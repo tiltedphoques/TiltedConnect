@@ -32,6 +32,7 @@ workspace ("Tilted Connect")
 	
     filter { "action:vs*"}
         buildoptions { "/wd4512", "/wd4996", "/wd4018", "/Zm500" }
+        defines { "WIN32" }
         
     filter { "action:gmake2", "language:C++" }
         buildoptions { "-g -fpermissive" }
