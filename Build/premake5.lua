@@ -18,6 +18,7 @@ workspace ("Tilted Connect")
     floatingpoint "Fast"
     vectorextensions "SSE2"
     warnings "Extra"
+    characterset "ASCII"
     
     cppdialect "C++17"
     
@@ -84,4 +85,5 @@ workspace ("Tilted Connect")
 
     CreateConnectProject("..", "../../TiltedCore")
     CreateProtobufProject("..")
+    CreateSteamNetProject("..")
 

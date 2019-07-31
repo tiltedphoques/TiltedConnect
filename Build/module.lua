@@ -93,3 +93,42 @@ function CreateProtobufProject(basePath)
             "HAVE_PTHREAD"
         }
 end
+
+function CreateSteamNetProject(basePath)
+    project ("SteamNet")
+        kind ("StaticLib")
+        language ("C++")
+
+        includedirs
+        {
+            basePath .. "/ThirdParty/protobuf/src/",
+            basePath .. "/ThirdParty/openssl/include/",
+            basePath .. "/ThirdParty/GameNetworkingSockets/include/",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/public",
+            basePath .. "/ThirdParty/"
+        }
+
+        files
+        {
+            basePath .. "/ThirdParty/GameNetworkingSockets/include/**/*.h",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/**/*.h",
+            basePath .. "/ThirdParty/gnsconfig.h",
+            
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_25519_donna.cpp",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_25519_openssl.cpp",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_openssl.cpp",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_textencode.cpp",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/common/keypair.cpp",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/common/steamid.cpp",
+
+        }
+        
+        defines
+        {
+            "STEAMNETWORKINGSOCKETS_FOREXPORT",
+            "ENABLE_OPENSSLCONNECTION",
+            "CRYPTO_DISABLE_ENCRYPT_WITH_PASSWORD",
+            "GOOGLE_PROTOBUF_NO_RTTI"
+        }
+end
