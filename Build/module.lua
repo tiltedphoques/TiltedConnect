@@ -119,6 +119,12 @@ function CreateProtobufProject(basePath)
         {
             "HAVE_PTHREAD"
         }
+
+        filter { "action:gmake*", "language:C++" }
+            buildoptions { "-fPIC" }
+            linkoptions ("-fPIC")
+
+        filter ""
 end
 
 function CreateSteamNetProject(basePath)
@@ -201,10 +207,6 @@ function CreateSteamNetProject(basePath)
         links
         {
             "protobuf",
-            "libcryptoMT.lib",
-            "libsslMT.lib",
-            "ws2_32",
-            "Crypt32.lib"
         }
         
         filter { "architecture:*86" }
@@ -212,6 +214,24 @@ function CreateSteamNetProject(basePath)
 
         filter { "architecture:*64" }
             libdirs { basePath .. "/ThirdParty/openssl/lib/x64" }
+
+        filter { "action:vs*" }
+            links
+            {
+                "libcryptoMT.lib",
+                "libsslMT.lib",
+                "ws2_32",
+                "Crypt32.lib"
+            }
         
+        filter { "action:gmake*", "language:C++" }
+            defines
+            {
+                'POSIX',
+                'LINUX',
+                'GNUC',
+                'GNU_COMPILER',
+            }
+
         filter ""
 end
