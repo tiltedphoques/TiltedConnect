@@ -1,3 +1,6 @@
 [submodule "Libraries/TiltedCore"]
 	path = Libraries/TiltedCore
 	url = https://github.com/tiltedphoques/TiltedCore
+[submodule "ThirdParty/GameNetworkingSockets"]
+	path = ThirdParty/GameNetworkingSockets
+	url = https://github.com/ValveSoftware/GameNetworkingSockets
