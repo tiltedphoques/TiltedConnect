@@ -95,6 +95,12 @@ workspace ("Tilted Connect")
                     'GNUC',
                     'GNU_COMPILER',
                 }
+                
+                links
+                {
+                    "ssl",
+                    "crypto"
+                }
 
             filter ""
 
