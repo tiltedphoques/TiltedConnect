@@ -34,7 +34,7 @@ workspace ("Tilted Connect")
         buildoptions { "/wd4512", "/wd4996", "/wd4018", "/Zm500" }
         defines { "WIN32" }
         
-    filter { "action:gmake2", "language:C++" }
+    filter { "action:gmake*", "language:C++" }
         buildoptions { "-g -fpermissive" }
         linkoptions ("-lm -lpthread -pthread -Wl,--no-as-needed -lrt -g -fPIC")
             
@@ -49,11 +49,11 @@ workspace ("Tilted Connect")
         symbols ( "On" )
         
     filter { "architecture:*86" }
-        libdirs { "lib/x32" }
+        libdirs { "lib/x32", "../../TiltedCore/Build/lib/x32" }
         targetdir ("lib/x32")
 
     filter { "architecture:*64" }
-        libdirs { "lib/x64" }
+        libdirs { "lib/x64", "../../TiltedCore/Build/lib/x64" }
         targetdir ("lib/x64")
         
     filter {}
