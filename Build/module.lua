@@ -15,6 +15,17 @@ function CreateConnectProject(basePath, coreBasePath)
             basePath .. "/Code/connect/include/**.h",
             basePath .. "/Code/connect/src/**.cpp",
         }
+        
+        filter { "action:gmake*", "language:C++" }
+            defines
+            {
+                'POSIX',
+                'LINUX',
+                'GNUC',
+                'GNU_COMPILER',
+            }
+
+        filter ""
 end
 
 function CreateProtobufProject(basePath)
@@ -232,6 +243,12 @@ function CreateSteamNetProject(basePath)
                 'LINUX',
                 'GNUC',
                 'GNU_COMPILER',
+            }
+            
+            links
+            {
+                "ssl",
+                "crypto"
             }
 
         filter ""

@@ -74,8 +74,8 @@ workspace ("Tilted Connect")
                 "../ThirdParty/GameNetworkingSockets/include/",
             }
 
-             files
-             {
+            files
+            {
                 "../Code/tests/include/**.h",
                 "../Code/tests/src/**.cpp",
             }
@@ -86,6 +86,17 @@ workspace ("Tilted Connect")
                 "Connect",
                 "SteamNet"
             }
+            
+            filter { "action:gmake*", "language:C++" }
+                defines
+                {
+                    'POSIX',
+                    'LINUX',
+                    'GNUC',
+                    'GNU_COMPILER',
+                }
+
+            filter ""
 
     CreateConnectProject("..", "../../TiltedCore")
     CreateProtobufProject("..")

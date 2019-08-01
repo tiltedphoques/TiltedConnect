@@ -8,5 +8,5 @@ struct SteamInterface
 
 private:
 
-    static std::atomic<size_t> s_initCounter;
+    static std::atomic<std::size_t> s_initCounter;
 };

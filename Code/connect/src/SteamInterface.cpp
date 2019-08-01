@@ -1,7 +1,7 @@
 #include "SteamInterface.h"
 #include "steam/steamnetworkingsockets.h"
 
-std::atomic<size_t> SteamInterface::s_initCounter = 0;
+std::atomic<std::size_t> SteamInterface::s_initCounter = 0;
 
 void SteamInterface::Acquire()
 {
