@@ -19,6 +19,7 @@ workspace ("Tilted Connect")
     vectorextensions "SSE2"
     warnings "Extra"
     characterset "ASCII"
+    flags { "MultiProcessorCompile" }
     
     cppdialect "C++17"
     
