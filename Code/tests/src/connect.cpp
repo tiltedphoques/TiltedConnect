@@ -49,7 +49,7 @@ TEST_CASE("Connect tests", "[connect]")
     TestClient client;
     REQUIRE(client.Connect("127.0.0.1:12547") == true);
 
-    while(true)
+   // while(true)
     {
         server.Update();
         client.Update();
