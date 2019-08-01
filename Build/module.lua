@@ -7,6 +7,7 @@ function CreateConnectProject(basePath, coreBasePath)
         {
             basePath .. "/Code/connect/include/",
             coreBasePath .. "/Code/core/include/",
+            basePath .. "/ThirdParty/GameNetworkingSockets/include/",
         }
 
         files

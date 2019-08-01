@@ -71,6 +71,7 @@ workspace ("Tilted Connect")
                 "../Code/tests/include/",
                 "../Code/connect/include/",
                 "../../TiltedCore/Code/core/include/",
+                "../ThirdParty/GameNetworkingSockets/include/",
             }
 
              files
@@ -82,7 +83,8 @@ workspace ("Tilted Connect")
             links
             {
                 "Core",
-                "Connect"
+                "Connect",
+                "SteamNet"
             }
 
     CreateConnectProject("..", "../../TiltedCore")
