@@ -143,6 +143,8 @@ function CreateSteamNetProject(basePath)
     project ("SteamNet")
         kind ("SharedLib")
         language ("C++")
+        
+        characterset "ASCII"
 
         includedirs
         {
