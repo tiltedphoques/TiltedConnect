@@ -1,6 +1,7 @@
 #include "Server.h"
 #include "SteamInterface.h"
 #include <thread>
+#include <algorithm>
 
 using namespace std::chrono;
 
@@ -88,6 +89,12 @@ void Server::Update()
     std::this_thread::sleep_for(2ms);
 }
 
+void Server::SendToAll(const void* apData, const uint32_t aSize)
+{
+    for (const auto conn : m_connections)
+        m_pInterface->SendMessageToConnection(conn, apData, aSize, k_nSteamNetworkingSend_Reliable);
+}
+
 void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
 {
     switch(apInfo->m_info.m_eState)
@@ -101,6 +108,7 @@ void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCa
         {
             const uintptr_t ptr = apInfo->m_info.m_nUserData;
             OnDisconnection(reinterpret_cast<void*>(ptr));
+            m_connections.erase(std::find(std::begin(m_connections), std::end(m_connections), apInfo->m_hConn));
         }
 
         m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
@@ -114,6 +122,8 @@ void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCa
             // TODO: Error handling
             break;
         }
+
+        m_connections.push_back(apInfo->m_hConn);
 
         const auto ptr = reinterpret_cast<uintptr_t>(OnConnection(apInfo->m_hConn));
 

@@ -50,6 +50,11 @@ void Client::Update()
     }
 }
 
+void Client::Send(const void* apData, const uint32_t aSize)
+{
+    m_pInterface->SendMessageToConnection(m_connection, apData, aSize, k_nSteamNetworkingSend_Reliable);
+}
+
 void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
 {
     switch(apInfo->m_info.m_eState)

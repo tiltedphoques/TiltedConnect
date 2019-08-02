@@ -26,6 +26,8 @@ struct Client : private ISteamNetworkingSocketsCallbacks
     virtual void OnConnected() = 0;
     virtual void OnDisconnected(EDisconnectReason aReason) = 0;
 
+    void Send(const void* apData, const uint32_t aSize);
+
 private:
 
     void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
