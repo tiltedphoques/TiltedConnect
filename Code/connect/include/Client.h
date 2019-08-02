@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <chrono>
 #include <string>
+#include "SteamInterface.h"
 
 struct Client : private ISteamNetworkingSocketsCallbacks
 {
@@ -17,6 +18,11 @@ struct Client : private ISteamNetworkingSocketsCallbacks
     Client();
     virtual ~Client();
 
+    Client(const Client&) = delete;
+    Client& operator=(const Client&) = delete;
+    Client(Client&&) noexcept;
+    Client& operator=(Client&&) noexcept;
+
     bool Connect(const std::string& acEndpoint);
     void Close();
 
@@ -26,7 +32,7 @@ struct Client : private ISteamNetworkingSocketsCallbacks
     virtual void OnConnected() = 0;
     virtual void OnDisconnected(EDisconnectReason aReason) = 0;
 
-    void Send(const void* apData, const uint32_t aSize);
+    void Send(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
 
 private:
 

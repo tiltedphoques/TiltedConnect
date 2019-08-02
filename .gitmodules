@@ -3,4 +3,4 @@
 	url = https://github.com/tiltedphoques/TiltedCore
 [submodule "ThirdParty/GameNetworkingSockets"]
 	path = ThirdParty/GameNetworkingSockets
-	url = https://github.com/ValveSoftware/GameNetworkingSockets
+	url = https://github.com/tiltedphoques/GameNetworkingSockets

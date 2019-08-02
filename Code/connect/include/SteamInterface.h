@@ -1,6 +1,12 @@
 #pragma once
 #include <atomic>
 
+enum EPacketFlags
+{
+    kReliable,
+    kUnreliable
+};
+
 struct SteamInterface
 {
     static void Acquire();

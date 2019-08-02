@@ -4,11 +4,17 @@
 #include <cstdint>
 #include <chrono>
 #include <vector>
+#include "SteamInterface.h"
 
 struct Server : private ISteamNetworkingSocketsCallbacks
 {
     Server();
     virtual ~Server();
+
+    Server(const Server&) = delete;
+    Server& operator=(const Server&) = delete;
+    Server(Server&&) = delete;
+    Server& operator=(Server&&) = delete;
 
     bool Host(uint16_t aPort, uint32_t aTickRate);
     void Close();
@@ -20,7 +26,7 @@ struct Server : private ISteamNetworkingSocketsCallbacks
     virtual void* OnConnection(uint32_t aHandle) = 0;
     virtual void OnDisconnection(void* aCookie) = 0;
 
-    void SendToAll(const void* apData, const uint32_t aSize);
+    void SendToAll(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable);
 
 private:
 

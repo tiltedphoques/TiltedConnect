@@ -14,6 +14,23 @@ Client::~Client()
     SteamInterface::Release();
 }
 
+Client::Client(Client&& aRhs) noexcept
+    : m_connection(k_HSteamNetConnection_Invalid)
+    , m_pInterface(nullptr)
+{
+    SteamInterface::Acquire();
+
+    this->operator=(std::move(aRhs));
+}
+
+Client& Client::operator=(Client&& aRhs) noexcept
+{
+    std::swap(m_connection, aRhs.m_connection);
+    std::swap(m_pInterface, aRhs.m_pInterface);
+
+    return *this;
+}
+
 bool Client::Connect(const std::string& acEndpoint)
 {
     SteamNetworkingIPAddr remoteAddress{};
@@ -50,9 +67,10 @@ void Client::Update()
     }
 }
 
-void Client::Send(const void* apData, const uint32_t aSize)
+void Client::Send(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
 {
-    m_pInterface->SendMessageToConnection(m_connection, apData, aSize, k_nSteamNetworkingSend_Reliable);
+    m_pInterface->SendMessageToConnection(m_connection, apData, aSize, 
+        aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
 }
 
 void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)

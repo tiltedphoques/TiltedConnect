@@ -89,10 +89,11 @@ void Server::Update()
     std::this_thread::sleep_for(2ms);
 }
 
-void Server::SendToAll(const void* apData, const uint32_t aSize)
+void Server::SendToAll(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags)
 {
     for (const auto conn : m_connections)
-        m_pInterface->SendMessageToConnection(conn, apData, aSize, k_nSteamNetworkingSend_Reliable);
+        m_pInterface->SendMessageToConnection(conn, apData, aSize, 
+            aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
 }
 
 void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
