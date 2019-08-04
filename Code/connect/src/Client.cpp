@@ -89,6 +89,18 @@ bool Client::IsConnected() const
     return false;
 }
 
+SteamNetworkingQuickConnectionStatus Client::GetConnectionStatus() const
+{
+    SteamNetworkingQuickConnectionStatus status{};
+
+    if (m_connection != k_HSteamNetConnection_Invalid)
+    {
+        m_pInterface->GetQuickConnectionStatus(m_connection, &status);
+    }
+
+    return status;
+}
+
 void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
 {
     switch(apInfo->m_info.m_eState)
