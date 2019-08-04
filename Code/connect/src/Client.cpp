@@ -75,6 +75,18 @@ void Client::Send(const void* apData, const uint32_t aSize, EPacketFlags aPacket
         aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
 }
 
+bool Client::IsConnected() const
+{
+    if(m_connection != k_HSteamNetConnection_Invalid)
+    {
+        SteamNetConnectionInfo_t info{};
+        if(m_pInterface->GetConnectionInfo(m_connection, &info))
+        {
+            return info.m_eState == k_ESteamNetworkingConnectionState_Connected;
+        }
+    }
+}
+
 void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
 {
     switch(apInfo->m_info.m_eState)

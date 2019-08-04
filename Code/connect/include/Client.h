@@ -35,6 +35,8 @@ struct Client : private ISteamNetworkingSocketsCallbacks
 
     void Send(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
 
+    [[nodiscard]] bool IsConnected() const;
+
 private:
 
     void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
