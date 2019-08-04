@@ -31,6 +31,7 @@ struct Client : private ISteamNetworkingSocketsCallbacks
     virtual void OnConsume(const void* apData, const uint32_t aSize) = 0;
     virtual void OnConnected() = 0;
     virtual void OnDisconnected(EDisconnectReason aReason) = 0;
+    virtual void OnUpdate() = 0;
 
     void Send(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
 

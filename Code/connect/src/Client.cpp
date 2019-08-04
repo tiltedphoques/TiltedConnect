@@ -65,6 +65,8 @@ void Client::Update()
 
         pIncomingMsg->Release();
     }
+
+    OnUpdate();
 }
 
 void Client::Send(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
