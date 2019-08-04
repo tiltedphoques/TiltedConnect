@@ -85,6 +85,8 @@ bool Client::IsConnected() const
             return info.m_eState == k_ESteamNetworkingConnectionState_Connected;
         }
     }
+
+    return false;
 }
 
 void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
