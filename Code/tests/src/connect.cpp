@@ -12,21 +12,17 @@ struct TestServer final : Server
         SendToAll(data.c_str(), data.size() + 1);
     }
 
-    void OnConsume(const void* apData, const uint32_t aSize, void* aCookie) override
+    void OnConsume(const void* apData, const uint32_t aSize, ConnectionId_t aId) override
     {
-        REQUIRE((void*)42 == aCookie);
-
         std::cout << static_cast<const char*>(apData) << std::endl;
     }
 
-    void* OnConnection(uint32_t aHandle) override
+    void OnConnection(ConnectionId_t aId) override
     {
-        return reinterpret_cast<void*>(42);
     }
 
-    void OnDisconnection(void* aCookie) override
+    void OnDisconnection(ConnectionId_t aId) override
     {
-        REQUIRE((void*)42 == aCookie);
     }
 };
 

@@ -16,6 +16,8 @@ function CreateConnectProject(basePath, coreBasePath)
             basePath .. "/Code/connect/src/**.cpp",
         }
         
+        defines { "STEAMNETWORKINGSOCKETS_STATIC_LINK" }
+        
         filter { "action:gmake*", "language:C++" }
             defines
             {
@@ -141,7 +143,7 @@ end
 
 function CreateSteamNetProject(basePath)
     project ("SteamNet")
-        kind ("SharedLib")
+        kind ("StaticLib")
         language ("C++")
         
         characterset "ASCII"
@@ -212,7 +214,7 @@ function CreateSteamNetProject(basePath)
         
         defines
         {
-            "STEAMNETWORKINGSOCKETS_FOREXPORT",
+            "STEAMNETWORKINGSOCKETS_STATIC_LINK",
             "ENABLE_OPENSSLCONNECTION",
             "CRYPTO_DISABLE_ENCRYPT_WITH_PASSWORD",
             "GOOGLE_PROTOBUF_NO_RTTI"
