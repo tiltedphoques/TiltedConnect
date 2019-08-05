@@ -74,7 +74,7 @@ void Server::Update()
 
             const uintptr_t ptr = pIncomingMessage->GetConnectionUserData();
 
-            OnConsume(pIncomingMessage->GetData(), pIncomingMessage->GetSize(), reinterpret_cast<void*>(ptr));
+            OnConsume(pIncomingMessage->GetData(), pIncomingMessage->GetSize(), pIncomingMessage->GetConnection());
 
             pIncomingMessage->Release();
         }
@@ -92,8 +92,24 @@ void Server::Update()
 void Server::SendToAll(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags)
 {
     for (const auto conn : m_connections)
-        m_pInterface->SendMessageToConnection(conn, apData, aSize, 
-            aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+        Send(conn, apData, aSize, aPacketFlags);
+}
+
+void Server::Send(ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
+{
+    m_pInterface->SendMessageToConnection(aConnectionId, apData, aSize,
+        aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+}
+
+uint16_t Server::GetPort() const
+{
+    SteamNetworkingIPAddr address{};
+    if(m_pInterface->GetListenSocketAddress(m_listenSock, &address))
+    {
+        return address.m_port;
+    }
+
+    return 0;
 }
 
 void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
@@ -107,8 +123,7 @@ void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCa
     {
         if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connected)
         {
-            const uintptr_t ptr = apInfo->m_info.m_nUserData;
-            OnDisconnection(reinterpret_cast<void*>(ptr));
+            OnDisconnection(apInfo->m_hConn);
             m_connections.erase(std::find(std::begin(m_connections), std::end(m_connections), apInfo->m_hConn));
         }
 
@@ -126,9 +141,7 @@ void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCa
 
         m_connections.push_back(apInfo->m_hConn);
 
-        const auto ptr = reinterpret_cast<uintptr_t>(OnConnection(apInfo->m_hConn));
-
-        m_pInterface->SetConnectionUserData(apInfo->m_hConn, uint64_t(ptr));
+        OnConnection(apInfo->m_hConn);
         break;
     }
     case k_ESteamNetworkingConnectionState_Connected:

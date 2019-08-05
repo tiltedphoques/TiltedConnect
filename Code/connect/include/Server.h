@@ -22,11 +22,14 @@ struct Server : private ISteamNetworkingSocketsCallbacks
     void Update();
 
     virtual void OnUpdate() = 0;
-    virtual void OnConsume(const void* apData, const uint32_t aSize, void* aCookie) = 0;
-    virtual void* OnConnection(uint32_t aHandle) = 0;
-    virtual void OnDisconnection(void* aCookie) = 0;
+    virtual void OnConsume(const void* apData, const uint32_t aSize, ConnectionId_t aConnectionId) = 0;
+    virtual void OnConnection(ConnectionId_t aHandle) = 0;
+    virtual void OnDisconnection(ConnectionId_t aConnectionId) = 0;
 
     void SendToAll(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable);
+    void Send(ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
+
+    [[nodiscard]] uint16_t GetPort() const;
 
 private:
 
