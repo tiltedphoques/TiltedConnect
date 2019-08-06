@@ -36,7 +36,7 @@ private:
 
     void Remove(ConnectionId_t aId);
 
-    void HandlePacket(const void* apData, const uint32_t aSize, ConnectionId_t aConnectionId);
+    void HandleMessage(const void* apData, const uint32_t aSize, ConnectionId_t aConnectionId);
 
     void SynchronizeClientClocks();
 

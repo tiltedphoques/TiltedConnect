@@ -76,9 +76,7 @@ void Server::Update()
                 // TODO: Handle when messageCount is a negative number, it's an error
             }
 
-            const uintptr_t ptr = pIncomingMessage->GetConnectionUserData();
-
-            OnConsume(pIncomingMessage->GetData(), pIncomingMessage->GetSize(), pIncomingMessage->GetConnection());
+            HandleMessage(pIncomingMessage->GetData(), pIncomingMessage->GetSize(), pIncomingMessage->GetConnection());
 
             pIncomingMessage->Release();
         }
@@ -162,7 +160,7 @@ void Server::Remove(const ConnectionId_t aId)
     }
 }
 
-void Server::HandlePacket(const void* apData, const uint32_t aSize, const ConnectionId_t aConnectionId)
+void Server::HandleMessage(const void* apData, const uint32_t aSize, const ConnectionId_t aConnectionId)
 {
     // We handle the cases where packets target the current stack or the user stack
     if (aSize == 0)

@@ -71,7 +71,7 @@ void Client::Update()
             break;
         }
 
-        OnConsume(pIncomingMsg->GetData(), pIncomingMsg->GetSize());
+        HandleMessage(pIncomingMsg->GetData(), pIncomingMsg->GetSize());
 
         pIncomingMsg->Release();
     }
