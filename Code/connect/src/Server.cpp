@@ -208,9 +208,9 @@ void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCa
     {
         if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connected)
         {
-            OnDisconnection(apInfo->m_hConn);
-
             Remove(apInfo->m_hConn);
+
+            OnDisconnection(apInfo->m_hConn);
         }
 
         m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
