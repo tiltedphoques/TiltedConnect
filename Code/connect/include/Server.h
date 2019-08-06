@@ -28,7 +28,7 @@ struct Server : private ISteamNetworkingSocketsCallbacks
 
     void SendToAll(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable);
     void Send(ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
-    void Kick(ConnectionId_t aConnectionId) const;
+    void Kick(ConnectionId_t aConnectionId);
 
     [[nodiscard]] uint16_t GetPort() const;
 

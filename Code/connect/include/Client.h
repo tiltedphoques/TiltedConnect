@@ -12,7 +12,8 @@ struct Client : private ISteamNetworkingSocketsCallbacks
     {
         kTimeout,
         kLocalProblem,
-        kKicked
+        kKicked,
+        kNormal
     };
 
     Client();

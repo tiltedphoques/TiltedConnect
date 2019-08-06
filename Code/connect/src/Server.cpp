@@ -101,9 +101,10 @@ void Server::Send(ConnectionId_t aConnectionId, const void* apData, const uint32
         aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
 }
 
-void Server::Kick(ConnectionId_t aConnectionId) const
+void Server::Kick(ConnectionId_t aConnectionId)
 {
     m_pInterface->CloseConnection(aConnectionId, 0, "Kick", true);
+    OnDisconnection(aConnectionId);
 }
 
 uint16_t Server::GetPort() const

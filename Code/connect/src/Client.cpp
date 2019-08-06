@@ -43,8 +43,13 @@ bool Client::Connect(const std::string& acEndpoint)
 
 void Client::Close()
 {
-    m_pInterface->CloseConnection(m_connection, 0, nullptr, false);
-    m_connection = k_HSteamNetConnection_Invalid;
+    if (m_connection != k_HSteamNetConnection_Invalid)
+    {
+        m_pInterface->CloseConnection(m_connection, 0, nullptr, true);
+        m_connection = k_HSteamNetConnection_Invalid;
+
+        OnDisconnected(kNormal);
+    }
 }
 
 void Client::Update()
