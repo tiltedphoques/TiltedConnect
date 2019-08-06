@@ -1,5 +1,8 @@
 #include "Client.h"
 #include "SteamInterface.h"
+#include <ScratchAllocator.h>
+#include <cassert>
+#include "Buffer.h"
 
 Client::Client()
 {
@@ -54,6 +57,8 @@ void Client::Close()
 
 void Client::Update()
 {
+    m_clock.Update();
+
     m_pInterface->RunCallbacks(this);
 
     while(true)
@@ -76,7 +81,19 @@ void Client::Update()
 
 void Client::Send(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
 {
-    m_pInterface->SendMessageToConnection(m_connection, apData, aSize, 
+    static thread_local ScratchAllocator s_allocator{ 1 << 16 };
+
+    assert(aSize < ((1 << 16) - 1));
+
+    const auto pBuffer = static_cast<uint8_t*>(s_allocator.Allocate(size_t(aSize) + 1));
+    assert(pBuffer);
+
+    const auto pData = static_cast<const uint8_t*>(apData);
+
+    pBuffer[0] = kPayload;
+    std::copy(pData, pData + aSize, pBuffer + 1);
+
+    m_pInterface->SendMessageToConnection(m_connection, pBuffer, aSize + 1, 
         aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
 }
 
@@ -104,6 +121,11 @@ SteamNetworkingQuickConnectionStatus Client::GetConnectionStatus() const
     }
 
     return status;
+}
+
+const SynchronizedClock& Client::GetClock() const
+{
+    return m_clock;
 }
 
 void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
@@ -141,4 +163,45 @@ void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCa
     default:
         break;
     }
+}
+
+void Client::HandleMessage(const void* apData, uint32_t aSize)
+{
+    // We handle the cases where packets target the current stack or the user stack
+    if (aSize == 0)
+        return;
+
+    auto pData = static_cast<const uint8_t*>(apData);
+
+    const auto opcode = pData[0];
+    
+    pData += 1;
+    aSize -= 1;
+
+    switch (opcode)
+    {
+    case kPayload:
+        OnConsume(pData, aSize);
+        break;
+    case kServerTime:
+        HandleServerTime(pData, aSize);
+        break;
+    default:
+        assert(false);
+        break;
+    }
+}
+
+void Client::HandleServerTime(const void* apData, uint32_t aSize)
+{
+    if (aSize < 8)
+        return;
+
+    const auto pData = static_cast<const uint8_t*>(apData);
+    const auto connectionStatus = GetConnectionStatus();
+
+    uint64_t serverTime;
+    std::copy(pData, pData + 8, &serverTime);
+
+    m_clock.Synchronize(serverTime, connectionStatus.m_nPing);
 }

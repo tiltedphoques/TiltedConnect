@@ -2,6 +2,10 @@
 #include "SteamInterface.h"
 #include <thread>
 #include <algorithm>
+#include <ScratchAllocator.h>
+#include <StackAllocator.h>
+#include <Buffer.h>
+#include <cassert>
 
 using namespace std::chrono;
 
@@ -56,7 +60,7 @@ void Server::Close()
 
 void Server::Update()
 {
-    const auto now = steady_clock::now();
+    m_currentTick = high_resolution_clock::now();
 
     if (m_listenSock != k_HSteamListenSocket_Invalid)
     {
@@ -80,30 +84,60 @@ void Server::Update()
         }
     }
 
-    if (now - m_lastUpdateTime >= m_timeBetweenUpdates)
+    if (m_currentTick - m_lastUpdateTime >= m_timeBetweenUpdates)
     {
-        m_lastUpdateTime = now;
+        m_lastUpdateTime = m_currentTick;
         OnUpdate();
     }
 
     std::this_thread::sleep_for(2ms);
 }
 
-void Server::SendToAll(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags)
+void Server::SendToAll(const void* apData, const uint32_t aSize, const EPacketFlags aPacketFlags)
 {
+    static thread_local ScratchAllocator s_allocator{1 << 16};
+
+    assert(aSize < ((1 << 16) - 1));
+
+    const auto pBuffer = static_cast<uint8_t*>(s_allocator.Allocate(size_t(aSize) + 1));
+    assert(pBuffer);
+
+    const auto pData = static_cast<const uint8_t*>(apData);
+
+    pBuffer[0] = kPayload;
+    std::copy(pData, pData + aSize, pBuffer + 1);
+
     for (const auto conn : m_connections)
-        Send(conn, apData, aSize, aPacketFlags);
+    {
+        m_pInterface->SendMessageToConnection(conn, pBuffer, aSize + 1,
+            aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+    }
 }
 
-void Server::Send(ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
+void Server::Send(const ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
 {
-    m_pInterface->SendMessageToConnection(aConnectionId, apData, aSize,
+    static thread_local ScratchAllocator s_allocator{ 1 << 16 };
+
+    assert(aSize < ((1 << 16) - 1));
+
+    const auto pBuffer = static_cast<uint8_t*>(s_allocator.Allocate(size_t(aSize) + 1));
+    assert(pBuffer);
+
+    const auto pData = static_cast<const uint8_t*>(apData);
+
+    pBuffer[0] = kPayload;
+    std::copy(pData, pData + aSize, pBuffer + 1);
+
+    m_pInterface->SendMessageToConnection(aConnectionId, pBuffer, aSize + 1,
         aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
 }
 
-void Server::Kick(ConnectionId_t aConnectionId)
+void Server::Kick(const ConnectionId_t aConnectionId)
 {
     m_pInterface->CloseConnection(aConnectionId, 0, "Kick", true);
+
+    Remove(aConnectionId);
+
     OnDisconnection(aConnectionId);
 }
 
@@ -118,6 +152,53 @@ uint16_t Server::GetPort() const
     return 0;
 }
 
+void Server::Remove(const ConnectionId_t aId)
+{
+    const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);
+    if (it != std::end(m_connections) && !m_connections.empty())
+    {
+        std::iter_swap(it, std::end(m_connections) - 1);
+        m_connections.pop_back();
+    }
+}
+
+void Server::HandlePacket(const void* apData, const uint32_t aSize, const ConnectionId_t aConnectionId)
+{
+    // We handle the cases where packets target the current stack or the user stack
+    if (aSize == 0)
+        return;
+
+    const auto pData = (uint8_t*)apData;
+    switch(pData[0])
+    {
+    case kPayload:
+        OnConsume(pData + 1, aSize - 1, aConnectionId);
+        break;
+    default:
+        assert(false);
+        break;
+    }
+}
+
+void Server::SynchronizeClientClocks()
+{
+    const auto time = std::chrono::duration_cast<std::chrono::milliseconds>(m_currentTick.time_since_epoch()).count();
+
+    StackAllocator<1 << 10> allocator;
+    ScopedAllocator _{ &allocator };
+
+    const auto pBuffer = New<Buffer>(512);
+
+    Buffer::Writer writer(pBuffer);
+    writer.WriteBits(kServerTime, 8);
+    writer.WriteBits(time, 64);
+
+    for (const auto conn : m_connections)
+    {
+        m_pInterface->SendMessageToConnection(conn, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+    }
+}
+
 void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
 {
     switch(apInfo->m_info.m_eState)
@@ -130,7 +211,8 @@ void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCa
         if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connected)
         {
             OnDisconnection(apInfo->m_hConn);
-            m_connections.erase(std::find(std::begin(m_connections), std::end(m_connections), apInfo->m_hConn));
+
+            Remove(apInfo->m_hConn);
         }
 
         m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);

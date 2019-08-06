@@ -5,6 +5,7 @@
 #include <chrono>
 #include <string>
 #include "SteamInterface.h"
+#include "SynchronizedClock.h"
 
 struct Client : private ISteamNetworkingSocketsCallbacks
 {
@@ -29,7 +30,7 @@ struct Client : private ISteamNetworkingSocketsCallbacks
 
     void Update();
 
-    virtual void OnConsume(const void* apData, const uint32_t aSize) = 0;
+    virtual void OnConsume(const void* apData, uint32_t aSize) = 0;
     virtual void OnConnected() = 0;
     virtual void OnDisconnected(EDisconnectReason aReason) = 0;
     virtual void OnUpdate() = 0;
@@ -38,11 +39,16 @@ struct Client : private ISteamNetworkingSocketsCallbacks
 
     [[nodiscard]] bool IsConnected() const;
     [[nodiscard]] SteamNetworkingQuickConnectionStatus GetConnectionStatus() const;
+    [[nodiscard]] const SynchronizedClock& GetClock() const;
 
 private:
 
     void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
 
+    void HandleMessage(const void* apData, uint32_t aSize);
+    void HandleServerTime(const void* apData, uint32_t aSize);
+
     HSteamNetConnection m_connection;
     ISteamNetworkingSockets* m_pInterface;
+    SynchronizedClock m_clock;
 };

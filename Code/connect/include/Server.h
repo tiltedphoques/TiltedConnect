@@ -22,26 +22,33 @@ struct Server : private ISteamNetworkingSocketsCallbacks
     void Update();
 
     virtual void OnUpdate() = 0;
-    virtual void OnConsume(const void* apData, const uint32_t aSize, ConnectionId_t aConnectionId) = 0;
+    virtual void OnConsume(const void* apData, uint32_t aSize, ConnectionId_t aConnectionId) = 0;
     virtual void OnConnection(ConnectionId_t aHandle) = 0;
     virtual void OnDisconnection(ConnectionId_t aConnectionId) = 0;
 
-    void SendToAll(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable);
-    void Send(ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
+    void SendToAll(const void* apData, uint32_t aSize, EPacketFlags aPacketFlags = kReliable);
+    void Send(ConnectionId_t aConnectionId, const void* apData, uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
     void Kick(ConnectionId_t aConnectionId);
 
     [[nodiscard]] uint16_t GetPort() const;
 
 private:
 
+    void Remove(ConnectionId_t aId);
+
+    void HandlePacket(const void* apData, const uint32_t aSize, ConnectionId_t aConnectionId);
+
+    void SynchronizeClientClocks();
+
     void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
 
     HSteamListenSocket m_listenSock;
     ISteamNetworkingSockets* m_pInterface;
 
-    std::vector<HSteamListenSocket> m_connections;
+    std::vector<ConnectionId_t> m_connections;
 
     uint32_t m_tickRate;
-    std::chrono::time_point<std::chrono::steady_clock> m_lastUpdateTime;
+    std::chrono::time_point<std::chrono::high_resolution_clock> m_lastUpdateTime;
+    std::chrono::time_point<std::chrono::high_resolution_clock> m_currentTick;
     std::chrono::milliseconds m_timeBetweenUpdates;
 };

@@ -107,4 +107,5 @@ workspace ("Tilted Connect")
     CreateConnectProject("..", "../../TiltedCore")
     CreateProtobufProject("..")
     CreateSteamNetProject("..")
+    CreateCoreProject("../../TiltedCore")
 
