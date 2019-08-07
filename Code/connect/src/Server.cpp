@@ -103,13 +103,15 @@ void Server::SendToAll(const void* apData, const uint32_t aSize, const EPacketFl
     const auto pData = static_cast<const uint8_t*>(apData);
 
     pBuffer[0] = kPayload;
-    std::copy(pData, pData + aSize, pBuffer + 1);
+    std::copy_n(pData, aSize, pBuffer + 1);
 
     for (const auto conn : m_connections)
     {
         m_pInterface->SendMessageToConnection(conn, pBuffer, aSize + 1,
             aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
     }
+
+    s_allocator.Reset();
 }
 
 void Server::Send(const ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
@@ -124,10 +126,12 @@ void Server::Send(const ConnectionId_t aConnectionId, const void* apData, const 
     const auto pData = static_cast<const uint8_t*>(apData);
 
     pBuffer[0] = kPayload;
-    std::copy(pData, pData + aSize, pBuffer + 1);
+    std::copy_n(pData, aSize, pBuffer + 1);
 
     m_pInterface->SendMessageToConnection(aConnectionId, pBuffer, aSize + 1,
         aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+
+    s_allocator.Reset();
 }
 
 void Server::Kick(const ConnectionId_t aConnectionId)

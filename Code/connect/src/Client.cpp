@@ -91,10 +91,12 @@ void Client::Send(const void* apData, const uint32_t aSize, EPacketFlags aPacket
     const auto pData = static_cast<const uint8_t*>(apData);
 
     pBuffer[0] = kPayload;
-    std::copy(pData, pData + aSize, pBuffer + 1);
+    std::copy_n(pData, aSize, pBuffer + 1);
 
     m_pInterface->SendMessageToConnection(m_connection, pBuffer, aSize + 1, 
         aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+
+    s_allocator.Reset();
 }
 
 bool Client::IsConnected() const
