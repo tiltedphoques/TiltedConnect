@@ -9,7 +9,7 @@
 
 using namespace std::chrono;
 
-Server::Server()
+Server::Server() noexcept
     : m_tickRate(10)
     , m_lastUpdateTime(0ns)
     , m_timeBetweenUpdates(100ms)
@@ -25,7 +25,7 @@ Server::~Server()
     SteamInterface::Release();
 }
 
-bool Server::Host(const uint16_t aPort, uint32_t aTickRate)
+bool Server::Host(const uint16_t aPort, uint32_t aTickRate) noexcept
 {
     Close();
 
@@ -47,22 +47,22 @@ bool Server::Host(const uint16_t aPort, uint32_t aTickRate)
     m_tickRate = aTickRate;
     m_timeBetweenUpdates = 1000ms / m_tickRate;
 
-    return m_listenSock != k_HSteamListenSocket_Invalid;
+    return IsListening();
 }
 
-void Server::Close()
+void Server::Close() noexcept
 {
-    if (m_listenSock != k_HSteamListenSocket_Invalid)
+    if (IsListening())
         m_pInterface->CloseListenSocket(m_listenSock);
 
     m_listenSock = k_HSteamListenSocket_Invalid;
 }
 
-void Server::Update()
+void Server::Update() noexcept
 {
     m_currentTick = high_resolution_clock::now();
 
-    if (m_listenSock != k_HSteamListenSocket_Invalid)
+    if (IsListening())
     {
         m_pInterface->RunCallbacks(this);
 
@@ -91,7 +91,7 @@ void Server::Update()
     std::this_thread::sleep_for(2ms);
 }
 
-void Server::SendToAll(const void* apData, const uint32_t aSize, const EPacketFlags aPacketFlags)
+void Server::SendToAll(const void* apData, const uint32_t aSize, const EPacketFlags aPacketFlags) noexcept
 {
     static thread_local ScratchAllocator s_allocator{1 << 16};
 
@@ -114,7 +114,7 @@ void Server::SendToAll(const void* apData, const uint32_t aSize, const EPacketFl
     s_allocator.Reset();
 }
 
-void Server::Send(const ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
+void Server::Send(const ConnectionId_t aConnectionId, const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const noexcept
 {
     static thread_local ScratchAllocator s_allocator{ 1 << 16 };
 
@@ -134,7 +134,7 @@ void Server::Send(const ConnectionId_t aConnectionId, const void* apData, const 
     s_allocator.Reset();
 }
 
-void Server::Kick(const ConnectionId_t aConnectionId)
+void Server::Kick(const ConnectionId_t aConnectionId) noexcept
 {
     m_pInterface->CloseConnection(aConnectionId, 0, "Kick", true);
 
@@ -143,7 +143,7 @@ void Server::Kick(const ConnectionId_t aConnectionId)
     OnDisconnection(aConnectionId);
 }
 
-uint16_t Server::GetPort() const
+uint16_t Server::GetPort() const noexcept
 {
     SteamNetworkingIPAddr address{};
     if(m_pInterface->GetListenSocketAddress(m_listenSock, &address))
@@ -154,7 +154,12 @@ uint16_t Server::GetPort() const
     return 0;
 }
 
-void Server::Remove(const ConnectionId_t aId)
+bool Server::IsListening() const noexcept
+{
+    return m_listenSock != k_HSteamListenSocket_Invalid;
+}
+
+void Server::Remove(const ConnectionId_t aId) noexcept
 {
     const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);
     if (it != std::end(m_connections) && !m_connections.empty())
@@ -164,7 +169,7 @@ void Server::Remove(const ConnectionId_t aId)
     }
 }
 
-void Server::HandleMessage(const void* apData, const uint32_t aSize, const ConnectionId_t aConnectionId)
+void Server::HandleMessage(const void* apData, const uint32_t aSize, const ConnectionId_t aConnectionId) noexcept
 {
     // We handle the cases where packets target the current stack or the user stack
     if (aSize == 0)
@@ -182,7 +187,7 @@ void Server::HandleMessage(const void* apData, const uint32_t aSize, const Conne
     }
 }
 
-void Server::SynchronizeClientClocks()
+void Server::SynchronizeClientClocks() noexcept
 {
     const auto time = std::chrono::duration_cast<std::chrono::milliseconds>(m_currentTick.time_since_epoch()).count();
 

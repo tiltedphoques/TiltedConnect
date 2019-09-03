@@ -3,12 +3,12 @@
 #include "steam/steamnetworkingsockets.h"
 #include <cstdint>
 #include <chrono>
-#include <vector>
 #include "SteamInterface.h"
+#include "Stl.h"
 
 struct Server : private ISteamNetworkingSocketsCallbacks
 {
-    Server();
+    Server() noexcept;
     virtual ~Server();
 
     Server(const Server&) = delete;
@@ -16,36 +16,37 @@ struct Server : private ISteamNetworkingSocketsCallbacks
     Server(Server&&) = delete;
     Server& operator=(Server&&) = delete;
 
-    bool Host(uint16_t aPort, uint32_t aTickRate);
-    void Close();
+    bool Host(uint16_t aPort, uint32_t aTickRate) noexcept;
+    void Close() noexcept;
 
-    void Update();
+    void Update() noexcept;
 
     virtual void OnUpdate() = 0;
     virtual void OnConsume(const void* apData, uint32_t aSize, ConnectionId_t aConnectionId) = 0;
     virtual void OnConnection(ConnectionId_t aHandle) = 0;
     virtual void OnDisconnection(ConnectionId_t aConnectionId) = 0;
 
-    void SendToAll(const void* apData, uint32_t aSize, EPacketFlags aPacketFlags = kReliable);
-    void Send(ConnectionId_t aConnectionId, const void* apData, uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
-    void Kick(ConnectionId_t aConnectionId);
+    void SendToAll(const void* apData, uint32_t aSize, EPacketFlags aPacketFlags = kReliable) noexcept;
+    void Send(ConnectionId_t aConnectionId, const void* apData, uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const noexcept;
+    void Kick(ConnectionId_t aConnectionId) noexcept;
 
-    [[nodiscard]] uint16_t GetPort() const;
+    [[nodiscard]] uint16_t GetPort() const noexcept;
+    [[nodiscard]] bool IsListening() const noexcept;
 
 private:
 
-    void Remove(ConnectionId_t aId);
+    void Remove(ConnectionId_t aId) noexcept;
 
-    void HandleMessage(const void* apData, const uint32_t aSize, ConnectionId_t aConnectionId);
+    void HandleMessage(const void* apData, const uint32_t aSize, ConnectionId_t aConnectionId) noexcept;
 
-    void SynchronizeClientClocks();
+    void SynchronizeClientClocks() noexcept;
 
     void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
 
     HSteamListenSocket m_listenSock;
     ISteamNetworkingSockets* m_pInterface;
 
-    std::vector<ConnectionId_t> m_connections;
+    Vector<ConnectionId_t> m_connections;
 
     uint32_t m_tickRate;
     std::chrono::time_point<std::chrono::high_resolution_clock> m_lastUpdateTime;
