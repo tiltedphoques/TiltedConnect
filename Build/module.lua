@@ -217,7 +217,8 @@ function CreateSteamNetProject(basePath)
             "STEAMNETWORKINGSOCKETS_STATIC_LINK",
             "ENABLE_OPENSSLCONNECTION",
             "CRYPTO_DISABLE_ENCRYPT_WITH_PASSWORD",
-            "GOOGLE_PROTOBUF_NO_RTTI"
+            "GOOGLE_PROTOBUF_NO_RTTI",
+            "VALVE_CRYPTO_25519_DONNA"
         }
         
         links
