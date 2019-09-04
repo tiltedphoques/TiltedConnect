@@ -39,7 +39,7 @@ bool Client::Connect(const std::string& acEndpoint)
     SteamNetworkingIPAddr remoteAddress{};
     remoteAddress.ParseString(acEndpoint.c_str());
 
-    m_connection = m_pInterface->ConnectByIPAddress(remoteAddress);
+    m_connection = m_pInterface->ConnectByIPAddress(remoteAddress, 0, nullptr);
 
     return m_connection != k_HSteamNetConnection_Invalid;
 }

@@ -48,7 +48,7 @@ struct TableStruct_steamnetworkingsockets_5fmessages_5fcerts_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[3]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[4]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -58,16 +58,20 @@ extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table
 class CMsgSteamDatagramCertificate;
 class CMsgSteamDatagramCertificateDefaultTypeInternal;
 extern CMsgSteamDatagramCertificateDefaultTypeInternal _CMsgSteamDatagramCertificate_default_instance_;
+class CMsgSteamDatagramCertificateRequest;
+class CMsgSteamDatagramCertificateRequestDefaultTypeInternal;
+extern CMsgSteamDatagramCertificateRequestDefaultTypeInternal _CMsgSteamDatagramCertificateRequest_default_instance_;
 class CMsgSteamDatagramCertificateSigned;
 class CMsgSteamDatagramCertificateSignedDefaultTypeInternal;
 extern CMsgSteamDatagramCertificateSignedDefaultTypeInternal _CMsgSteamDatagramCertificateSigned_default_instance_;
-class CMsgSteamNetworkingIdentity;
-class CMsgSteamNetworkingIdentityDefaultTypeInternal;
-extern CMsgSteamNetworkingIdentityDefaultTypeInternal _CMsgSteamNetworkingIdentity_default_instance_;
+class CMsgSteamNetworkingIdentityLegacyBinary;
+class CMsgSteamNetworkingIdentityLegacyBinaryDefaultTypeInternal;
+extern CMsgSteamNetworkingIdentityLegacyBinaryDefaultTypeInternal _CMsgSteamNetworkingIdentityLegacyBinary_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::CMsgSteamDatagramCertificate* Arena::CreateMaybeMessage<::CMsgSteamDatagramCertificate>(Arena*);
+template<> ::CMsgSteamDatagramCertificateRequest* Arena::CreateMaybeMessage<::CMsgSteamDatagramCertificateRequest>(Arena*);
 template<> ::CMsgSteamDatagramCertificateSigned* Arena::CreateMaybeMessage<::CMsgSteamDatagramCertificateSigned>(Arena*);
-template<> ::CMsgSteamNetworkingIdentity* Arena::CreateMaybeMessage<::CMsgSteamNetworkingIdentity>(Arena*);
+template<> ::CMsgSteamNetworkingIdentityLegacyBinary* Arena::CreateMaybeMessage<::CMsgSteamNetworkingIdentityLegacyBinary>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 
 enum CMsgSteamDatagramCertificate_EKeyType : int {
@@ -95,23 +99,23 @@ inline bool CMsgSteamDatagramCertificate_EKeyType_Parse(
 }
 // ===================================================================
 
-class CMsgSteamNetworkingIdentity :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:CMsgSteamNetworkingIdentity) */ {
+class CMsgSteamNetworkingIdentityLegacyBinary :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:CMsgSteamNetworkingIdentityLegacyBinary) */ {
  public:
-  CMsgSteamNetworkingIdentity();
-  virtual ~CMsgSteamNetworkingIdentity();
+  CMsgSteamNetworkingIdentityLegacyBinary();
+  virtual ~CMsgSteamNetworkingIdentityLegacyBinary();
 
-  CMsgSteamNetworkingIdentity(const CMsgSteamNetworkingIdentity& from);
-  CMsgSteamNetworkingIdentity(CMsgSteamNetworkingIdentity&& from) noexcept
-    : CMsgSteamNetworkingIdentity() {
+  CMsgSteamNetworkingIdentityLegacyBinary(const CMsgSteamNetworkingIdentityLegacyBinary& from);
+  CMsgSteamNetworkingIdentityLegacyBinary(CMsgSteamNetworkingIdentityLegacyBinary&& from) noexcept
+    : CMsgSteamNetworkingIdentityLegacyBinary() {
     *this = ::std::move(from);
   }
 
-  inline CMsgSteamNetworkingIdentity& operator=(const CMsgSteamNetworkingIdentity& from) {
+  inline CMsgSteamNetworkingIdentityLegacyBinary& operator=(const CMsgSteamNetworkingIdentityLegacyBinary& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CMsgSteamNetworkingIdentity& operator=(CMsgSteamNetworkingIdentity&& from) noexcept {
+  inline CMsgSteamNetworkingIdentityLegacyBinary& operator=(CMsgSteamNetworkingIdentityLegacyBinary&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -136,37 +140,37 @@ class CMsgSteamNetworkingIdentity :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const CMsgSteamNetworkingIdentity& default_instance();
+  static const CMsgSteamNetworkingIdentityLegacyBinary& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const CMsgSteamNetworkingIdentity* internal_default_instance() {
-    return reinterpret_cast<const CMsgSteamNetworkingIdentity*>(
-               &_CMsgSteamNetworkingIdentity_default_instance_);
+  static inline const CMsgSteamNetworkingIdentityLegacyBinary* internal_default_instance() {
+    return reinterpret_cast<const CMsgSteamNetworkingIdentityLegacyBinary*>(
+               &_CMsgSteamNetworkingIdentityLegacyBinary_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(CMsgSteamNetworkingIdentity& a, CMsgSteamNetworkingIdentity& b) {
+  friend void swap(CMsgSteamNetworkingIdentityLegacyBinary& a, CMsgSteamNetworkingIdentityLegacyBinary& b) {
     a.Swap(&b);
   }
-  inline void Swap(CMsgSteamNetworkingIdentity* other) {
+  inline void Swap(CMsgSteamNetworkingIdentityLegacyBinary* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline CMsgSteamNetworkingIdentity* New() const final {
-    return CreateMaybeMessage<CMsgSteamNetworkingIdentity>(nullptr);
+  inline CMsgSteamNetworkingIdentityLegacyBinary* New() const final {
+    return CreateMaybeMessage<CMsgSteamNetworkingIdentityLegacyBinary>(nullptr);
   }
 
-  CMsgSteamNetworkingIdentity* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<CMsgSteamNetworkingIdentity>(arena);
+  CMsgSteamNetworkingIdentityLegacyBinary* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<CMsgSteamNetworkingIdentityLegacyBinary>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const CMsgSteamNetworkingIdentity& from);
-  void MergeFrom(const CMsgSteamNetworkingIdentity& from);
+  void CopyFrom(const CMsgSteamNetworkingIdentityLegacyBinary& from);
+  void MergeFrom(const CMsgSteamNetworkingIdentityLegacyBinary& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -187,10 +191,10 @@ class CMsgSteamNetworkingIdentity :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CMsgSteamNetworkingIdentity* other);
+  void InternalSwap(CMsgSteamNetworkingIdentityLegacyBinary* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "CMsgSteamNetworkingIdentity";
+    return "CMsgSteamNetworkingIdentityLegacyBinary";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -262,7 +266,7 @@ class CMsgSteamNetworkingIdentity :
   ::PROTOBUF_NAMESPACE_ID::uint64 steam_id() const;
   void set_steam_id(::PROTOBUF_NAMESPACE_ID::uint64 value);
 
-  // @@protoc_insertion_point(class_scope:CMsgSteamNetworkingIdentity)
+  // @@protoc_insertion_point(class_scope:CMsgSteamNetworkingIdentityLegacyBinary)
  private:
   class _Internal;
 
@@ -430,7 +434,8 @@ class CMsgSteamDatagramCertificate :
     kGameserverDatacenterIdsFieldNumber = 5,
     kAppIdsFieldNumber = 10,
     kKeyDataFieldNumber = 2,
-    kIdentityFieldNumber = 11,
+    kIdentityStringFieldNumber = 12,
+    kLegacyIdentityBinaryFieldNumber = 11,
     kLegacySteamIdFieldNumber = 4,
     kKeyTypeFieldNumber = 1,
     kTimeCreatedFieldNumber = 8,
@@ -470,13 +475,25 @@ class CMsgSteamDatagramCertificate :
   std::string* release_key_data();
   void set_allocated_key_data(std::string* key_data);
 
-  // optional .CMsgSteamNetworkingIdentity identity = 11;
-  bool has_identity() const;
-  void clear_identity();
-  const ::CMsgSteamNetworkingIdentity& identity() const;
-  ::CMsgSteamNetworkingIdentity* release_identity();
-  ::CMsgSteamNetworkingIdentity* mutable_identity();
-  void set_allocated_identity(::CMsgSteamNetworkingIdentity* identity);
+  // optional string identity_string = 12;
+  bool has_identity_string() const;
+  void clear_identity_string();
+  const std::string& identity_string() const;
+  void set_identity_string(const std::string& value);
+  void set_identity_string(std::string&& value);
+  void set_identity_string(const char* value);
+  void set_identity_string(const char* value, size_t size);
+  std::string* mutable_identity_string();
+  std::string* release_identity_string();
+  void set_allocated_identity_string(std::string* identity_string);
+
+  // optional .CMsgSteamNetworkingIdentityLegacyBinary legacy_identity_binary = 11;
+  bool has_legacy_identity_binary() const;
+  void clear_legacy_identity_binary();
+  const ::CMsgSteamNetworkingIdentityLegacyBinary& legacy_identity_binary() const;
+  ::CMsgSteamNetworkingIdentityLegacyBinary* release_legacy_identity_binary();
+  ::CMsgSteamNetworkingIdentityLegacyBinary* mutable_legacy_identity_binary();
+  void set_allocated_legacy_identity_binary(::CMsgSteamNetworkingIdentityLegacyBinary* legacy_identity_binary);
 
   // optional fixed64 legacy_steam_id = 4;
   bool has_legacy_steam_id() const;
@@ -512,7 +529,8 @@ class CMsgSteamDatagramCertificate :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 > gameserver_datacenter_ids_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 > app_ids_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr key_data_;
-  ::CMsgSteamNetworkingIdentity* identity_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr identity_string_;
+  ::CMsgSteamNetworkingIdentityLegacyBinary* legacy_identity_binary_;
   ::PROTOBUF_NAMESPACE_ID::uint64 legacy_steam_id_;
   int key_type_;
   ::PROTOBUF_NAMESPACE_ID::uint32 time_created_;
@@ -687,6 +705,148 @@ class CMsgSteamDatagramCertificateSigned :
   ::PROTOBUF_NAMESPACE_ID::uint64 ca_key_id_;
   friend struct ::TableStruct_steamnetworkingsockets_5fmessages_5fcerts_2eproto;
 };
+// -------------------------------------------------------------------
+
+class CMsgSteamDatagramCertificateRequest :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:CMsgSteamDatagramCertificateRequest) */ {
+ public:
+  CMsgSteamDatagramCertificateRequest();
+  virtual ~CMsgSteamDatagramCertificateRequest();
+
+  CMsgSteamDatagramCertificateRequest(const CMsgSteamDatagramCertificateRequest& from);
+  CMsgSteamDatagramCertificateRequest(CMsgSteamDatagramCertificateRequest&& from) noexcept
+    : CMsgSteamDatagramCertificateRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline CMsgSteamDatagramCertificateRequest& operator=(const CMsgSteamDatagramCertificateRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CMsgSteamDatagramCertificateRequest& operator=(CMsgSteamDatagramCertificateRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const CMsgSteamDatagramCertificateRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const CMsgSteamDatagramCertificateRequest* internal_default_instance() {
+    return reinterpret_cast<const CMsgSteamDatagramCertificateRequest*>(
+               &_CMsgSteamDatagramCertificateRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(CMsgSteamDatagramCertificateRequest& a, CMsgSteamDatagramCertificateRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CMsgSteamDatagramCertificateRequest* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline CMsgSteamDatagramCertificateRequest* New() const final {
+    return CreateMaybeMessage<CMsgSteamDatagramCertificateRequest>(nullptr);
+  }
+
+  CMsgSteamDatagramCertificateRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<CMsgSteamDatagramCertificateRequest>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const CMsgSteamDatagramCertificateRequest& from);
+  void MergeFrom(const CMsgSteamDatagramCertificateRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  #else
+  bool MergePartialFromCodedStream(
+      ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::PROTOBUF_NAMESPACE_ID::io::CodedOutputStream* output) const final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CMsgSteamDatagramCertificateRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "CMsgSteamDatagramCertificateRequest";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto);
+    return ::descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCertFieldNumber = 1,
+  };
+  // optional .CMsgSteamDatagramCertificate cert = 1;
+  bool has_cert() const;
+  void clear_cert();
+  const ::CMsgSteamDatagramCertificate& cert() const;
+  ::CMsgSteamDatagramCertificate* release_cert();
+  ::CMsgSteamDatagramCertificate* mutable_cert();
+  void set_allocated_cert(::CMsgSteamDatagramCertificate* cert);
+
+  // @@protoc_insertion_point(class_scope:CMsgSteamDatagramCertificateRequest)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::CMsgSteamDatagramCertificate* cert_;
+  friend struct ::TableStruct_steamnetworkingsockets_5fmessages_5fcerts_2eproto;
+};
 // ===================================================================
 
 
@@ -696,198 +856,198 @@ class CMsgSteamDatagramCertificateSigned :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// CMsgSteamNetworkingIdentity
+// CMsgSteamNetworkingIdentityLegacyBinary
 
 // optional fixed64 steam_id = 16;
-inline bool CMsgSteamNetworkingIdentity::has_steam_id() const {
+inline bool CMsgSteamNetworkingIdentityLegacyBinary::has_steam_id() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void CMsgSteamNetworkingIdentity::clear_steam_id() {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::clear_steam_id() {
   steam_id_ = PROTOBUF_ULONGLONG(0);
   _has_bits_[0] &= ~0x00000008u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint64 CMsgSteamNetworkingIdentity::steam_id() const {
-  // @@protoc_insertion_point(field_get:CMsgSteamNetworkingIdentity.steam_id)
+inline ::PROTOBUF_NAMESPACE_ID::uint64 CMsgSteamNetworkingIdentityLegacyBinary::steam_id() const {
+  // @@protoc_insertion_point(field_get:CMsgSteamNetworkingIdentityLegacyBinary.steam_id)
   return steam_id_;
 }
-inline void CMsgSteamNetworkingIdentity::set_steam_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_steam_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _has_bits_[0] |= 0x00000008u;
   steam_id_ = value;
-  // @@protoc_insertion_point(field_set:CMsgSteamNetworkingIdentity.steam_id)
+  // @@protoc_insertion_point(field_set:CMsgSteamNetworkingIdentityLegacyBinary.steam_id)
 }
 
 // optional bytes generic_bytes = 2;
-inline bool CMsgSteamNetworkingIdentity::has_generic_bytes() const {
+inline bool CMsgSteamNetworkingIdentityLegacyBinary::has_generic_bytes() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void CMsgSteamNetworkingIdentity::clear_generic_bytes() {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::clear_generic_bytes() {
   generic_bytes_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   _has_bits_[0] &= ~0x00000001u;
 }
-inline const std::string& CMsgSteamNetworkingIdentity::generic_bytes() const {
-  // @@protoc_insertion_point(field_get:CMsgSteamNetworkingIdentity.generic_bytes)
+inline const std::string& CMsgSteamNetworkingIdentityLegacyBinary::generic_bytes() const {
+  // @@protoc_insertion_point(field_get:CMsgSteamNetworkingIdentityLegacyBinary.generic_bytes)
   return generic_bytes_.GetNoArena();
 }
-inline void CMsgSteamNetworkingIdentity::set_generic_bytes(const std::string& value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_generic_bytes(const std::string& value) {
   _has_bits_[0] |= 0x00000001u;
   generic_bytes_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CMsgSteamNetworkingIdentity.generic_bytes)
+  // @@protoc_insertion_point(field_set:CMsgSteamNetworkingIdentityLegacyBinary.generic_bytes)
 }
-inline void CMsgSteamNetworkingIdentity::set_generic_bytes(std::string&& value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_generic_bytes(std::string&& value) {
   _has_bits_[0] |= 0x00000001u;
   generic_bytes_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CMsgSteamNetworkingIdentity.generic_bytes)
+  // @@protoc_insertion_point(field_set_rvalue:CMsgSteamNetworkingIdentityLegacyBinary.generic_bytes)
 }
-inline void CMsgSteamNetworkingIdentity::set_generic_bytes(const char* value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_generic_bytes(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000001u;
   generic_bytes_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CMsgSteamNetworkingIdentity.generic_bytes)
+  // @@protoc_insertion_point(field_set_char:CMsgSteamNetworkingIdentityLegacyBinary.generic_bytes)
 }
-inline void CMsgSteamNetworkingIdentity::set_generic_bytes(const void* value, size_t size) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_generic_bytes(const void* value, size_t size) {
   _has_bits_[0] |= 0x00000001u;
   generic_bytes_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CMsgSteamNetworkingIdentity.generic_bytes)
+  // @@protoc_insertion_point(field_set_pointer:CMsgSteamNetworkingIdentityLegacyBinary.generic_bytes)
 }
-inline std::string* CMsgSteamNetworkingIdentity::mutable_generic_bytes() {
+inline std::string* CMsgSteamNetworkingIdentityLegacyBinary::mutable_generic_bytes() {
   _has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_mutable:CMsgSteamNetworkingIdentity.generic_bytes)
+  // @@protoc_insertion_point(field_mutable:CMsgSteamNetworkingIdentityLegacyBinary.generic_bytes)
   return generic_bytes_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline std::string* CMsgSteamNetworkingIdentity::release_generic_bytes() {
-  // @@protoc_insertion_point(field_release:CMsgSteamNetworkingIdentity.generic_bytes)
+inline std::string* CMsgSteamNetworkingIdentityLegacyBinary::release_generic_bytes() {
+  // @@protoc_insertion_point(field_release:CMsgSteamNetworkingIdentityLegacyBinary.generic_bytes)
   if (!has_generic_bytes()) {
     return nullptr;
   }
   _has_bits_[0] &= ~0x00000001u;
   return generic_bytes_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline void CMsgSteamNetworkingIdentity::set_allocated_generic_bytes(std::string* generic_bytes) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_allocated_generic_bytes(std::string* generic_bytes) {
   if (generic_bytes != nullptr) {
     _has_bits_[0] |= 0x00000001u;
   } else {
     _has_bits_[0] &= ~0x00000001u;
   }
   generic_bytes_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), generic_bytes);
-  // @@protoc_insertion_point(field_set_allocated:CMsgSteamNetworkingIdentity.generic_bytes)
+  // @@protoc_insertion_point(field_set_allocated:CMsgSteamNetworkingIdentityLegacyBinary.generic_bytes)
 }
 
 // optional string generic_string = 3;
-inline bool CMsgSteamNetworkingIdentity::has_generic_string() const {
+inline bool CMsgSteamNetworkingIdentityLegacyBinary::has_generic_string() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void CMsgSteamNetworkingIdentity::clear_generic_string() {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::clear_generic_string() {
   generic_string_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   _has_bits_[0] &= ~0x00000002u;
 }
-inline const std::string& CMsgSteamNetworkingIdentity::generic_string() const {
-  // @@protoc_insertion_point(field_get:CMsgSteamNetworkingIdentity.generic_string)
+inline const std::string& CMsgSteamNetworkingIdentityLegacyBinary::generic_string() const {
+  // @@protoc_insertion_point(field_get:CMsgSteamNetworkingIdentityLegacyBinary.generic_string)
   return generic_string_.GetNoArena();
 }
-inline void CMsgSteamNetworkingIdentity::set_generic_string(const std::string& value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_generic_string(const std::string& value) {
   _has_bits_[0] |= 0x00000002u;
   generic_string_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CMsgSteamNetworkingIdentity.generic_string)
+  // @@protoc_insertion_point(field_set:CMsgSteamNetworkingIdentityLegacyBinary.generic_string)
 }
-inline void CMsgSteamNetworkingIdentity::set_generic_string(std::string&& value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_generic_string(std::string&& value) {
   _has_bits_[0] |= 0x00000002u;
   generic_string_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CMsgSteamNetworkingIdentity.generic_string)
+  // @@protoc_insertion_point(field_set_rvalue:CMsgSteamNetworkingIdentityLegacyBinary.generic_string)
 }
-inline void CMsgSteamNetworkingIdentity::set_generic_string(const char* value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_generic_string(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000002u;
   generic_string_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CMsgSteamNetworkingIdentity.generic_string)
+  // @@protoc_insertion_point(field_set_char:CMsgSteamNetworkingIdentityLegacyBinary.generic_string)
 }
-inline void CMsgSteamNetworkingIdentity::set_generic_string(const char* value, size_t size) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_generic_string(const char* value, size_t size) {
   _has_bits_[0] |= 0x00000002u;
   generic_string_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CMsgSteamNetworkingIdentity.generic_string)
+  // @@protoc_insertion_point(field_set_pointer:CMsgSteamNetworkingIdentityLegacyBinary.generic_string)
 }
-inline std::string* CMsgSteamNetworkingIdentity::mutable_generic_string() {
+inline std::string* CMsgSteamNetworkingIdentityLegacyBinary::mutable_generic_string() {
   _has_bits_[0] |= 0x00000002u;
-  // @@protoc_insertion_point(field_mutable:CMsgSteamNetworkingIdentity.generic_string)
+  // @@protoc_insertion_point(field_mutable:CMsgSteamNetworkingIdentityLegacyBinary.generic_string)
   return generic_string_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline std::string* CMsgSteamNetworkingIdentity::release_generic_string() {
-  // @@protoc_insertion_point(field_release:CMsgSteamNetworkingIdentity.generic_string)
+inline std::string* CMsgSteamNetworkingIdentityLegacyBinary::release_generic_string() {
+  // @@protoc_insertion_point(field_release:CMsgSteamNetworkingIdentityLegacyBinary.generic_string)
   if (!has_generic_string()) {
     return nullptr;
   }
   _has_bits_[0] &= ~0x00000002u;
   return generic_string_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline void CMsgSteamNetworkingIdentity::set_allocated_generic_string(std::string* generic_string) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_allocated_generic_string(std::string* generic_string) {
   if (generic_string != nullptr) {
     _has_bits_[0] |= 0x00000002u;
   } else {
     _has_bits_[0] &= ~0x00000002u;
   }
   generic_string_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), generic_string);
-  // @@protoc_insertion_point(field_set_allocated:CMsgSteamNetworkingIdentity.generic_string)
+  // @@protoc_insertion_point(field_set_allocated:CMsgSteamNetworkingIdentityLegacyBinary.generic_string)
 }
 
 // optional bytes ipv6_and_port = 4;
-inline bool CMsgSteamNetworkingIdentity::has_ipv6_and_port() const {
+inline bool CMsgSteamNetworkingIdentityLegacyBinary::has_ipv6_and_port() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void CMsgSteamNetworkingIdentity::clear_ipv6_and_port() {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::clear_ipv6_and_port() {
   ipv6_and_port_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   _has_bits_[0] &= ~0x00000004u;
 }
-inline const std::string& CMsgSteamNetworkingIdentity::ipv6_and_port() const {
-  // @@protoc_insertion_point(field_get:CMsgSteamNetworkingIdentity.ipv6_and_port)
+inline const std::string& CMsgSteamNetworkingIdentityLegacyBinary::ipv6_and_port() const {
+  // @@protoc_insertion_point(field_get:CMsgSteamNetworkingIdentityLegacyBinary.ipv6_and_port)
   return ipv6_and_port_.GetNoArena();
 }
-inline void CMsgSteamNetworkingIdentity::set_ipv6_and_port(const std::string& value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_ipv6_and_port(const std::string& value) {
   _has_bits_[0] |= 0x00000004u;
   ipv6_and_port_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CMsgSteamNetworkingIdentity.ipv6_and_port)
+  // @@protoc_insertion_point(field_set:CMsgSteamNetworkingIdentityLegacyBinary.ipv6_and_port)
 }
-inline void CMsgSteamNetworkingIdentity::set_ipv6_and_port(std::string&& value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_ipv6_and_port(std::string&& value) {
   _has_bits_[0] |= 0x00000004u;
   ipv6_and_port_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CMsgSteamNetworkingIdentity.ipv6_and_port)
+  // @@protoc_insertion_point(field_set_rvalue:CMsgSteamNetworkingIdentityLegacyBinary.ipv6_and_port)
 }
-inline void CMsgSteamNetworkingIdentity::set_ipv6_and_port(const char* value) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_ipv6_and_port(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000004u;
   ipv6_and_port_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CMsgSteamNetworkingIdentity.ipv6_and_port)
+  // @@protoc_insertion_point(field_set_char:CMsgSteamNetworkingIdentityLegacyBinary.ipv6_and_port)
 }
-inline void CMsgSteamNetworkingIdentity::set_ipv6_and_port(const void* value, size_t size) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_ipv6_and_port(const void* value, size_t size) {
   _has_bits_[0] |= 0x00000004u;
   ipv6_and_port_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CMsgSteamNetworkingIdentity.ipv6_and_port)
+  // @@protoc_insertion_point(field_set_pointer:CMsgSteamNetworkingIdentityLegacyBinary.ipv6_and_port)
 }
-inline std::string* CMsgSteamNetworkingIdentity::mutable_ipv6_and_port() {
+inline std::string* CMsgSteamNetworkingIdentityLegacyBinary::mutable_ipv6_and_port() {
   _has_bits_[0] |= 0x00000004u;
-  // @@protoc_insertion_point(field_mutable:CMsgSteamNetworkingIdentity.ipv6_and_port)
+  // @@protoc_insertion_point(field_mutable:CMsgSteamNetworkingIdentityLegacyBinary.ipv6_and_port)
   return ipv6_and_port_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline std::string* CMsgSteamNetworkingIdentity::release_ipv6_and_port() {
-  // @@protoc_insertion_point(field_release:CMsgSteamNetworkingIdentity.ipv6_and_port)
+inline std::string* CMsgSteamNetworkingIdentityLegacyBinary::release_ipv6_and_port() {
+  // @@protoc_insertion_point(field_release:CMsgSteamNetworkingIdentityLegacyBinary.ipv6_and_port)
   if (!has_ipv6_and_port()) {
     return nullptr;
   }
   _has_bits_[0] &= ~0x00000004u;
   return ipv6_and_port_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline void CMsgSteamNetworkingIdentity::set_allocated_ipv6_and_port(std::string* ipv6_and_port) {
+inline void CMsgSteamNetworkingIdentityLegacyBinary::set_allocated_ipv6_and_port(std::string* ipv6_and_port) {
   if (ipv6_and_port != nullptr) {
     _has_bits_[0] |= 0x00000004u;
   } else {
     _has_bits_[0] &= ~0x00000004u;
   }
   ipv6_and_port_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ipv6_and_port);
-  // @@protoc_insertion_point(field_set_allocated:CMsgSteamNetworkingIdentity.ipv6_and_port)
+  // @@protoc_insertion_point(field_set_allocated:CMsgSteamNetworkingIdentityLegacyBinary.ipv6_and_port)
 }
 
 // -------------------------------------------------------------------
@@ -896,11 +1056,11 @@ inline void CMsgSteamNetworkingIdentity::set_allocated_ipv6_and_port(std::string
 
 // optional .CMsgSteamDatagramCertificate.EKeyType key_type = 1;
 inline bool CMsgSteamDatagramCertificate::has_key_type() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void CMsgSteamDatagramCertificate::clear_key_type() {
   key_type_ = 0;
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline ::CMsgSteamDatagramCertificate_EKeyType CMsgSteamDatagramCertificate::key_type() const {
   // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificate.key_type)
@@ -908,7 +1068,7 @@ inline ::CMsgSteamDatagramCertificate_EKeyType CMsgSteamDatagramCertificate::key
 }
 inline void CMsgSteamDatagramCertificate::set_key_type(::CMsgSteamDatagramCertificate_EKeyType value) {
   assert(::CMsgSteamDatagramCertificate_EKeyType_IsValid(value));
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
   key_type_ = value;
   // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificate.key_type)
 }
@@ -973,69 +1133,127 @@ inline void CMsgSteamDatagramCertificate::set_allocated_key_data(std::string* ke
 
 // optional fixed64 legacy_steam_id = 4;
 inline bool CMsgSteamDatagramCertificate::has_legacy_steam_id() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void CMsgSteamDatagramCertificate::clear_legacy_steam_id() {
   legacy_steam_id_ = PROTOBUF_ULONGLONG(0);
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint64 CMsgSteamDatagramCertificate::legacy_steam_id() const {
   // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificate.legacy_steam_id)
   return legacy_steam_id_;
 }
 inline void CMsgSteamDatagramCertificate::set_legacy_steam_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
   legacy_steam_id_ = value;
   // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificate.legacy_steam_id)
 }
 
-// optional .CMsgSteamNetworkingIdentity identity = 11;
-inline bool CMsgSteamDatagramCertificate::has_identity() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+// optional .CMsgSteamNetworkingIdentityLegacyBinary legacy_identity_binary = 11;
+inline bool CMsgSteamDatagramCertificate::has_legacy_identity_binary() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void CMsgSteamDatagramCertificate::clear_identity() {
-  if (identity_ != nullptr) identity_->Clear();
-  _has_bits_[0] &= ~0x00000002u;
+inline void CMsgSteamDatagramCertificate::clear_legacy_identity_binary() {
+  if (legacy_identity_binary_ != nullptr) legacy_identity_binary_->Clear();
+  _has_bits_[0] &= ~0x00000004u;
 }
-inline const ::CMsgSteamNetworkingIdentity& CMsgSteamDatagramCertificate::identity() const {
-  const ::CMsgSteamNetworkingIdentity* p = identity_;
-  // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificate.identity)
-  return p != nullptr ? *p : *reinterpret_cast<const ::CMsgSteamNetworkingIdentity*>(
-      &::_CMsgSteamNetworkingIdentity_default_instance_);
+inline const ::CMsgSteamNetworkingIdentityLegacyBinary& CMsgSteamDatagramCertificate::legacy_identity_binary() const {
+  const ::CMsgSteamNetworkingIdentityLegacyBinary* p = legacy_identity_binary_;
+  // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificate.legacy_identity_binary)
+  return p != nullptr ? *p : *reinterpret_cast<const ::CMsgSteamNetworkingIdentityLegacyBinary*>(
+      &::_CMsgSteamNetworkingIdentityLegacyBinary_default_instance_);
 }
-inline ::CMsgSteamNetworkingIdentity* CMsgSteamDatagramCertificate::release_identity() {
-  // @@protoc_insertion_point(field_release:CMsgSteamDatagramCertificate.identity)
-  _has_bits_[0] &= ~0x00000002u;
-  ::CMsgSteamNetworkingIdentity* temp = identity_;
-  identity_ = nullptr;
+inline ::CMsgSteamNetworkingIdentityLegacyBinary* CMsgSteamDatagramCertificate::release_legacy_identity_binary() {
+  // @@protoc_insertion_point(field_release:CMsgSteamDatagramCertificate.legacy_identity_binary)
+  _has_bits_[0] &= ~0x00000004u;
+  ::CMsgSteamNetworkingIdentityLegacyBinary* temp = legacy_identity_binary_;
+  legacy_identity_binary_ = nullptr;
   return temp;
 }
-inline ::CMsgSteamNetworkingIdentity* CMsgSteamDatagramCertificate::mutable_identity() {
-  _has_bits_[0] |= 0x00000002u;
-  if (identity_ == nullptr) {
-    auto* p = CreateMaybeMessage<::CMsgSteamNetworkingIdentity>(GetArenaNoVirtual());
-    identity_ = p;
+inline ::CMsgSteamNetworkingIdentityLegacyBinary* CMsgSteamDatagramCertificate::mutable_legacy_identity_binary() {
+  _has_bits_[0] |= 0x00000004u;
+  if (legacy_identity_binary_ == nullptr) {
+    auto* p = CreateMaybeMessage<::CMsgSteamNetworkingIdentityLegacyBinary>(GetArenaNoVirtual());
+    legacy_identity_binary_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:CMsgSteamDatagramCertificate.identity)
-  return identity_;
+  // @@protoc_insertion_point(field_mutable:CMsgSteamDatagramCertificate.legacy_identity_binary)
+  return legacy_identity_binary_;
 }
-inline void CMsgSteamDatagramCertificate::set_allocated_identity(::CMsgSteamNetworkingIdentity* identity) {
+inline void CMsgSteamDatagramCertificate::set_allocated_legacy_identity_binary(::CMsgSteamNetworkingIdentityLegacyBinary* legacy_identity_binary) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
-    delete identity_;
+    delete legacy_identity_binary_;
   }
-  if (identity) {
+  if (legacy_identity_binary) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
     if (message_arena != submessage_arena) {
-      identity = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, identity, submessage_arena);
+      legacy_identity_binary = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, legacy_identity_binary, submessage_arena);
     }
+    _has_bits_[0] |= 0x00000004u;
+  } else {
+    _has_bits_[0] &= ~0x00000004u;
+  }
+  legacy_identity_binary_ = legacy_identity_binary;
+  // @@protoc_insertion_point(field_set_allocated:CMsgSteamDatagramCertificate.legacy_identity_binary)
+}
+
+// optional string identity_string = 12;
+inline bool CMsgSteamDatagramCertificate::has_identity_string() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void CMsgSteamDatagramCertificate::clear_identity_string() {
+  identity_string_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline const std::string& CMsgSteamDatagramCertificate::identity_string() const {
+  // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificate.identity_string)
+  return identity_string_.GetNoArena();
+}
+inline void CMsgSteamDatagramCertificate::set_identity_string(const std::string& value) {
+  _has_bits_[0] |= 0x00000002u;
+  identity_string_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificate.identity_string)
+}
+inline void CMsgSteamDatagramCertificate::set_identity_string(std::string&& value) {
+  _has_bits_[0] |= 0x00000002u;
+  identity_string_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CMsgSteamDatagramCertificate.identity_string)
+}
+inline void CMsgSteamDatagramCertificate::set_identity_string(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000002u;
+  identity_string_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CMsgSteamDatagramCertificate.identity_string)
+}
+inline void CMsgSteamDatagramCertificate::set_identity_string(const char* value, size_t size) {
+  _has_bits_[0] |= 0x00000002u;
+  identity_string_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CMsgSteamDatagramCertificate.identity_string)
+}
+inline std::string* CMsgSteamDatagramCertificate::mutable_identity_string() {
+  _has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_mutable:CMsgSteamDatagramCertificate.identity_string)
+  return identity_string_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* CMsgSteamDatagramCertificate::release_identity_string() {
+  // @@protoc_insertion_point(field_release:CMsgSteamDatagramCertificate.identity_string)
+  if (!has_identity_string()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000002u;
+  return identity_string_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void CMsgSteamDatagramCertificate::set_allocated_identity_string(std::string* identity_string) {
+  if (identity_string != nullptr) {
     _has_bits_[0] |= 0x00000002u;
   } else {
     _has_bits_[0] &= ~0x00000002u;
   }
-  identity_ = identity;
-  // @@protoc_insertion_point(field_set_allocated:CMsgSteamDatagramCertificate.identity)
+  identity_string_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), identity_string);
+  // @@protoc_insertion_point(field_set_allocated:CMsgSteamDatagramCertificate.identity_string)
 }
 
 // repeated fixed32 gameserver_datacenter_ids = 5;
@@ -1070,36 +1288,36 @@ CMsgSteamDatagramCertificate::mutable_gameserver_datacenter_ids() {
 
 // optional fixed32 time_created = 8;
 inline bool CMsgSteamDatagramCertificate::has_time_created() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void CMsgSteamDatagramCertificate::clear_time_created() {
   time_created_ = 0u;
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 CMsgSteamDatagramCertificate::time_created() const {
   // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificate.time_created)
   return time_created_;
 }
 inline void CMsgSteamDatagramCertificate::set_time_created(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
   time_created_ = value;
   // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificate.time_created)
 }
 
 // optional fixed32 time_expiry = 9;
 inline bool CMsgSteamDatagramCertificate::has_time_expiry() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void CMsgSteamDatagramCertificate::clear_time_expiry() {
   time_expiry_ = 0u;
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 CMsgSteamDatagramCertificate::time_expiry() const {
   // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificate.time_expiry)
   return time_expiry_;
 }
 inline void CMsgSteamDatagramCertificate::set_time_expiry(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000040u;
   time_expiry_ = value;
   // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificate.time_expiry)
 }
@@ -1272,9 +1490,64 @@ inline void CMsgSteamDatagramCertificateSigned::set_allocated_ca_signature(std::
   // @@protoc_insertion_point(field_set_allocated:CMsgSteamDatagramCertificateSigned.ca_signature)
 }
 
+// -------------------------------------------------------------------
+
+// CMsgSteamDatagramCertificateRequest
+
+// optional .CMsgSteamDatagramCertificate cert = 1;
+inline bool CMsgSteamDatagramCertificateRequest::has_cert() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void CMsgSteamDatagramCertificateRequest::clear_cert() {
+  if (cert_ != nullptr) cert_->Clear();
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const ::CMsgSteamDatagramCertificate& CMsgSteamDatagramCertificateRequest::cert() const {
+  const ::CMsgSteamDatagramCertificate* p = cert_;
+  // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificateRequest.cert)
+  return p != nullptr ? *p : *reinterpret_cast<const ::CMsgSteamDatagramCertificate*>(
+      &::_CMsgSteamDatagramCertificate_default_instance_);
+}
+inline ::CMsgSteamDatagramCertificate* CMsgSteamDatagramCertificateRequest::release_cert() {
+  // @@protoc_insertion_point(field_release:CMsgSteamDatagramCertificateRequest.cert)
+  _has_bits_[0] &= ~0x00000001u;
+  ::CMsgSteamDatagramCertificate* temp = cert_;
+  cert_ = nullptr;
+  return temp;
+}
+inline ::CMsgSteamDatagramCertificate* CMsgSteamDatagramCertificateRequest::mutable_cert() {
+  _has_bits_[0] |= 0x00000001u;
+  if (cert_ == nullptr) {
+    auto* p = CreateMaybeMessage<::CMsgSteamDatagramCertificate>(GetArenaNoVirtual());
+    cert_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:CMsgSteamDatagramCertificateRequest.cert)
+  return cert_;
+}
+inline void CMsgSteamDatagramCertificateRequest::set_allocated_cert(::CMsgSteamDatagramCertificate* cert) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete cert_;
+  }
+  if (cert) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      cert = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, cert, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  cert_ = cert;
+  // @@protoc_insertion_point(field_set_allocated:CMsgSteamDatagramCertificateRequest.cert)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -32,7 +32,7 @@ bool Server::Host(const uint16_t aPort, uint32_t aTickRate) noexcept
     SteamNetworkingIPAddr localAddress{};  // NOLINT(cppcoreguidelines-pro-type-member-init)
     localAddress.Clear();
     localAddress.m_port = aPort;
-    m_listenSock = m_pInterface->CreateListenSocketIP(localAddress);
+    m_listenSock = m_pInterface->CreateListenSocketIP(localAddress, 0, nullptr);
 
     if (m_tickRate == 0 && aTickRate == 0)
     {
