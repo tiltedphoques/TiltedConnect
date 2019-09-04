@@ -2,6 +2,7 @@
 
 #include "Server.h"
 #include "Client.h"
+#include "Packet.h"
 #include <iostream>
 
 struct TestServer final : Server
@@ -9,7 +10,11 @@ struct TestServer final : Server
     void OnUpdate() override
     {
         const std::string data("Hello from server!");
-        SendToAll(data.c_str(), data.size() + 1);
+
+		Packet packet(data.size() + 1);
+		std::copy_n(data.begin(), data.size() + 1, packet.GetData());
+
+		SendToAll(&packet);
     }
 
     void OnConsume(const void* apData, const uint32_t aSize, ConnectionId_t aId) override
@@ -33,7 +38,11 @@ struct TestClient final : Client
         //std::cout << static_cast<const char*>(apData) << std::endl;
 
         const std::string data("Hello from client!");
-        Send(data.c_str(), data.size() + 1);
+
+		Packet packet(data.size() + 1);
+		std::copy_n(data.begin(), data.size() + 1, packet.GetData());
+
+        Send(&packet);
     }
 
     void OnConnected() override

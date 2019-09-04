@@ -3,6 +3,7 @@
 #include <ScratchAllocator.h>
 #include <cassert>
 #include "Buffer.h"
+#include "Packet.h"
 
 Client::Client()
 {
@@ -79,24 +80,10 @@ void Client::Update()
     OnUpdate();
 }
 
-void Client::Send(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags) const
+void Client::Send(Packet* apPacket, EPacketFlags aPacketFlags) const
 {
-    static thread_local ScratchAllocator s_allocator{ 1 << 16 };
-
-    assert(aSize < ((1 << 16) - 1));
-
-    const auto pBuffer = static_cast<uint8_t*>(s_allocator.Allocate(size_t(aSize) + 1));
-    assert(pBuffer);
-
-    const auto pData = static_cast<const uint8_t*>(apData);
-
-    pBuffer[0] = kPayload;
-    std::copy_n(pData, aSize, pBuffer + 1);
-
-    m_pInterface->SendMessageToConnection(m_connection, pBuffer, aSize + 1, 
+    m_pInterface->SendMessageToConnection(m_connection, apPacket->m_pData, apPacket->m_size, 
         aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
-
-    s_allocator.Reset();
 }
 
 bool Client::IsConnected() const

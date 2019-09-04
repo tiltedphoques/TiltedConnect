@@ -2,11 +2,11 @@
 
 #include "steam/steamnetworkingsockets.h"
 #include <cstdint>
-#include <chrono>
 #include <string>
 #include "SteamInterface.h"
 #include "SynchronizedClock.h"
 
+struct Packet;
 struct Client : private ISteamNetworkingSocketsCallbacks
 {
     enum EDisconnectReason
@@ -35,7 +35,7 @@ struct Client : private ISteamNetworkingSocketsCallbacks
     virtual void OnDisconnected(EDisconnectReason aReason) = 0;
     virtual void OnUpdate() = 0;
 
-    void Send(const void* apData, const uint32_t aSize, EPacketFlags aPacketFlags = kReliable) const;
+    void Send(Packet* apPacket, EPacketFlags aPacketFlags = kReliable) const;
 
     [[nodiscard]] bool IsConnected() const;
     [[nodiscard]] SteamNetworkingQuickConnectionStatus GetConnectionStatus() const;
