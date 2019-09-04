@@ -205,6 +205,7 @@ function CreateSteamNetProject(basePath)
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/clientlib/steamnetworkingsockets_flat.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/clientlib/steamnetworkingsockets_lowlevel.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/steamnetworkingsockets_shared.cpp",
+            basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/steamnetworkingsockets_stats.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/clientlib/steamnetworkingsockets_snp.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/clientlib/steamnetworkingsockets_udp.cpp",
             
@@ -218,7 +219,8 @@ function CreateSteamNetProject(basePath)
             "ENABLE_OPENSSLCONNECTION",
             "CRYPTO_DISABLE_ENCRYPT_WITH_PASSWORD",
             "GOOGLE_PROTOBUF_NO_RTTI",
-            "VALVE_CRYPTO_25519_DONNA"
+            "VALVE_CRYPTO_25519_DONNA",
+            "STEAMNETWORKINGSOCKETS_CRYPTO_VALVEOPENSSL"
         }
         
         links
