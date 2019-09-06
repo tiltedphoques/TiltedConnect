@@ -1,8 +1,8 @@
-#include "Client.h"
-#include "SteamInterface.h"
+#include "Client.hpp"
+#include "SteamInterface.hpp"
 #include <cassert>
-#include "Buffer.h"
-#include "Packet.h"
+#include "Buffer.hpp"
+#include "Packet.hpp"
 
 namespace TiltedPhoques
 {

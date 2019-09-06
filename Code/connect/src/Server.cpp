@@ -1,11 +1,11 @@
-#include "Server.h"
-#include "SteamInterface.h"
+#include "Server.hpp"
+#include "SteamInterface.hpp"
 #include <thread>
 #include <algorithm>
-#include <Buffer.h>
+#include <Buffer.hpp>
 #include <cassert>
-#include <Packet.h>
-#include "StackAllocator.h"
+#include <Packet.hpp>
+#include "StackAllocator.hpp"
 
 using namespace std::chrono;
 

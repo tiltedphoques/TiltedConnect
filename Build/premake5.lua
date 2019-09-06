@@ -76,7 +76,7 @@ workspace ("Tilted Connect")
 
             files
             {
-                "../Code/tests/include/**.h",
+                "../Code/tests/include/**.hpp",
                 "../Code/tests/src/**.cpp",
             }
 			

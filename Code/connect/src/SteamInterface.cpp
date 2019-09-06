@@ -1,4 +1,4 @@
-#include "SteamInterface.h"
+#include "SteamInterface.hpp"
 #include "steam/steamnetworkingsockets.h"
 
 namespace TiltedPhoques

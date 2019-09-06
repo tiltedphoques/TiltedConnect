@@ -1,8 +1,8 @@
 #include "catch.hpp"
 
-#include "Server.h"
-#include "Client.h"
-#include "Packet.h"
+#include "Server.hpp"
+#include "Client.hpp"
+#include "Packet.hpp"
 #include <iostream>
 
 using namespace TiltedPhoques;

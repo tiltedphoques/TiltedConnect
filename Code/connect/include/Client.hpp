@@ -3,8 +3,8 @@
 #include "steam/steamnetworkingsockets.h"
 #include <cstdint>
 #include <string>
-#include "SteamInterface.h"
-#include "SynchronizedClock.h"
+#include "SteamInterface.hpp"
+#include "SynchronizedClock.hpp"
 
 namespace TiltedPhoques
 {

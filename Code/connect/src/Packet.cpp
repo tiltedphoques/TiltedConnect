@@ -1,5 +1,5 @@
-#include "Packet.h"
-#include "SteamInterface.h"
+#include "Packet.hpp"
+#include "SteamInterface.hpp"
 
 namespace TiltedPhoques
 {

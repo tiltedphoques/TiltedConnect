@@ -12,7 +12,7 @@ function CreateConnectProject(basePath, coreBasePath)
 
         files
         {
-            basePath .. "/Code/connect/include/**.h",
+            basePath .. "/Code/connect/include/**.hpp",
             basePath .. "/Code/connect/src/**.cpp",
         }
         

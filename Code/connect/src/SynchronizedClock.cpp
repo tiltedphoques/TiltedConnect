@@ -1,4 +1,4 @@
-#include "SynchronizedClock.h"
+#include "SynchronizedClock.hpp"
 
 namespace TiltedPhoques
 {
