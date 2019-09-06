@@ -5,6 +5,8 @@
 #include "Packet.h"
 #include <iostream>
 
+using namespace TiltedPhoques;
+
 struct TestServer final : Server
 {
     void OnUpdate() override

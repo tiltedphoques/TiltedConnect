@@ -3,23 +3,26 @@
 #include "Meta.h"
 #include "Allocator.h"
 
-struct Packet
+namespace TiltedPhoques
 {
-	TP_ALLOCATOR;
+	struct Packet
+	{
+		TP_ALLOCATOR;
 
-	Packet(size_t aSize);
-	~Packet();
+		Packet(size_t aSize) noexcept;
+		~Packet() noexcept;
 
-	TP_NOCOPYMOVE(Packet);
+		TP_NOCOPYMOVE(Packet);
 
-	[[nodiscard]] char* GetData() const;
-	[[nodiscard]] size_t GetSize() const;
+		[[nodiscard]] char* GetData() const noexcept;
+		[[nodiscard]] size_t GetSize() const noexcept;
 
-private:
+	private:
 
-	friend struct Server;
-	friend struct Client;
+		friend struct Server;
+		friend struct Client;
 
-	char* m_pData;
-	size_t m_size;
-};
+		char* m_pData;
+		size_t m_size;
+	};
+}

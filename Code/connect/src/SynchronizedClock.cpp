@@ -1,43 +1,46 @@
 #include "SynchronizedClock.h"
 
-SynchronizedClock::SynchronizedClock()
-    : m_lastServerTick{ 0 }
-    , m_simulatedTick{ 0 }
-    , m_lastSimulationTime{ std::chrono::high_resolution_clock::now() }
-{}
-
-uint64_t SynchronizedClock::GetCurrentTick() const
+namespace TiltedPhoques
 {
-    return m_simulatedTick;
-}
+	SynchronizedClock::SynchronizedClock() noexcept
+		: m_lastServerTick{ 0 }
+		, m_simulatedTick{ 0 }
+		, m_lastSimulationTime{ std::chrono::high_resolution_clock::now() }
+	{}
 
-void SynchronizedClock::Synchronize(uint64_t aServerTick, uint32_t aPing)
-{
-    if (aServerTick <= m_lastServerTick)
-        return;
-        
-    m_lastServerTick = aServerTick;
+	uint64_t SynchronizedClock::GetCurrentTick() const noexcept
+	{
+		return m_simulatedTick;
+	}
 
-    const auto tripTime = aPing / 2;
+	void SynchronizedClock::Synchronize(uint64_t aServerTick, uint32_t aPing) noexcept
+	{
+		if (aServerTick <= m_lastServerTick)
+			return;
 
-    m_lastSimulationTime = std::chrono::high_resolution_clock::now();
+		m_lastServerTick = aServerTick;
 
-    m_simulatedTick = m_lastServerTick + tripTime;
-}
+		const auto tripTime = aPing / 2;
 
-void SynchronizedClock::Reset(uint64_t aServerTick, uint32_t aPing)
-{
-    // Rebuild
-    *this = SynchronizedClock{};
-    Synchronize(aServerTick, aPing);
-}
+		m_lastSimulationTime = std::chrono::high_resolution_clock::now();
 
-void SynchronizedClock::Update()
-{
-    const auto now = std::chrono::high_resolution_clock::now();
-    const auto delta = now - m_lastSimulationTime;
+		m_simulatedTick = m_lastServerTick + tripTime;
+	}
 
-    m_lastSimulationTime = now;
+	void SynchronizedClock::Reset(uint64_t aServerTick, uint32_t aPing) noexcept
+	{
+		// Rebuild
+		*this = SynchronizedClock{};
+		Synchronize(aServerTick, aPing);
+	}
 
-    m_simulatedTick += std::chrono::duration_cast<std::chrono::milliseconds>(delta).count();
+	void SynchronizedClock::Update() noexcept
+	{
+		const auto now = std::chrono::high_resolution_clock::now();
+		const auto delta = now - m_lastSimulationTime;
+
+		m_lastSimulationTime = now;
+
+		m_simulatedTick += std::chrono::duration_cast<std::chrono::milliseconds>(delta).count();
+	}
 }
