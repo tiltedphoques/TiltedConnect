@@ -127,6 +127,9 @@ namespace TiltedPhoques
 		case k_ESteamNetworkingConnectionState_ClosedByPeer:
 		case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
 		{
+			m_pInterface->CloseConnection(m_connection, 0, nullptr, false);
+			m_connection = k_HSteamNetConnection_Invalid;
+
 			if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connecting)
 			{
 				OnDisconnected(kTimeout);
@@ -139,9 +142,6 @@ namespace TiltedPhoques
 			{
 				OnDisconnected(kKicked);
 			}
-
-			m_pInterface->CloseConnection(m_connection, 0, nullptr, false);
-			m_connection = k_HSteamNetConnection_Invalid;
 
 			break;
 		}
