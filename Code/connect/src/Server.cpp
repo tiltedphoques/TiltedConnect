@@ -139,6 +139,11 @@ namespace TiltedPhoques
 		return m_connections.size();
 	}
 
+	uint32_t Server::GetTickRate() const noexcept
+	{
+		return m_tickRate;
+	}
+
 	void Server::Remove(const ConnectionId_t aId) noexcept
 	{
 		const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);

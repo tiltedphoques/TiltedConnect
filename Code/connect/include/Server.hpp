@@ -33,6 +33,7 @@ namespace TiltedPhoques
 		[[nodiscard]] uint16_t GetPort() const noexcept;
 		[[nodiscard]] bool IsListening() const noexcept;
 		[[nodiscard]] uint32_t GetClientCount() const noexcept;
+		[[nodiscard]] uint32_t GetTickRate() const noexcept;
 
 	private:
 
