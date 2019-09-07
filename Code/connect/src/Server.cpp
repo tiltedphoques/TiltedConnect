@@ -15,6 +15,7 @@ namespace TiltedPhoques
 		: m_tickRate(10)
 		, m_lastUpdateTime(0ns)
 		, m_timeBetweenUpdates(100ms)
+		, m_lastClockSyncTime(0ns)
 	{
 		SteamInterface::Acquire();
 
@@ -82,6 +83,13 @@ namespace TiltedPhoques
 
 				pIncomingMessage->Release();
 			}
+		}
+
+		// Sync clocks every 10 seconds
+		if (m_currentTick - m_lastClockSyncTime >= 10s)
+		{
+			m_lastClockSyncTime = m_currentTick;
+			SynchronizeClientClocks();
 		}
 
 		if (m_currentTick - m_lastUpdateTime >= m_timeBetweenUpdates)
@@ -172,7 +180,7 @@ namespace TiltedPhoques
 		}
 	}
 
-	void Server::SynchronizeClientClocks() noexcept
+	void Server::SynchronizeClientClocks(const ConnectionId_t aSpecificConnection) noexcept
 	{
 		const auto time = std::chrono::duration_cast<std::chrono::milliseconds>(m_currentTick.time_since_epoch()).count();
 
@@ -185,9 +193,16 @@ namespace TiltedPhoques
 		writer.WriteBits(kServerTime, 8);
 		writer.WriteBits(time, 64);
 
-		for (const auto conn : m_connections)
+		if(aSpecificConnection != k_HSteamNetConnection_Invalid)
 		{
-			m_pInterface->SendMessageToConnection(conn, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+			m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+		}
+		else
+		{
+			for (const auto conn : m_connections)
+			{
+				m_pInterface->SendMessageToConnection(conn, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+			}
 		}
 	}
 
@@ -220,6 +235,8 @@ namespace TiltedPhoques
 			}
 
 			m_connections.push_back(apInfo->m_hConn);
+
+			SynchronizeClientClocks(apInfo->m_hConn);
 
 			OnConnection(apInfo->m_hConn);
 			break;

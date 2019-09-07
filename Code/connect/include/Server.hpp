@@ -41,7 +41,7 @@ namespace TiltedPhoques
 
 		void HandleMessage(const void* apData, uint32_t aSize, ConnectionId_t aConnectionId) noexcept;
 
-		void SynchronizeClientClocks() noexcept;
+		void SynchronizeClientClocks(ConnectionId_t aSpecificConnection = k_HSteamNetConnection_Invalid) noexcept;
 
 		void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
 
@@ -51,6 +51,7 @@ namespace TiltedPhoques
 		Vector<ConnectionId_t> m_connections;
 
 		uint32_t m_tickRate;
+		std::chrono::time_point<std::chrono::high_resolution_clock> m_lastClockSyncTime;
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_lastUpdateTime;
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_currentTick;
 		std::chrono::milliseconds m_timeBetweenUpdates;
