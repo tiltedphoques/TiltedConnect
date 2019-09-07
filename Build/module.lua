@@ -175,7 +175,6 @@ function CreateSteamNetProject(basePath)
             basePath .. "/ThirdParty/SteamCodegen/*.h",
             basePath .. "/ThirdParty/SteamCodegen/*.cc",
             
-            basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_25519_donna.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_25519_openssl.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_openssl.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_textencode.cpp",
@@ -193,11 +192,6 @@ function CreateSteamNetProject(basePath)
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier1/netadr.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier1/utlbuffer.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier1/utlmemory.cpp",
-            
-            basePath .. "/ThirdParty/GameNetworkingSockets/src/external/curve25519-donna/curve25519.c",
-            basePath .. "/ThirdParty/GameNetworkingSockets/src/external/curve25519-donna/curve25519_VALVE_sse2.c",
-            basePath .. "/ThirdParty/GameNetworkingSockets/src/external/ed25519-donna/ed25519_VALVE.c",
-            basePath .. "/ThirdParty/GameNetworkingSockets/src/external/ed25519-donna/ed25519_VALVE_sse2.c",
             
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/steamnetworkingsockets_certs.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/steamnetworkingsockets_certstore.cpp",
@@ -219,7 +213,8 @@ function CreateSteamNetProject(basePath)
             "ENABLE_OPENSSLCONNECTION",
             "CRYPTO_DISABLE_ENCRYPT_WITH_PASSWORD",
             "GOOGLE_PROTOBUF_NO_RTTI",
-            "VALVE_CRYPTO_25519_DONNA",
+            "OPENSSL_HAS_25519_RAW",
+            "STEAMNETWORKINGSOCKETS_CRYPTO_25519_OPENSSL",
             "STEAMNETWORKINGSOCKETS_CRYPTO_VALVEOPENSSL"
         }
         
