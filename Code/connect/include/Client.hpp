@@ -24,6 +24,7 @@ namespace TiltedPhoques
 
 		Client(const Client&) = delete;
 		Client& operator=(const Client&) = delete;
+
 		Client(Client&&) noexcept;
 		Client& operator=(Client&&) noexcept;
 

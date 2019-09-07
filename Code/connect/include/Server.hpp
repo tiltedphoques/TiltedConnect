@@ -14,10 +14,7 @@ namespace TiltedPhoques
 		Server() noexcept;
 		virtual ~Server();
 
-		Server(const Server&) = delete;
-		Server& operator=(const Server&) = delete;
-		Server(Server&&) = delete;
-		Server& operator=(Server&&) = delete;
+		TP_NOCOPYMOVE(Server);
 
 		bool Host(uint16_t aPort, uint32_t aTickRate) noexcept;
 		void Close() noexcept;
@@ -35,6 +32,7 @@ namespace TiltedPhoques
 
 		[[nodiscard]] uint16_t GetPort() const noexcept;
 		[[nodiscard]] bool IsListening() const noexcept;
+		[[nodiscard]] uint32_t GetClientCount() const noexcept;
 
 	private:
 

@@ -134,6 +134,11 @@ namespace TiltedPhoques
 		return m_listenSock != k_HSteamListenSocket_Invalid;
 	}
 
+	uint32_t Server::GetClientCount() const noexcept
+	{
+		return m_connections.size();
+	}
+
 	void Server::Remove(const ConnectionId_t aId) noexcept
 	{
 		const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);
