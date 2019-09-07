@@ -6,6 +6,7 @@
 #include <cassert>
 #include <Packet.hpp>
 #include "StackAllocator.hpp"
+#include <google/protobuf/stubs/port.h>
 
 using namespace std::chrono;
 
@@ -191,7 +192,7 @@ namespace TiltedPhoques
 
 		Buffer::Writer writer(pBuffer);
 		writer.WriteBits(kServerTime, 8);
-		writer.WriteBits(time, 64);
+		writer.WriteBits(google::protobuf::BigEndian::FromHost64(time), 64);
 
 		if(aSpecificConnection != k_HSteamNetConnection_Invalid)
 		{

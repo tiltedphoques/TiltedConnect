@@ -3,6 +3,7 @@
 #include <cassert>
 #include "Buffer.hpp"
 #include "Packet.hpp"
+#include <google/protobuf/stubs/port.h>
 
 namespace TiltedPhoques
 {
@@ -155,7 +156,7 @@ namespace TiltedPhoques
 		}
 	}
 
-	void Client::HandleMessage(const void* apData, uint32_t aSize) noexcept
+	void __declspec(noinline) Client::HandleMessage(const void* apData, uint32_t aSize) noexcept
 	{
 		// We handle the cases where packets target the current stack or the user stack
 		if (aSize == 0)
@@ -187,11 +188,9 @@ namespace TiltedPhoques
 		if (aSize < 8)
 			return;
 
-		const auto pData = static_cast<const uint8_t*>(apData);
 		const auto connectionStatus = GetConnectionStatus();
 
-		uint64_t serverTime;
-		std::copy(pData, pData + 8, &serverTime);
+		const auto serverTime = google::protobuf::BigEndian::Load64(apData);
 
 		m_clock.Synchronize(serverTime, connectionStatus.m_nPing);
 	}
