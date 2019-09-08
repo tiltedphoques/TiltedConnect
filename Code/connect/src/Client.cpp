@@ -156,7 +156,7 @@ namespace TiltedPhoques
 		}
 	}
 
-	void __declspec(noinline) Client::HandleMessage(const void* apData, uint32_t aSize) noexcept
+	void Client::HandleMessage(const void* apData, uint32_t aSize) noexcept
 	{
 		// We handle the cases where packets target the current stack or the user stack
 		if (aSize == 0)
