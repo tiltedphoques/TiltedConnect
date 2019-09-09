@@ -82,8 +82,8 @@ workspace ("Tilted Connect")
 			
             links
             {
-                "Core",
                 "Connect",
+                "Core",
                 "SteamNet"
             }
             
@@ -99,7 +99,8 @@ workspace ("Tilted Connect")
                 links
                 {
                     "ssl",
-                    "crypto"
+                    "crypto",
+                    "protobuf"
                 }
 
             filter ""
