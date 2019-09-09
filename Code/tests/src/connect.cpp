@@ -35,6 +35,10 @@ struct TestServer final : Server
 
 struct TestClient final : Client
 {
+    void OnUpdate() override
+    {
+    }
+
     void OnConsume(const void* apData, const uint32_t aSize) override
     {
         //std::cout << static_cast<const char*>(apData) << std::endl;
