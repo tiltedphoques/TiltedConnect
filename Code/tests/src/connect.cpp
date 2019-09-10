@@ -13,10 +13,10 @@ struct TestServer final : Server
     {
         const std::string data("Hello from server!");
 
-		Packet packet(data.size() + 1);
-		std::copy_n(data.begin(), data.size() + 1, packet.GetData());
+        Packet packet(data.size() + 1);
+        std::copy_n(data.begin(), data.size() + 1, packet.GetData());
 
-		SendToAll(&packet);
+        SendToAll(&packet);
     }
 
     void OnConsume(const void* apData, const uint32_t aSize, ConnectionId_t aId) override
@@ -45,8 +45,8 @@ struct TestClient final : Client
 
         const std::string data("Hello from client!");
 
-		Packet packet(data.size() + 1);
-		std::copy_n(data.begin(), data.size() + 1, packet.GetData());
+        Packet packet(data.size() + 1);
+        std::copy_n(data.begin(), data.size() + 1, packet.GetData());
 
         Send(&packet);
     }

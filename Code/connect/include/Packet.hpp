@@ -5,24 +5,24 @@
 
 namespace TiltedPhoques
 {
-	struct Packet
-	{
-		TP_ALLOCATOR;
+    struct Packet
+    {
+        TP_ALLOCATOR;
 
-		Packet(size_t aSize) noexcept;
-		~Packet() noexcept;
+        Packet(size_t aSize) noexcept;
+        ~Packet() noexcept;
 
-		TP_NOCOPYMOVE(Packet);
+        TP_NOCOPYMOVE(Packet);
 
-		[[nodiscard]] char* GetData() const noexcept;
-		[[nodiscard]] size_t GetSize() const noexcept;
+        [[nodiscard]] char* GetData() const noexcept;
+        [[nodiscard]] size_t GetSize() const noexcept;
 
-	private:
+    private:
 
-		friend struct Server;
-		friend struct Client;
+        friend struct Server;
+        friend struct Client;
 
-		char* m_pData;
-		size_t m_size;
-	};
+        char* m_pData;
+        size_t m_size;
+    };
 }

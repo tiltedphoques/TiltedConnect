@@ -7,191 +7,191 @@
 
 namespace TiltedPhoques
 {
-	Client::Client() noexcept
-	{
-		SteamInterface::Acquire();
+    Client::Client() noexcept
+    {
+        SteamInterface::Acquire();
 
-		m_connection = k_HSteamNetConnection_Invalid;
-		m_pInterface = SteamNetworkingSockets();
-	}
+        m_connection = k_HSteamNetConnection_Invalid;
+        m_pInterface = SteamNetworkingSockets();
+    }
 
-	Client::~Client()
-	{
-		SteamInterface::Release();
-	}
+    Client::~Client()
+    {
+        SteamInterface::Release();
+    }
 
-	Client::Client(Client&& aRhs) noexcept
-		: m_connection(k_HSteamNetConnection_Invalid)
-		, m_pInterface(nullptr)
-	{
-		SteamInterface::Acquire();
+    Client::Client(Client&& aRhs) noexcept
+        : m_connection(k_HSteamNetConnection_Invalid)
+        , m_pInterface(nullptr)
+    {
+        SteamInterface::Acquire();
 
-		this->operator=(std::move(aRhs));
-	}
+        this->operator=(std::move(aRhs));
+    }
 
-	Client& Client::operator=(Client&& aRhs) noexcept
-	{
-		std::swap(m_connection, aRhs.m_connection);
-		std::swap(m_pInterface, aRhs.m_pInterface);
+    Client& Client::operator=(Client&& aRhs) noexcept
+    {
+        std::swap(m_connection, aRhs.m_connection);
+        std::swap(m_pInterface, aRhs.m_pInterface);
 
-		return *this;
-	}
+        return *this;
+    }
 
-	bool Client::Connect(const std::string& acEndpoint) noexcept
-	{
-		SteamNetworkingIPAddr remoteAddress{};
-		remoteAddress.ParseString(acEndpoint.c_str());
+    bool Client::Connect(const std::string& acEndpoint) noexcept
+    {
+        SteamNetworkingIPAddr remoteAddress{};
+        remoteAddress.ParseString(acEndpoint.c_str());
 
-		m_connection = m_pInterface->ConnectByIPAddress(remoteAddress, 0, nullptr);
+        m_connection = m_pInterface->ConnectByIPAddress(remoteAddress, 0, nullptr);
 
-		return m_connection != k_HSteamNetConnection_Invalid;
-	}
+        return m_connection != k_HSteamNetConnection_Invalid;
+    }
 
-	void Client::Close() noexcept
-	{
-		if (m_connection != k_HSteamNetConnection_Invalid)
-		{
-			m_pInterface->CloseConnection(m_connection, 0, nullptr, true);
-			m_connection = k_HSteamNetConnection_Invalid;
+    void Client::Close() noexcept
+    {
+        if (m_connection != k_HSteamNetConnection_Invalid)
+        {
+            m_pInterface->CloseConnection(m_connection, 0, nullptr, true);
+            m_connection = k_HSteamNetConnection_Invalid;
 
-			OnDisconnected(kNormal);
-		}
-	}
+            OnDisconnected(kNormal);
+        }
+    }
 
-	void Client::Update() noexcept
-	{
-		m_clock.Update();
+    void Client::Update() noexcept
+    {
+        m_clock.Update();
 
-		m_pInterface->RunCallbacks(this);
+        m_pInterface->RunCallbacks(this);
 
-		while (true)
-		{
-			ISteamNetworkingMessage* pIncomingMsg = nullptr;
-			const auto messageCount = m_pInterface->ReceiveMessagesOnConnection(m_connection, &pIncomingMsg, 1);
-			if (messageCount <= 0 || pIncomingMsg == nullptr)
-			{
-				// TODO: Handle error when messageCount < 0
-				break;
-			}
+        while (true)
+        {
+            ISteamNetworkingMessage* pIncomingMsg = nullptr;
+            const auto messageCount = m_pInterface->ReceiveMessagesOnConnection(m_connection, &pIncomingMsg, 1);
+            if (messageCount <= 0 || pIncomingMsg == nullptr)
+            {
+                // TODO: Handle error when messageCount < 0
+                break;
+            }
 
-			HandleMessage(pIncomingMsg->GetData(), pIncomingMsg->GetSize());
+            HandleMessage(pIncomingMsg->GetData(), pIncomingMsg->GetSize());
 
-			pIncomingMsg->Release();
-		}
+            pIncomingMsg->Release();
+        }
 
-		OnUpdate();
-	}
-	 
-	void Client::Send(Packet* apPacket, EPacketFlags aPacketFlags) const noexcept
-	{
-		m_pInterface->SendMessageToConnection(m_connection, apPacket->m_pData, apPacket->m_size,
-			aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
-	}
+        OnUpdate();
+    }
 
-	bool Client::IsConnected() const noexcept
-	{
-		if (m_connection != k_HSteamNetConnection_Invalid)
-		{
-			SteamNetConnectionInfo_t info{};
-			if (m_pInterface->GetConnectionInfo(m_connection, &info))
-			{
-				return info.m_eState == k_ESteamNetworkingConnectionState_Connected;
-			}
-		}
+    void Client::Send(Packet* apPacket, EPacketFlags aPacketFlags) const noexcept
+    {
+        m_pInterface->SendMessageToConnection(m_connection, apPacket->m_pData, apPacket->m_size,
+            aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+    }
 
-		return false;
-	}
+    bool Client::IsConnected() const noexcept
+    {
+        if (m_connection != k_HSteamNetConnection_Invalid)
+        {
+            SteamNetConnectionInfo_t info{};
+            if (m_pInterface->GetConnectionInfo(m_connection, &info))
+            {
+                return info.m_eState == k_ESteamNetworkingConnectionState_Connected;
+            }
+        }
 
-	SteamNetworkingQuickConnectionStatus Client::GetConnectionStatus() const noexcept
-	{
-		SteamNetworkingQuickConnectionStatus status{};
+        return false;
+    }
 
-		if (m_connection != k_HSteamNetConnection_Invalid)
-		{
-			m_pInterface->GetQuickConnectionStatus(m_connection, &status);
-		}
+    SteamNetworkingQuickConnectionStatus Client::GetConnectionStatus() const noexcept
+    {
+        SteamNetworkingQuickConnectionStatus status{};
 
-		return status;
-	}
+        if (m_connection != k_HSteamNetConnection_Invalid)
+        {
+            m_pInterface->GetQuickConnectionStatus(m_connection, &status);
+        }
 
-	const SynchronizedClock& Client::GetClock() const noexcept
-	{
-		return m_clock;
-	}
+        return status;
+    }
 
-	void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
-	{
-		switch (apInfo->m_info.m_eState)
-		{
-		case k_ESteamNetworkingConnectionState_None:
-			break;
-		case k_ESteamNetworkingConnectionState_ClosedByPeer:
-		case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
-		{
-			m_pInterface->CloseConnection(m_connection, 0, nullptr, false);
-			m_connection = k_HSteamNetConnection_Invalid;
+    const SynchronizedClock& Client::GetClock() const noexcept
+    {
+        return m_clock;
+    }
 
-			if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connecting)
-			{
-				OnDisconnected(kTimeout);
-			}
-			else if (apInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ProblemDetectedLocally)
-			{
-				OnDisconnected(kLocalProblem);
-			}
-			else
-			{
-				OnDisconnected(kKicked);
-			}
+    void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
+    {
+        switch (apInfo->m_info.m_eState)
+        {
+        case k_ESteamNetworkingConnectionState_None:
+            break;
+        case k_ESteamNetworkingConnectionState_ClosedByPeer:
+        case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+        {
+            m_pInterface->CloseConnection(m_connection, 0, nullptr, false);
+            m_connection = k_HSteamNetConnection_Invalid;
 
-			break;
-		}
-		case k_ESteamNetworkingConnectionState_Connecting:
-			break;
-		case k_ESteamNetworkingConnectionState_Connected:
-			OnConnected();
-			break;
-		default:
-			break;
-		}
-	}
+            if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connecting)
+            {
+                OnDisconnected(kTimeout);
+            }
+            else if (apInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ProblemDetectedLocally)
+            {
+                OnDisconnected(kLocalProblem);
+            }
+            else
+            {
+                OnDisconnected(kKicked);
+            }
 
-	void Client::HandleMessage(const void* apData, uint32_t aSize) noexcept
-	{
-		// We handle the cases where packets target the current stack or the user stack
-		if (aSize == 0)
-			return;
+            break;
+        }
+        case k_ESteamNetworkingConnectionState_Connecting:
+            break;
+        case k_ESteamNetworkingConnectionState_Connected:
+            OnConnected();
+            break;
+        default:
+            break;
+        }
+    }
 
-		auto pData = static_cast<const uint8_t*>(apData);
+    void Client::HandleMessage(const void* apData, uint32_t aSize) noexcept
+    {
+        // We handle the cases where packets target the current stack or the user stack
+        if (aSize == 0)
+            return;
 
-		const auto opcode = pData[0];
+        auto pData = static_cast<const uint8_t*>(apData);
 
-		pData += 1;
-		aSize -= 1;
+        const auto opcode = pData[0];
 
-		switch (opcode)
-		{
-		case kPayload:
-			OnConsume(pData, aSize);
-			break;
-		case kServerTime:
-			HandleServerTime(pData, aSize);
-			break;
-		default:
-			assert(false);
-			break;
-		}
-	}
+        pData += 1;
+        aSize -= 1;
 
-	void Client::HandleServerTime(const void* apData, uint32_t aSize) noexcept
-	{
-		if (aSize < 8)
-			return;
+        switch (opcode)
+        {
+        case kPayload:
+            OnConsume(pData, aSize);
+            break;
+        case kServerTime:
+            HandleServerTime(pData, aSize);
+            break;
+        default:
+            assert(false);
+            break;
+        }
+    }
 
-		const auto connectionStatus = GetConnectionStatus();
+    void Client::HandleServerTime(const void* apData, uint32_t aSize) noexcept
+    {
+        if (aSize < 8)
+            return;
 
-		const auto serverTime = google::protobuf::BigEndian::Load64(apData);
+        const auto connectionStatus = GetConnectionStatus();
 
-		m_clock.Synchronize(serverTime, connectionStatus.m_nPing);
-	}
+        const auto serverTime = google::protobuf::BigEndian::Load64(apData);
+
+        m_clock.Synchronize(serverTime, connectionStatus.m_nPing);
+    }
 }

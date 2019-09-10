@@ -12,241 +12,241 @@ using namespace std::chrono;
 
 namespace TiltedPhoques
 {
-	Server::Server() noexcept
-		: m_tickRate(10)
-		, m_lastUpdateTime(0ns)
-		, m_timeBetweenUpdates(100ms)
-		, m_lastClockSyncTime(0ns)
-	{
-		SteamInterface::Acquire();
+    Server::Server() noexcept
+        : m_tickRate(10)
+        , m_lastUpdateTime(0ns)
+        , m_timeBetweenUpdates(100ms)
+        , m_lastClockSyncTime(0ns)
+    {
+        SteamInterface::Acquire();
 
-		m_pInterface = SteamNetworkingSockets();
-		m_listenSock = k_HSteamListenSocket_Invalid;
-	}
+        m_pInterface = SteamNetworkingSockets();
+        m_listenSock = k_HSteamListenSocket_Invalid;
+    }
 
-	Server::~Server()
-	{
-		SteamInterface::Release();
-	}
+    Server::~Server()
+    {
+        SteamInterface::Release();
+    }
 
-	bool Server::Host(const uint16_t aPort, uint32_t aTickRate) noexcept
-	{
-		Close();
+    bool Server::Host(const uint16_t aPort, uint32_t aTickRate) noexcept
+    {
+        Close();
 
-		SteamNetworkingIPAddr localAddress{};  // NOLINT(cppcoreguidelines-pro-type-member-init)
-		localAddress.Clear();
-		localAddress.m_port = aPort;
-		m_listenSock = m_pInterface->CreateListenSocketIP(localAddress, 0, nullptr);
+        SteamNetworkingIPAddr localAddress{};  // NOLINT(cppcoreguidelines-pro-type-member-init)
+        localAddress.Clear();
+        localAddress.m_port = aPort;
+        m_listenSock = m_pInterface->CreateListenSocketIP(localAddress, 0, nullptr);
 
-		if (m_tickRate == 0 && aTickRate == 0)
-		{
-			aTickRate = 10;
-		}
-		// If we pass 0, reuse the previously used tick rate
-		else if (aTickRate == 0)
-		{
-			m_tickRate = aTickRate;
-		}
+        if (m_tickRate == 0 && aTickRate == 0)
+        {
+            aTickRate = 10;
+        }
+        // If we pass 0, reuse the previously used tick rate
+        else if (aTickRate == 0)
+        {
+            m_tickRate = aTickRate;
+        }
 
-		m_tickRate = aTickRate;
-		m_timeBetweenUpdates = 1000ms / m_tickRate;
+        m_tickRate = aTickRate;
+        m_timeBetweenUpdates = 1000ms / m_tickRate;
 
-		return IsListening();
-	}
+        return IsListening();
+    }
 
-	void Server::Close() noexcept
-	{
-		if (IsListening())
-			m_pInterface->CloseListenSocket(m_listenSock);
+    void Server::Close() noexcept
+    {
+        if (IsListening())
+            m_pInterface->CloseListenSocket(m_listenSock);
 
-		m_listenSock = k_HSteamListenSocket_Invalid;
-	}
+        m_listenSock = k_HSteamListenSocket_Invalid;
+    }
 
-	void Server::Update() noexcept
-	{
-		m_currentTick = high_resolution_clock::now();
+    void Server::Update() noexcept
+    {
+        m_currentTick = high_resolution_clock::now();
 
-		if (IsListening())
-		{
-			m_pInterface->RunCallbacks(this);
+        if (IsListening())
+        {
+            m_pInterface->RunCallbacks(this);
 
-			while (true)
-			{
-				ISteamNetworkingMessage* pIncomingMessage = nullptr;
-				const auto messageCount = m_pInterface->ReceiveMessagesOnListenSocket(m_listenSock, &pIncomingMessage, 1);
-				if (messageCount <= 0 || pIncomingMessage == nullptr)
-				{
-					break;
-					// TODO: Handle when messageCount is a negative number, it's an error
-				}
+            while (true)
+            {
+                ISteamNetworkingMessage* pIncomingMessage = nullptr;
+                const auto messageCount = m_pInterface->ReceiveMessagesOnListenSocket(m_listenSock, &pIncomingMessage, 1);
+                if (messageCount <= 0 || pIncomingMessage == nullptr)
+                {
+                    break;
+                    // TODO: Handle when messageCount is a negative number, it's an error
+                }
 
-				HandleMessage(pIncomingMessage->GetData(), pIncomingMessage->GetSize(), pIncomingMessage->GetConnection());
+                HandleMessage(pIncomingMessage->GetData(), pIncomingMessage->GetSize(), pIncomingMessage->GetConnection());
 
-				pIncomingMessage->Release();
-			}
-		}
+                pIncomingMessage->Release();
+            }
+        }
 
-		// Sync clocks every 10 seconds
-		if (m_currentTick - m_lastClockSyncTime >= 10s)
-		{
-			m_lastClockSyncTime = m_currentTick;
-			SynchronizeClientClocks();
-		}
+        // Sync clocks every 10 seconds
+        if (m_currentTick - m_lastClockSyncTime >= 10s)
+        {
+            m_lastClockSyncTime = m_currentTick;
+            SynchronizeClientClocks();
+        }
 
-		if (m_currentTick - m_lastUpdateTime >= m_timeBetweenUpdates)
-		{
-			m_lastUpdateTime = m_currentTick;
-			OnUpdate();
-		}
+        if (m_currentTick - m_lastUpdateTime >= m_timeBetweenUpdates)
+        {
+            m_lastUpdateTime = m_currentTick;
+            OnUpdate();
+        }
 
-		std::this_thread::sleep_for(2ms);
-	}
+        std::this_thread::sleep_for(2ms);
+    }
 
-	void Server::SendToAll(Packet* apPacket, const EPacketFlags aPacketFlags) noexcept
-	{
-		for (const auto conn : m_connections)
-		{
-			m_pInterface->SendMessageToConnection(conn, apPacket->m_pData, apPacket->m_size,
-				aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
-		}
+    void Server::SendToAll(Packet* apPacket, const EPacketFlags aPacketFlags) noexcept
+    {
+        for (const auto conn : m_connections)
+        {
+            m_pInterface->SendMessageToConnection(conn, apPacket->m_pData, apPacket->m_size,
+                aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+        }
 
-	}
+    }
 
-	void Server::Send(const ConnectionId_t aConnectionId, Packet* apPacket, EPacketFlags aPacketFlags) const noexcept
-	{
-		m_pInterface->SendMessageToConnection(aConnectionId, apPacket->m_pData, apPacket->m_size,
-			aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
-	}
+    void Server::Send(const ConnectionId_t aConnectionId, Packet* apPacket, EPacketFlags aPacketFlags) const noexcept
+    {
+        m_pInterface->SendMessageToConnection(aConnectionId, apPacket->m_pData, apPacket->m_size,
+            aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+    }
 
-	void Server::Kick(const ConnectionId_t aConnectionId) noexcept
-	{
-		m_pInterface->CloseConnection(aConnectionId, 0, "Kick", true);
+    void Server::Kick(const ConnectionId_t aConnectionId) noexcept
+    {
+        m_pInterface->CloseConnection(aConnectionId, 0, "Kick", true);
 
-		Remove(aConnectionId);
+        Remove(aConnectionId);
 
-		OnDisconnection(aConnectionId);
-	}
+        OnDisconnection(aConnectionId);
+    }
 
-	uint16_t Server::GetPort() const noexcept
-	{
-		SteamNetworkingIPAddr address{};
-		if (m_pInterface->GetListenSocketAddress(m_listenSock, &address))
-		{
-			return address.m_port;
-		}
+    uint16_t Server::GetPort() const noexcept
+    {
+        SteamNetworkingIPAddr address{};
+        if (m_pInterface->GetListenSocketAddress(m_listenSock, &address))
+        {
+            return address.m_port;
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	bool Server::IsListening() const noexcept
-	{
-		return m_listenSock != k_HSteamListenSocket_Invalid;
-	}
+    bool Server::IsListening() const noexcept
+    {
+        return m_listenSock != k_HSteamListenSocket_Invalid;
+    }
 
-	uint32_t Server::GetClientCount() const noexcept
-	{
-		return m_connections.size();
-	}
+    uint32_t Server::GetClientCount() const noexcept
+    {
+        return m_connections.size();
+    }
 
-	uint32_t Server::GetTickRate() const noexcept
-	{
-		return m_tickRate;
-	}
+    uint32_t Server::GetTickRate() const noexcept
+    {
+        return m_tickRate;
+    }
 
-	void Server::Remove(const ConnectionId_t aId) noexcept
-	{
-		const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);
-		if (it != std::end(m_connections) && !m_connections.empty())
-		{
-			std::iter_swap(it, std::end(m_connections) - 1);
-			m_connections.pop_back();
-		}
-	}
+    void Server::Remove(const ConnectionId_t aId) noexcept
+    {
+        const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);
+        if (it != std::end(m_connections) && !m_connections.empty())
+        {
+            std::iter_swap(it, std::end(m_connections) - 1);
+            m_connections.pop_back();
+        }
+    }
 
-	void Server::HandleMessage(const void* apData, const uint32_t aSize, const ConnectionId_t aConnectionId) noexcept
-	{
-		// We handle the cases where packets target the current stack or the user stack
-		if (aSize == 0)
-			return;
+    void Server::HandleMessage(const void* apData, const uint32_t aSize, const ConnectionId_t aConnectionId) noexcept
+    {
+        // We handle the cases where packets target the current stack or the user stack
+        if (aSize == 0)
+            return;
 
-		const auto pData = (uint8_t*)apData;
-		switch (pData[0])
-		{
-		case kPayload:
-			OnConsume(pData + 1, aSize - 1, aConnectionId);
-			break;
-		default:
-			assert(false);
-			break;
-		}
-	}
+        const auto pData = (uint8_t*)apData;
+        switch (pData[0])
+        {
+        case kPayload:
+            OnConsume(pData + 1, aSize - 1, aConnectionId);
+            break;
+        default:
+            assert(false);
+            break;
+        }
+    }
 
-	void Server::SynchronizeClientClocks(const ConnectionId_t aSpecificConnection) noexcept
-	{
-		const auto time = std::chrono::duration_cast<std::chrono::milliseconds>(m_currentTick.time_since_epoch()).count();
+    void Server::SynchronizeClientClocks(const ConnectionId_t aSpecificConnection) noexcept
+    {
+        const auto time = std::chrono::duration_cast<std::chrono::milliseconds>(m_currentTick.time_since_epoch()).count();
 
-		StackAllocator<1 << 10> allocator;
-		ScopedAllocator _{ &allocator };
+        StackAllocator<1 << 10> allocator;
+        ScopedAllocator _{ &allocator };
 
-		const auto pBuffer = New<Buffer>(512);
+        const auto pBuffer = New<Buffer>(512);
 
-		Buffer::Writer writer(pBuffer);
-		writer.WriteBits(kServerTime, 8);
-		writer.WriteBits(google::protobuf::BigEndian::FromHost64(time), 64);
+        Buffer::Writer writer(pBuffer);
+        writer.WriteBits(kServerTime, 8);
+        writer.WriteBits(google::protobuf::BigEndian::FromHost64(time), 64);
 
-		if(aSpecificConnection != k_HSteamNetConnection_Invalid)
-		{
-			m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
-		}
-		else
-		{
-			for (const auto conn : m_connections)
-			{
-				m_pInterface->SendMessageToConnection(conn, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
-			}
-		}
-	}
+        if(aSpecificConnection != k_HSteamNetConnection_Invalid)
+        {
+            m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+        }
+        else
+        {
+            for (const auto conn : m_connections)
+            {
+                m_pInterface->SendMessageToConnection(conn, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+            }
+        }
+    }
 
-	void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
-	{
-		switch (apInfo->m_info.m_eState)
-		{
-		case k_ESteamNetworkingConnectionState_None:
-			break;
-		case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
-		case k_ESteamNetworkingConnectionState_ClosedByPeer:
-		{
-			if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connected)
-			{
-				Remove(apInfo->m_hConn);
+    void Server::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)
+    {
+        switch (apInfo->m_info.m_eState)
+        {
+        case k_ESteamNetworkingConnectionState_None:
+            break;
+        case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+        case k_ESteamNetworkingConnectionState_ClosedByPeer:
+        {
+            if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connected)
+            {
+                Remove(apInfo->m_hConn);
 
-				OnDisconnection(apInfo->m_hConn);
-			}
+                OnDisconnection(apInfo->m_hConn);
+            }
 
-			m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
-			break;
-		}
-		case k_ESteamNetworkingConnectionState_Connecting:
-		{
-			if (m_pInterface->AcceptConnection(apInfo->m_hConn) != k_EResultOK)
-			{
-				m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
-				// TODO: Error handling
-				break;
-			}
+            m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
+            break;
+        }
+        case k_ESteamNetworkingConnectionState_Connecting:
+        {
+            if (m_pInterface->AcceptConnection(apInfo->m_hConn) != k_EResultOK)
+            {
+                m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
+                // TODO: Error handling
+                break;
+            }
 
-			m_connections.push_back(apInfo->m_hConn);
+            m_connections.push_back(apInfo->m_hConn);
 
-			SynchronizeClientClocks(apInfo->m_hConn);
+            SynchronizeClientClocks(apInfo->m_hConn);
 
-			OnConnection(apInfo->m_hConn);
-			break;
-		}
-		case k_ESteamNetworkingConnectionState_Connected:
-			break;
-		default:
-			break;
+            OnConnection(apInfo->m_hConn);
+            break;
+        }
+        case k_ESteamNetworkingConnectionState_Connected:
+            break;
+        default:
+            break;
 
-		}
-	}
+        }
+    }
 }
