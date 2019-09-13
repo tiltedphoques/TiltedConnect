@@ -169,7 +169,7 @@ namespace TiltedPhoques
 		if (aSize == 0)
 			return;
 
-		const auto pData = (uint8_t*)apData;
+		const auto pData = static_cast<const uint8_t*>(apData);
 		switch (pData[0])
 		{
 		case kPayload:
@@ -196,13 +196,14 @@ namespace TiltedPhoques
 
 		if(aSpecificConnection != k_HSteamNetConnection_Invalid)
 		{
-			m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+			// In this case we probably want it to arrive so send it reliably
+			m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_ReliableNoNagle);
 		}
 		else
 		{
-			for (const auto conn : m_connections)
+			for (const auto cConnection : m_connections)
 			{
-				m_pInterface->SendMessageToConnection(conn, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+				m_pInterface->SendMessageToConnection(cConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
 			}
 		}
 	}

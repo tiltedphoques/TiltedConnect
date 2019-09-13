@@ -67,8 +67,8 @@ namespace TiltedPhoques
 		while (true)
 		{
 			ISteamNetworkingMessage* pIncomingMsg = nullptr;
-			const auto messageCount = m_pInterface->ReceiveMessagesOnConnection(m_connection, &pIncomingMsg, 1);
-			if (messageCount <= 0 || pIncomingMsg == nullptr)
+			const auto cMessageCount = m_pInterface->ReceiveMessagesOnConnection(m_connection, &pIncomingMsg, 1);
+			if (cMessageCount <= 0 || pIncomingMsg == nullptr)
 			{
 				// TODO: Handle error when messageCount < 0
 				break;
@@ -82,10 +82,10 @@ namespace TiltedPhoques
 		OnUpdate();
 	}
 	 
-	void Client::Send(Packet* apPacket, EPacketFlags aPacketFlags) const noexcept
+	void Client::Send(Packet* apPacket, const EPacketFlags acPacketFlags) const noexcept
 	{
 		m_pInterface->SendMessageToConnection(m_connection, apPacket->m_pData, apPacket->m_size,
-			aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+			acPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
 	}
 
 	bool Client::IsConnected() const noexcept
@@ -95,7 +95,10 @@ namespace TiltedPhoques
 			SteamNetConnectionInfo_t info{};
 			if (m_pInterface->GetConnectionInfo(m_connection, &info))
 			{
-				return info.m_eState == k_ESteamNetworkingConnectionState_Connected;
+				if(info.m_eState == k_ESteamNetworkingConnectionState_Connected)
+				{
+					return GetClock().IsSynchronized();
+				}
 			}
 		}
 
@@ -131,6 +134,8 @@ namespace TiltedPhoques
 			m_pInterface->CloseConnection(m_connection, 0, nullptr, false);
 			m_connection = k_HSteamNetConnection_Invalid;
 
+			m_clock.Reset();
+
 			if (apInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connecting)
 			{
 				OnDisconnected(kTimeout);
@@ -149,7 +154,7 @@ namespace TiltedPhoques
 		case k_ESteamNetworkingConnectionState_Connecting:
 			break;
 		case k_ESteamNetworkingConnectionState_Connected:
-			OnConnected();
+			// We don't notify here, wait for clock sync
 			break;
 		default:
 			break;
@@ -164,12 +169,12 @@ namespace TiltedPhoques
 
 		auto pData = static_cast<const uint8_t*>(apData);
 
-		const auto opcode = pData[0];
+		const auto cOpcode = pData[0];
 
 		pData += 1;
 		aSize -= 1;
 
-		switch (opcode)
+		switch (cOpcode)
 		{
 		case kPayload:
 			OnConsume(pData, aSize);
@@ -188,10 +193,14 @@ namespace TiltedPhoques
 		if (aSize < 8)
 			return;
 
-		const auto connectionStatus = GetConnectionStatus();
+		const auto cConnectionStatus = GetConnectionStatus();
 
-		const auto serverTime = google::protobuf::BigEndian::Load64(apData);
+		const auto cServerTime = google::protobuf::BigEndian::Load64(apData);
+		const auto cWasSynchronized = GetClock().IsSynchronized();
 
-		m_clock.Synchronize(serverTime, connectionStatus.m_nPing);
+		m_clock.Synchronize(cServerTime, cConnectionStatus.m_nPing);
+
+		if (!cWasSynchronized)
+			OnConnected();
 	}
 }
