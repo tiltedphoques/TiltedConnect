@@ -25,4 +25,14 @@ namespace TiltedPhoques
 	{
 		return m_size - 1;
 	}
+
+	size_t Packet::GetTotalSize() const noexcept
+	{
+		return m_size;
+	}
+
+	bool Packet::IsValid() const noexcept
+	{
+		return m_pData != nullptr;
+	}
 }

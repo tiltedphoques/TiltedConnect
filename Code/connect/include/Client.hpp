@@ -38,7 +38,7 @@ namespace TiltedPhoques
 		virtual void OnDisconnected(EDisconnectReason aReason) = 0;
 		virtual void OnUpdate() = 0;
 
-		void Send(Packet* apPacket, EPacketFlags aPacketFlags = kReliable) const noexcept;
+		void Send(Packet* apPacket, EPacketFlags acPacketFlags = kReliable) const noexcept;
 
 		[[nodiscard]] bool IsConnected() const noexcept;
 		[[nodiscard]] SteamNetworkingQuickConnectionStatus GetConnectionStatus() const noexcept;
