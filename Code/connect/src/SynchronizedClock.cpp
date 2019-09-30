@@ -13,6 +13,11 @@ namespace TiltedPhoques
         return m_simulatedTick;
     }
 
+    bool SynchronizedClock::IsSynchronized() const noexcept
+    {
+        return m_simulatedTick != 0;
+    }
+
     void SynchronizedClock::Synchronize(uint64_t aServerTick, uint32_t aPing) noexcept
     {
         if (aServerTick <= m_lastServerTick)
@@ -27,11 +32,10 @@ namespace TiltedPhoques
         m_simulatedTick = m_lastServerTick + tripTime;
     }
 
-    void SynchronizedClock::Reset(uint64_t aServerTick, uint32_t aPing) noexcept
+    void SynchronizedClock::Reset() noexcept
     {
         // Rebuild
         *this = SynchronizedClock{};
-        Synchronize(aServerTick, aPing);
     }
 
     void SynchronizedClock::Update() noexcept
@@ -40,6 +44,9 @@ namespace TiltedPhoques
         const auto delta = now - m_lastSimulationTime;
 
         m_lastSimulationTime = now;
+
+        if (m_simulatedTick == 0)
+            return;
 
         m_simulatedTick += std::chrono::duration_cast<std::chrono::milliseconds>(delta).count();
     }

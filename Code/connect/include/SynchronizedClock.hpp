@@ -9,8 +9,9 @@ namespace TiltedPhoques
     {
         SynchronizedClock() noexcept;
         [[nodiscard]] uint64_t GetCurrentTick() const noexcept;
+        [[nodiscard]] bool IsSynchronized() const noexcept;
         void Synchronize(uint64_t aServerTick, uint32_t aPing) noexcept;
-        void Reset(uint64_t aServerTick, uint32_t aPing) noexcept;
+        void Reset() noexcept;
         void Update() noexcept;
 
     private:
