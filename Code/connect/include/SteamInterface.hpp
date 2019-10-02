@@ -4,27 +4,27 @@
 
 namespace TiltedPhoques
 {
-	enum EPacketFlags
-	{
-		kReliable,
-		kUnreliable
-	};
+    enum EPacketFlags
+    {
+        kReliable,
+        kUnreliable
+    };
 
-	enum EConnectOpcode : uint8_t
-	{
-		kPayload = 0,
-		kServerTime = 1
-	};
+    enum EConnectOpcode : uint8_t
+    {
+        kPayload = 0,
+        kServerTime = 1
+    };
 
-	struct SteamInterface
-	{
-		static void Acquire();
-		static void Release();
+    struct SteamInterface
+    {
+        static void Acquire();
+        static void Release();
 
-	private:
+    private:
 
-		static std::atomic<std::size_t> s_initCounter;
-	};
+        static std::atomic<std::size_t> s_initCounter;
+    };
 
-	using ConnectionId_t = HSteamNetConnection;
+    using ConnectionId_t = HSteamNetConnection;
 }

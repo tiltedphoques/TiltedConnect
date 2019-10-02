@@ -16,9 +16,9 @@ function CreateConnectProject(basePath, coreBasePath)
             basePath .. "/Code/connect/include/**.hpp",
             basePath .. "/Code/connect/src/**.cpp",
         }
-        
+
         defines { "STEAMNETWORKINGSOCKETS_STATIC_LINK" }
-        
+
         filter { "action:gmake*", "language:C++" }
             defines
             {
@@ -100,7 +100,7 @@ function CreateProtobufProject(basePath)
             basePath .. "/ThirdParty/protobuf/src/google/protobuf/util/type_resolver_util.cc",
             basePath .. "/ThirdParty/protobuf/src/google/protobuf/wire_format.cc",
             basePath .. "/ThirdParty/protobuf/src/google/protobuf/wrappers.pb.cc",
-            
+
             basePath .. "/ThirdParty/protobuf/src/google/protobuf/any_lite.cc",
             basePath .. "/ThirdParty/protobuf/src/google/protobuf/arena.cc",
             basePath .. "/ThirdParty/protobuf/src/google/protobuf/extension_set.cc",
@@ -129,7 +129,7 @@ function CreateProtobufProject(basePath)
 
 
         }
-        
+
         defines
         {
             "HAVE_PTHREAD"
@@ -146,7 +146,7 @@ function CreateSteamNetProject(basePath)
     project ("SteamNet")
         kind ("StaticLib")
         language ("C++")
-        
+
         characterset "ASCII"
 
         includedirs
@@ -172,28 +172,28 @@ function CreateSteamNetProject(basePath)
             basePath .. "/ThirdParty/GameNetworkingSockets/include/**/*.h",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/**/*.h",
             basePath .. "/ThirdParty/gnsconfig.h",
-            
+
             basePath .. "/ThirdParty/SteamCodegen/*.h",
             basePath .. "/ThirdParty/SteamCodegen/*.cc",
-            
+
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_25519_openssl.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_openssl.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/crypto_textencode.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/keypair.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/steamid.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/common/opensslwrapper.cpp",
-            
+
             basePath .. "/ThirdParty/GameNetworkingSockets/src/vstdlib/strtools.cpp",
-            
+
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier0/dbg.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier0/platformtime.cpp",
-            
+
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier1/bitstring.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier1/ipv6text.c",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier1/netadr.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier1/utlbuffer.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/tier1/utlmemory.cpp",
-            
+
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/steamnetworkingsockets_certs.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/steamnetworkingsockets_certstore.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/clientlib/steamnetworkingsockets_connections.cpp",
@@ -203,11 +203,11 @@ function CreateSteamNetProject(basePath)
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/steamnetworkingsockets_stats.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/clientlib/steamnetworkingsockets_snp.cpp",
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/clientlib/steamnetworkingsockets_udp.cpp",
-            
+
             basePath .. "/ThirdParty/GameNetworkingSockets/src/steamnetworkingsockets/clientlib/csteamnetworkingsockets.cpp",
 
         }
-        
+
         defines
         {
             "STEAMNETWORKINGSOCKETS_STATIC_LINK",
@@ -218,12 +218,12 @@ function CreateSteamNetProject(basePath)
             "STEAMNETWORKINGSOCKETS_CRYPTO_25519_OPENSSL",
             "STEAMNETWORKINGSOCKETS_CRYPTO_VALVEOPENSSL"
         }
-        
+
         links
         {
             "protobuf",
         }
-        
+
         filter { "architecture:*86" }
             libdirs { basePath .. "/ThirdParty/openssl/lib/x32" }
 
@@ -238,7 +238,7 @@ function CreateSteamNetProject(basePath)
                 "ws2_32",
                 "Crypt32.lib"
             }
-        
+
         filter { "action:gmake*", "language:C++" }
             defines
             {
@@ -247,7 +247,7 @@ function CreateSteamNetProject(basePath)
                 'GNUC',
                 'GNU_COMPILER',
             }
-            
+
             links
             {
                 "ssl",
