@@ -140,9 +140,11 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_steamnetworkingsockets_5fmessa
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramCertificateSigned, cert_),
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramCertificateSigned, ca_key_id_),
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramCertificateSigned, ca_signature_),
-  0,
-  2,
+  PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramCertificateSigned, private_key_data_),
   1,
+  3,
+  2,
+  0,
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramCertificateRequest, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramCertificateRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -154,8 +156,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_steamnetworkingsockets_5fmessa
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 9, sizeof(::CMsgSteamNetworkingIdentityLegacyBinary)},
   { 13, 27, sizeof(::CMsgSteamDatagramCertificate)},
-  { 36, 44, sizeof(::CMsgSteamDatagramCertificateSigned)},
-  { 47, 53, sizeof(::CMsgSteamDatagramCertificateRequest)},
+  { 36, 45, sizeof(::CMsgSteamDatagramCertificateSigned)},
+  { 49, 55, sizeof(::CMsgSteamDatagramCertificateRequest)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -179,12 +181,12 @@ const char descriptor_table_protodef_steamnetworkingsockets_5fmessages_5fcerts_2
   "ring\030\014 \001(\t\022!\n\031gameserver_datacenter_ids\030"
   "\005 \003(\007\022\024\n\014time_created\030\010 \001(\007\022\023\n\013time_expi"
   "ry\030\t \001(\007\022\017\n\007app_ids\030\n \003(\r\"$\n\010EKeyType\022\013\n"
-  "\007INVALID\020\000\022\013\n\007ED25519\020\001\"[\n\"CMsgSteamData"
+  "\007INVALID\020\000\022\013\n\007ED25519\020\001\"u\n\"CMsgSteamData"
   "gramCertificateSigned\022\014\n\004cert\030\004 \001(\014\022\021\n\tc"
-  "a_key_id\030\005 \001(\006\022\024\n\014ca_signature\030\006 \001(\014\"R\n#"
-  "CMsgSteamDatagramCertificateRequest\022+\n\004c"
-  "ert\030\001 \001(\0132\035.CMsgSteamDatagramCertificate"
-  "B\005H\001\200\001\000"
+  "a_key_id\030\005 \001(\006\022\024\n\014ca_signature\030\006 \001(\014\022\030\n\020"
+  "private_key_data\030\001 \001(\014\"R\n#CMsgSteamDatag"
+  "ramCertificateRequest\022+\n\004cert\030\001 \001(\0132\035.CM"
+  "sgSteamDatagramCertificateB\005H\001\200\001\000"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto_deps[1] = {
 };
@@ -197,7 +199,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_ste
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto_once;
 static bool descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto = {
-  &descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto_initialized, descriptor_table_protodef_steamnetworkingsockets_5fmessages_5fcerts_2eproto, "steamnetworkingsockets_messages_certs.proto", 727,
+  &descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto_initialized, descriptor_table_protodef_steamnetworkingsockets_5fmessages_5fcerts_2eproto, "steamnetworkingsockets_messages_certs.proto", 753,
   &descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto_once, descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto_sccs, descriptor_table_steamnetworkingsockets_5fmessages_5fcerts_2eproto_deps, 4, 0,
   schemas, file_default_instances, TableStruct_steamnetworkingsockets_5fmessages_5fcerts_2eproto::offsets,
   file_level_metadata_steamnetworkingsockets_5fmessages_5fcerts_2eproto, 4, file_level_enum_descriptors_steamnetworkingsockets_5fmessages_5fcerts_2eproto, file_level_service_descriptors_steamnetworkingsockets_5fmessages_5fcerts_2eproto,
@@ -1399,13 +1401,16 @@ class CMsgSteamDatagramCertificateSigned::_Internal {
  public:
   using HasBits = decltype(std::declval<CMsgSteamDatagramCertificateSigned>()._has_bits_);
   static void set_has_cert(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
+    (*has_bits)[0] |= 2u;
   }
   static void set_has_ca_key_id(HasBits* has_bits) {
-    (*has_bits)[0] |= 4u;
+    (*has_bits)[0] |= 8u;
   }
   static void set_has_ca_signature(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
+    (*has_bits)[0] |= 4u;
+  }
+  static void set_has_private_key_data(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
   }
 };
 
@@ -1419,6 +1424,10 @@ CMsgSteamDatagramCertificateSigned::CMsgSteamDatagramCertificateSigned(const CMs
       _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  private_key_data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from.has_private_key_data()) {
+    private_key_data_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.private_key_data_);
+  }
   cert_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from.has_cert()) {
     cert_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.cert_);
@@ -1433,6 +1442,7 @@ CMsgSteamDatagramCertificateSigned::CMsgSteamDatagramCertificateSigned(const CMs
 
 void CMsgSteamDatagramCertificateSigned::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CMsgSteamDatagramCertificateSigned_steamnetworkingsockets_5fmessages_5fcerts_2eproto.base);
+  private_key_data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   cert_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ca_signature_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ca_key_id_ = PROTOBUF_ULONGLONG(0);
@@ -1444,6 +1454,7 @@ CMsgSteamDatagramCertificateSigned::~CMsgSteamDatagramCertificateSigned() {
 }
 
 void CMsgSteamDatagramCertificateSigned::SharedDtor() {
+  private_key_data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   cert_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ca_signature_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -1464,11 +1475,14 @@ void CMsgSteamDatagramCertificateSigned::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      cert_.ClearNonDefaultToEmptyNoArena();
+      private_key_data_.ClearNonDefaultToEmptyNoArena();
     }
     if (cached_has_bits & 0x00000002u) {
+      cert_.ClearNonDefaultToEmptyNoArena();
+    }
+    if (cached_has_bits & 0x00000004u) {
       ca_signature_.ClearNonDefaultToEmptyNoArena();
     }
   }
@@ -1486,6 +1500,13 @@ const char* CMsgSteamDatagramCertificateSigned::_InternalParse(const char* ptr, 
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
+      // optional bytes private_key_data = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(mutable_private_key_data(), ptr, ctx);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // optional bytes cert = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
@@ -1539,6 +1560,17 @@ bool CMsgSteamDatagramCertificateSigned::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes private_key_data = 1;
+      case 1: {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_private_key_data()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // optional bytes cert = 4;
       case 4: {
         if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (34 & 0xFF)) {
@@ -1602,19 +1634,25 @@ void CMsgSteamDatagramCertificateSigned::SerializeWithCachedSizes(
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  // optional bytes cert = 4;
+  // optional bytes private_key_data = 1;
   if (cached_has_bits & 0x00000001u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBytesMaybeAliased(
+      1, this->private_key_data(), output);
+  }
+
+  // optional bytes cert = 4;
+  if (cached_has_bits & 0x00000002u) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBytesMaybeAliased(
       4, this->cert(), output);
   }
 
   // optional fixed64 ca_key_id = 5;
-  if (cached_has_bits & 0x00000004u) {
+  if (cached_has_bits & 0x00000008u) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFixed64(5, this->ca_key_id(), output);
   }
 
   // optional bytes ca_signature = 6;
-  if (cached_has_bits & 0x00000002u) {
+  if (cached_has_bits & 0x00000004u) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBytesMaybeAliased(
       6, this->ca_signature(), output);
   }
@@ -1633,20 +1671,27 @@ void CMsgSteamDatagramCertificateSigned::SerializeWithCachedSizes(
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  // optional bytes cert = 4;
+  // optional bytes private_key_data = 1;
   if (cached_has_bits & 0x00000001u) {
+    target =
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBytesToArray(
+        1, this->private_key_data(), target);
+  }
+
+  // optional bytes cert = 4;
+  if (cached_has_bits & 0x00000002u) {
     target =
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBytesToArray(
         4, this->cert(), target);
   }
 
   // optional fixed64 ca_key_id = 5;
-  if (cached_has_bits & 0x00000004u) {
+  if (cached_has_bits & 0x00000008u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFixed64ToArray(5, this->ca_key_id(), target);
   }
 
   // optional bytes ca_signature = 6;
-  if (cached_has_bits & 0x00000002u) {
+  if (cached_has_bits & 0x00000004u) {
     target =
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBytesToArray(
         6, this->ca_signature(), target);
@@ -1674,23 +1719,30 @@ size_t CMsgSteamDatagramCertificateSigned::ByteSizeLong() const {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
-    // optional bytes cert = 4;
+  if (cached_has_bits & 0x0000000fu) {
+    // optional bytes private_key_data = 1;
     if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+          this->private_key_data());
+    }
+
+    // optional bytes cert = 4;
+    if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->cert());
     }
 
     // optional bytes ca_signature = 6;
-    if (cached_has_bits & 0x00000002u) {
+    if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->ca_signature());
     }
 
     // optional fixed64 ca_key_id = 5;
-    if (cached_has_bits & 0x00000004u) {
+    if (cached_has_bits & 0x00000008u) {
       total_size += 1 + 8;
     }
 
@@ -1723,16 +1775,20 @@ void CMsgSteamDatagramCertificateSigned::MergeFrom(const CMsgSteamDatagramCertif
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
       _has_bits_[0] |= 0x00000001u;
-      cert_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.cert_);
+      private_key_data_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.private_key_data_);
     }
     if (cached_has_bits & 0x00000002u) {
       _has_bits_[0] |= 0x00000002u;
-      ca_signature_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.ca_signature_);
+      cert_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.cert_);
     }
     if (cached_has_bits & 0x00000004u) {
+      _has_bits_[0] |= 0x00000004u;
+      ca_signature_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.ca_signature_);
+    }
+    if (cached_has_bits & 0x00000008u) {
       ca_key_id_ = from.ca_key_id_;
     }
     _has_bits_[0] |= cached_has_bits;
@@ -1761,6 +1817,8 @@ void CMsgSteamDatagramCertificateSigned::InternalSwap(CMsgSteamDatagramCertifica
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
+  private_key_data_.Swap(&other->private_key_data_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   cert_.Swap(&other->cert_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   ca_signature_.Swap(&other->ca_signature_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),

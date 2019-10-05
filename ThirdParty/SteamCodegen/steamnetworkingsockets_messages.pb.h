@@ -105,6 +105,30 @@ inline bool CMsgSteamDatagramSessionCryptInfo_EKeyType_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CMsgSteamDatagramSessionCryptInfo_EKeyType>(
     CMsgSteamDatagramSessionCryptInfo_EKeyType_descriptor(), name, value);
 }
+enum ESteamNetworkingSocketsCipher : int {
+  k_ESteamNetworkingSocketsCipher_INVALID = 0,
+  k_ESteamNetworkingSocketsCipher_NULL = 1,
+  k_ESteamNetworkingSocketsCipher_AES_256_GCM = 2
+};
+bool ESteamNetworkingSocketsCipher_IsValid(int value);
+constexpr ESteamNetworkingSocketsCipher ESteamNetworkingSocketsCipher_MIN = k_ESteamNetworkingSocketsCipher_INVALID;
+constexpr ESteamNetworkingSocketsCipher ESteamNetworkingSocketsCipher_MAX = k_ESteamNetworkingSocketsCipher_AES_256_GCM;
+constexpr int ESteamNetworkingSocketsCipher_ARRAYSIZE = ESteamNetworkingSocketsCipher_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ESteamNetworkingSocketsCipher_descriptor();
+template<typename T>
+inline const std::string& ESteamNetworkingSocketsCipher_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ESteamNetworkingSocketsCipher>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ESteamNetworkingSocketsCipher_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ESteamNetworkingSocketsCipher_descriptor(), enum_t_value);
+}
+inline bool ESteamNetworkingSocketsCipher_Parse(
+    const std::string& name, ESteamNetworkingSocketsCipher* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ESteamNetworkingSocketsCipher>(
+    ESteamNetworkingSocketsCipher_descriptor(), name, value);
+}
 // ===================================================================
 
 class CMsgSteamDatagramSessionCryptInfo :
@@ -257,11 +281,21 @@ class CMsgSteamDatagramSessionCryptInfo :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kCiphersFieldNumber = 5,
     kKeyDataFieldNumber = 2,
     kKeyTypeFieldNumber = 1,
     kProtocolVersionFieldNumber = 4,
     kNonceFieldNumber = 3,
   };
+  // repeated .ESteamNetworkingSocketsCipher ciphers = 5;
+  int ciphers_size() const;
+  void clear_ciphers();
+  ::ESteamNetworkingSocketsCipher ciphers(int index) const;
+  void set_ciphers(int index, ::ESteamNetworkingSocketsCipher value);
+  void add_ciphers(::ESteamNetworkingSocketsCipher value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>& ciphers() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>* mutable_ciphers();
+
   // optional bytes key_data = 2;
   bool has_key_data() const;
   void clear_key_data();
@@ -299,6 +333,7 @@ class CMsgSteamDatagramSessionCryptInfo :
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<int> ciphers_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr key_data_;
   int key_type_;
   ::PROTOBUF_NAMESPACE_ID::uint32 protocol_version_;
@@ -1781,6 +1816,38 @@ inline void CMsgSteamDatagramSessionCryptInfo::set_protocol_version(::PROTOBUF_N
   _has_bits_[0] |= 0x00000004u;
   protocol_version_ = value;
   // @@protoc_insertion_point(field_set:CMsgSteamDatagramSessionCryptInfo.protocol_version)
+}
+
+// repeated .ESteamNetworkingSocketsCipher ciphers = 5;
+inline int CMsgSteamDatagramSessionCryptInfo::ciphers_size() const {
+  return ciphers_.size();
+}
+inline void CMsgSteamDatagramSessionCryptInfo::clear_ciphers() {
+  ciphers_.Clear();
+}
+inline ::ESteamNetworkingSocketsCipher CMsgSteamDatagramSessionCryptInfo::ciphers(int index) const {
+  // @@protoc_insertion_point(field_get:CMsgSteamDatagramSessionCryptInfo.ciphers)
+  return static_cast< ::ESteamNetworkingSocketsCipher >(ciphers_.Get(index));
+}
+inline void CMsgSteamDatagramSessionCryptInfo::set_ciphers(int index, ::ESteamNetworkingSocketsCipher value) {
+  assert(::ESteamNetworkingSocketsCipher_IsValid(value));
+  ciphers_.Set(index, value);
+  // @@protoc_insertion_point(field_set:CMsgSteamDatagramSessionCryptInfo.ciphers)
+}
+inline void CMsgSteamDatagramSessionCryptInfo::add_ciphers(::ESteamNetworkingSocketsCipher value) {
+  assert(::ESteamNetworkingSocketsCipher_IsValid(value));
+  ciphers_.Add(value);
+  // @@protoc_insertion_point(field_add:CMsgSteamDatagramSessionCryptInfo.ciphers)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>&
+CMsgSteamDatagramSessionCryptInfo::ciphers() const {
+  // @@protoc_insertion_point(field_list:CMsgSteamDatagramSessionCryptInfo.ciphers)
+  return ciphers_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>*
+CMsgSteamDatagramSessionCryptInfo::mutable_ciphers() {
+  // @@protoc_insertion_point(field_mutable_list:CMsgSteamDatagramSessionCryptInfo.ciphers)
+  return &ciphers_;
 }
 
 // -------------------------------------------------------------------
@@ -3520,6 +3587,11 @@ template <> struct is_proto_enum< ::CMsgSteamDatagramSessionCryptInfo_EKeyType> 
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::CMsgSteamDatagramSessionCryptInfo_EKeyType>() {
   return ::CMsgSteamDatagramSessionCryptInfo_EKeyType_descriptor();
+}
+template <> struct is_proto_enum< ::ESteamNetworkingSocketsCipher> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::ESteamNetworkingSocketsCipher>() {
+  return ::ESteamNetworkingSocketsCipher_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

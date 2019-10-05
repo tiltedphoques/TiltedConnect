@@ -128,7 +128,7 @@ static void InitDefaultsscc_info_CMsgSteamDatagramSessionCryptInfoSigned_steamne
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsscc_info_CMsgSteamDatagramSessionCryptInfoSigned_steamnetworkingsockets_5fmessages_2eproto}, {}};
 
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_steamnetworkingsockets_5fmessages_2eproto[6];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_steamnetworkingsockets_5fmessages_2eproto[1];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_steamnetworkingsockets_5fmessages_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_steamnetworkingsockets_5fmessages_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_steamnetworkingsockets_5fmessages_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -141,10 +141,12 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_steamnetworkingsockets_5fmessa
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramSessionCryptInfo, key_data_),
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramSessionCryptInfo, nonce_),
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramSessionCryptInfo, protocol_version_),
+  PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramSessionCryptInfo, ciphers_),
   1,
   0,
   3,
   2,
+  ~0u,
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramSessionCryptInfoSigned, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::CMsgSteamDatagramSessionCryptInfoSigned, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -340,12 +342,12 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_steamnetworkingsockets_5fmessa
   1,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 9, sizeof(::CMsgSteamDatagramSessionCryptInfo)},
-  { 13, 20, sizeof(::CMsgSteamDatagramSessionCryptInfoSigned)},
-  { 22, 29, sizeof(::CMsgSteamDatagramDiagnostic)},
-  { 31, 44, sizeof(::CMsgSteamDatagramLinkInstantaneousStats)},
-  { 52, 127, sizeof(::CMsgSteamDatagramLinkLifetimeStats)},
-  { 197, 204, sizeof(::CMsgSteamDatagramConnectionQuality)},
+  { 0, 10, sizeof(::CMsgSteamDatagramSessionCryptInfo)},
+  { 15, 22, sizeof(::CMsgSteamDatagramSessionCryptInfoSigned)},
+  { 24, 31, sizeof(::CMsgSteamDatagramDiagnostic)},
+  { 33, 46, sizeof(::CMsgSteamDatagramLinkInstantaneousStats)},
+  { 54, 129, sizeof(::CMsgSteamDatagramLinkLifetimeStats)},
+  { 199, 206, sizeof(::CMsgSteamDatagramConnectionQuality)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -359,76 +361,82 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_steamnetworkingsockets_5fmessages_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n%steamnetworkingsockets_messages.proto\""
-  "\306\001\n!CMsgSteamDatagramSessionCryptInfo\022=\n"
+  "\367\001\n!CMsgSteamDatagramSessionCryptInfo\022=\n"
   "\010key_type\030\001 \001(\0162+.CMsgSteamDatagramSessi"
   "onCryptInfo.EKeyType\022\020\n\010key_data\030\002 \001(\014\022\r"
-  "\n\005nonce\030\003 \001(\006\022\030\n\020protocol_version\030\004 \001(\r\""
-  "\'\n\010EKeyType\022\013\n\007INVALID\020\000\022\016\n\nCURVE25519\020\001"
-  "\"J\n\'CMsgSteamDatagramSessionCryptInfoSig"
-  "ned\022\014\n\004info\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014\"=\n\033"
-  "CMsgSteamDatagramDiagnostic\022\020\n\010severity\030"
-  "\001 \001(\r\022\014\n\004text\030\002 \001(\t\"\213\002\n\'CMsgSteamDatagra"
-  "mLinkInstantaneousStats\022\037\n\027out_packets_p"
-  "er_sec_x10\030\001 \001(\r\022\031\n\021out_bytes_per_sec\030\002 "
-  "\001(\r\022\036\n\026in_packets_per_sec_x10\030\003 \001(\r\022\030\n\020i"
-  "n_bytes_per_sec\030\004 \001(\r\022\017\n\007ping_ms\030\005 \001(\r\022\033"
-  "\n\023packets_dropped_pct\030\006 \001(\r\022\"\n\032packets_w"
-  "eird_sequence_pct\030\007 \001(\r\022\030\n\020peak_jitter_u"
-  "sec\030\010 \001(\r\"\341\017\n\"CMsgSteamDatagramLinkLifet"
-  "imeStats\022\024\n\014packets_sent\030\003 \001(\004\022\017\n\007kb_sen"
-  "t\030\004 \001(\004\022\024\n\014packets_recv\030\005 \001(\004\022\017\n\007kb_recv"
-  "\030\006 \001(\004\022\036\n\026packets_recv_sequenced\030\007 \001(\004\022\034"
-  "\n\024packets_recv_dropped\030\010 \001(\004\022!\n\031packets_"
-  "recv_out_of_order\030\t \001(\004\022\036\n\026packets_recv_"
-  "duplicate\030\n \001(\004\022\032\n\022packets_recv_lurch\030\013 "
-  "\001(\004\022\035\n\025quality_histogram_100\030\025 \001(\r\022\034\n\024qu"
-  "ality_histogram_99\030\026 \001(\r\022\034\n\024quality_hist"
-  "ogram_97\030\027 \001(\r\022\034\n\024quality_histogram_95\030\030"
-  " \001(\r\022\034\n\024quality_histogram_90\030\031 \001(\r\022\034\n\024qu"
-  "ality_histogram_75\030\032 \001(\r\022\034\n\024quality_hist"
-  "ogram_50\030\033 \001(\r\022\033\n\023quality_histogram_1\030\034 "
-  "\001(\r\022\036\n\026quality_histogram_dead\030\035 \001(\r\022\031\n\021q"
-  "uality_ntile_2nd\030\036 \001(\r\022\031\n\021quality_ntile_"
-  "5th\030\037 \001(\r\022\032\n\022quality_ntile_25th\030  \001(\r\022\032\n"
-  "\022quality_ntile_50th\030! \001(\r\022\031\n\021ping_histog"
-  "ram_25\030) \001(\r\022\031\n\021ping_histogram_50\030* \001(\r\022"
-  "\031\n\021ping_histogram_75\030+ \001(\r\022\032\n\022ping_histo"
-  "gram_100\030, \001(\r\022\032\n\022ping_histogram_125\030- \001"
-  "(\r\022\032\n\022ping_histogram_150\030. \001(\r\022\032\n\022ping_h"
-  "istogram_200\030/ \001(\r\022\032\n\022ping_histogram_300"
-  "\0300 \001(\r\022\032\n\022ping_histogram_max\0301 \001(\r\022\026\n\016pi"
-  "ng_ntile_5th\0302 \001(\r\022\027\n\017ping_ntile_50th\0303 "
-  "\001(\r\022\027\n\017ping_ntile_75th\0304 \001(\r\022\027\n\017ping_nti"
-  "le_95th\0305 \001(\r\022\027\n\017ping_ntile_98th\0306 \001(\r\022#"
-  "\n\033jitter_histogram_negligible\030= \001(\r\022\032\n\022j"
-  "itter_histogram_1\030> \001(\r\022\032\n\022jitter_histog"
-  "ram_2\030\? \001(\r\022\032\n\022jitter_histogram_5\030@ \001(\r\022"
-  "\033\n\023jitter_histogram_10\030A \001(\r\022\033\n\023jitter_h"
-  "istogram_20\030B \001(\r\022\023\n\013txspeed_max\030C \001(\r\022\034"
-  "\n\024txspeed_histogram_16\030D \001(\r\022\034\n\024txspeed_"
-  "histogram_32\030E \001(\r\022\034\n\024txspeed_histogram_"
-  "64\030F \001(\r\022\035\n\025txspeed_histogram_128\030G \001(\r\022"
-  "\035\n\025txspeed_histogram_256\030H \001(\r\022\035\n\025txspee"
-  "d_histogram_512\030I \001(\r\022\036\n\026txspeed_histogr"
-  "am_1024\030J \001(\r\022\035\n\025txspeed_histogram_max\030K"
-  " \001(\r\022\031\n\021txspeed_ntile_5th\030L \001(\r\022\032\n\022txspe"
-  "ed_ntile_50th\030M \001(\r\022\032\n\022txspeed_ntile_75t"
-  "h\030N \001(\r\022\032\n\022txspeed_ntile_95th\030O \001(\r\022\032\n\022t"
-  "xspeed_ntile_98th\030P \001(\r\022\023\n\013rxspeed_max\030Q"
-  " \001(\r\022\034\n\024rxspeed_histogram_16\030R \001(\r\022\034\n\024rx"
-  "speed_histogram_32\030S \001(\r\022\034\n\024rxspeed_hist"
-  "ogram_64\030T \001(\r\022\035\n\025rxspeed_histogram_128\030"
-  "U \001(\r\022\035\n\025rxspeed_histogram_256\030V \001(\r\022\035\n\025"
-  "rxspeed_histogram_512\030W \001(\r\022\036\n\026rxspeed_h"
-  "istogram_1024\030X \001(\r\022\035\n\025rxspeed_histogram"
-  "_max\030Y \001(\r\022\031\n\021rxspeed_ntile_5th\030Z \001(\r\022\032\n"
-  "\022rxspeed_ntile_50th\030[ \001(\r\022\032\n\022rxspeed_nti"
-  "le_75th\030\\ \001(\r\022\032\n\022rxspeed_ntile_95th\030] \001("
-  "\r\022\032\n\022rxspeed_ntile_98th\030^ \001(\r\"\234\001\n\"CMsgSt"
-  "eamDatagramConnectionQuality\022\?\n\rinstanta"
-  "neous\030\001 \001(\0132(.CMsgSteamDatagramLinkInsta"
-  "ntaneousStats\0225\n\010lifetime\030\002 \001(\0132#.CMsgSt"
-  "eamDatagramLinkLifetimeStatsB\005H\001\200\001\000"
+  "\n\005nonce\030\003 \001(\006\022\030\n\020protocol_version\030\004 \001(\r\022"
+  "/\n\007ciphers\030\005 \003(\0162\036.ESteamNetworkingSocke"
+  "tsCipher\"\'\n\010EKeyType\022\013\n\007INVALID\020\000\022\016\n\nCUR"
+  "VE25519\020\001\"J\n\'CMsgSteamDatagramSessionCry"
+  "ptInfoSigned\022\014\n\004info\030\001 \001(\014\022\021\n\tsignature\030"
+  "\002 \001(\014\"=\n\033CMsgSteamDatagramDiagnostic\022\020\n\010"
+  "severity\030\001 \001(\r\022\014\n\004text\030\002 \001(\t\"\213\002\n\'CMsgSte"
+  "amDatagramLinkInstantaneousStats\022\037\n\027out_"
+  "packets_per_sec_x10\030\001 \001(\r\022\031\n\021out_bytes_p"
+  "er_sec\030\002 \001(\r\022\036\n\026in_packets_per_sec_x10\030\003"
+  " \001(\r\022\030\n\020in_bytes_per_sec\030\004 \001(\r\022\017\n\007ping_m"
+  "s\030\005 \001(\r\022\033\n\023packets_dropped_pct\030\006 \001(\r\022\"\n\032"
+  "packets_weird_sequence_pct\030\007 \001(\r\022\030\n\020peak"
+  "_jitter_usec\030\010 \001(\r\"\341\017\n\"CMsgSteamDatagram"
+  "LinkLifetimeStats\022\024\n\014packets_sent\030\003 \001(\004\022"
+  "\017\n\007kb_sent\030\004 \001(\004\022\024\n\014packets_recv\030\005 \001(\004\022\017"
+  "\n\007kb_recv\030\006 \001(\004\022\036\n\026packets_recv_sequence"
+  "d\030\007 \001(\004\022\034\n\024packets_recv_dropped\030\010 \001(\004\022!\n"
+  "\031packets_recv_out_of_order\030\t \001(\004\022\036\n\026pack"
+  "ets_recv_duplicate\030\n \001(\004\022\032\n\022packets_recv"
+  "_lurch\030\013 \001(\004\022\035\n\025quality_histogram_100\030\025 "
+  "\001(\r\022\034\n\024quality_histogram_99\030\026 \001(\r\022\034\n\024qua"
+  "lity_histogram_97\030\027 \001(\r\022\034\n\024quality_histo"
+  "gram_95\030\030 \001(\r\022\034\n\024quality_histogram_90\030\031 "
+  "\001(\r\022\034\n\024quality_histogram_75\030\032 \001(\r\022\034\n\024qua"
+  "lity_histogram_50\030\033 \001(\r\022\033\n\023quality_histo"
+  "gram_1\030\034 \001(\r\022\036\n\026quality_histogram_dead\030\035"
+  " \001(\r\022\031\n\021quality_ntile_2nd\030\036 \001(\r\022\031\n\021quali"
+  "ty_ntile_5th\030\037 \001(\r\022\032\n\022quality_ntile_25th"
+  "\030  \001(\r\022\032\n\022quality_ntile_50th\030! \001(\r\022\031\n\021pi"
+  "ng_histogram_25\030) \001(\r\022\031\n\021ping_histogram_"
+  "50\030* \001(\r\022\031\n\021ping_histogram_75\030+ \001(\r\022\032\n\022p"
+  "ing_histogram_100\030, \001(\r\022\032\n\022ping_histogra"
+  "m_125\030- \001(\r\022\032\n\022ping_histogram_150\030. \001(\r\022"
+  "\032\n\022ping_histogram_200\030/ \001(\r\022\032\n\022ping_hist"
+  "ogram_300\0300 \001(\r\022\032\n\022ping_histogram_max\0301 "
+  "\001(\r\022\026\n\016ping_ntile_5th\0302 \001(\r\022\027\n\017ping_ntil"
+  "e_50th\0303 \001(\r\022\027\n\017ping_ntile_75th\0304 \001(\r\022\027\n"
+  "\017ping_ntile_95th\0305 \001(\r\022\027\n\017ping_ntile_98t"
+  "h\0306 \001(\r\022#\n\033jitter_histogram_negligible\030="
+  " \001(\r\022\032\n\022jitter_histogram_1\030> \001(\r\022\032\n\022jitt"
+  "er_histogram_2\030\? \001(\r\022\032\n\022jitter_histogram"
+  "_5\030@ \001(\r\022\033\n\023jitter_histogram_10\030A \001(\r\022\033\n"
+  "\023jitter_histogram_20\030B \001(\r\022\023\n\013txspeed_ma"
+  "x\030C \001(\r\022\034\n\024txspeed_histogram_16\030D \001(\r\022\034\n"
+  "\024txspeed_histogram_32\030E \001(\r\022\034\n\024txspeed_h"
+  "istogram_64\030F \001(\r\022\035\n\025txspeed_histogram_1"
+  "28\030G \001(\r\022\035\n\025txspeed_histogram_256\030H \001(\r\022"
+  "\035\n\025txspeed_histogram_512\030I \001(\r\022\036\n\026txspee"
+  "d_histogram_1024\030J \001(\r\022\035\n\025txspeed_histog"
+  "ram_max\030K \001(\r\022\031\n\021txspeed_ntile_5th\030L \001(\r"
+  "\022\032\n\022txspeed_ntile_50th\030M \001(\r\022\032\n\022txspeed_"
+  "ntile_75th\030N \001(\r\022\032\n\022txspeed_ntile_95th\030O"
+  " \001(\r\022\032\n\022txspeed_ntile_98th\030P \001(\r\022\023\n\013rxsp"
+  "eed_max\030Q \001(\r\022\034\n\024rxspeed_histogram_16\030R "
+  "\001(\r\022\034\n\024rxspeed_histogram_32\030S \001(\r\022\034\n\024rxs"
+  "peed_histogram_64\030T \001(\r\022\035\n\025rxspeed_histo"
+  "gram_128\030U \001(\r\022\035\n\025rxspeed_histogram_256\030"
+  "V \001(\r\022\035\n\025rxspeed_histogram_512\030W \001(\r\022\036\n\026"
+  "rxspeed_histogram_1024\030X \001(\r\022\035\n\025rxspeed_"
+  "histogram_max\030Y \001(\r\022\031\n\021rxspeed_ntile_5th"
+  "\030Z \001(\r\022\032\n\022rxspeed_ntile_50th\030[ \001(\r\022\032\n\022rx"
+  "speed_ntile_75th\030\\ \001(\r\022\032\n\022rxspeed_ntile_"
+  "95th\030] \001(\r\022\032\n\022rxspeed_ntile_98th\030^ \001(\r\"\234"
+  "\001\n\"CMsgSteamDatagramConnectionQuality\022\?\n"
+  "\rinstantaneous\030\001 \001(\0132(.CMsgSteamDatagram"
+  "LinkInstantaneousStats\0225\n\010lifetime\030\002 \001(\013"
+  "2#.CMsgSteamDatagramLinkLifetimeStats*\247\001"
+  "\n\035ESteamNetworkingSocketsCipher\022+\n\'k_ESt"
+  "eamNetworkingSocketsCipher_INVALID\020\000\022(\n$"
+  "k_ESteamNetworkingSocketsCipher_NULL\020\001\022/"
+  "\n+k_ESteamNetworkingSocketsCipher_AES_25"
+  "6_GCM\020\002B\005H\001\200\001\000"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_steamnetworkingsockets_5fmessages_2eproto_deps[1] = {
 };
@@ -443,7 +451,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_ste
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_steamnetworkingsockets_5fmessages_2eproto_once;
 static bool descriptor_table_steamnetworkingsockets_5fmessages_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_steamnetworkingsockets_5fmessages_2eproto = {
-  &descriptor_table_steamnetworkingsockets_5fmessages_2eproto_initialized, descriptor_table_protodef_steamnetworkingsockets_5fmessages_2eproto, "steamnetworkingsockets_messages.proto", 2835,
+  &descriptor_table_steamnetworkingsockets_5fmessages_2eproto_initialized, descriptor_table_protodef_steamnetworkingsockets_5fmessages_2eproto, "steamnetworkingsockets_messages.proto", 3054,
   &descriptor_table_steamnetworkingsockets_5fmessages_2eproto_once, descriptor_table_steamnetworkingsockets_5fmessages_2eproto_sccs, descriptor_table_steamnetworkingsockets_5fmessages_2eproto_deps, 6, 0,
   schemas, file_default_instances, TableStruct_steamnetworkingsockets_5fmessages_2eproto::offsets,
   file_level_metadata_steamnetworkingsockets_5fmessages_2eproto, 6, file_level_enum_descriptors_steamnetworkingsockets_5fmessages_2eproto, file_level_service_descriptors_steamnetworkingsockets_5fmessages_2eproto,
@@ -472,6 +480,21 @@ constexpr CMsgSteamDatagramSessionCryptInfo_EKeyType CMsgSteamDatagramSessionCry
 constexpr CMsgSteamDatagramSessionCryptInfo_EKeyType CMsgSteamDatagramSessionCryptInfo::EKeyType_MAX;
 constexpr int CMsgSteamDatagramSessionCryptInfo::EKeyType_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ESteamNetworkingSocketsCipher_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_steamnetworkingsockets_5fmessages_2eproto);
+  return file_level_enum_descriptors_steamnetworkingsockets_5fmessages_2eproto[1];
+}
+bool ESteamNetworkingSocketsCipher_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 // ===================================================================
 
@@ -502,7 +525,8 @@ CMsgSteamDatagramSessionCryptInfo::CMsgSteamDatagramSessionCryptInfo()
 CMsgSteamDatagramSessionCryptInfo::CMsgSteamDatagramSessionCryptInfo(const CMsgSteamDatagramSessionCryptInfo& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
-      _has_bits_(from._has_bits_) {
+      _has_bits_(from._has_bits_),
+      ciphers_(from.ciphers_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   key_data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from.has_key_data()) {
@@ -546,6 +570,7 @@ void CMsgSteamDatagramSessionCryptInfo::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  ciphers_.Clear();
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     key_data_.ClearNonDefaultToEmptyNoArena();
@@ -600,6 +625,26 @@ const char* CMsgSteamDatagramSessionCryptInfo::_InternalParse(const char* ptr, :
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           _Internal::set_has_protocol_version(&has_bits);
           protocol_version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // repeated .ESteamNetworkingSocketsCipher ciphers = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+            CHK_(ptr);
+            if (PROTOBUF_PREDICT_TRUE(::ESteamNetworkingSocketsCipher_IsValid(val))) {
+              add_ciphers(static_cast<::ESteamNetworkingSocketsCipher>(val));
+            } else {
+              ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(5, val, mutable_unknown_fields());
+            }
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<::PROTOBUF_NAMESPACE_ID::uint8>(ptr) == 40);
+        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedEnumParser(mutable_ciphers(), ptr, ctx, ::ESteamNetworkingSocketsCipher_IsValid, &_internal_metadata_, 5);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -690,6 +735,32 @@ bool CMsgSteamDatagramSessionCryptInfo::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated .ESteamNetworkingSocketsCipher ciphers = 5;
+      case 5: {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (40 & 0xFF)) {
+          int value = 0;
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::ESteamNetworkingSocketsCipher_IsValid(value)) {
+            add_ciphers(static_cast< ::ESteamNetworkingSocketsCipher >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(
+                5, static_cast<::PROTOBUF_NAMESPACE_ID::uint64>(value));
+          }
+        } else if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (42 & 0xFF)) {
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormat::ReadPackedEnumPreserveUnknowns(
+                 input,
+                 5,
+                 ::ESteamNetworkingSocketsCipher_IsValid,
+                 mutable_unknown_fields(),
+                 this->mutable_ciphers())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -740,6 +811,12 @@ void CMsgSteamDatagramSessionCryptInfo::SerializeWithCachedSizes(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32(4, this->protocol_version(), output);
   }
 
+  // repeated .ESteamNetworkingSocketsCipher ciphers = 5;
+  for (int i = 0, n = this->ciphers_size(); i < n; i++) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnum(
+      5, this->ciphers(i), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -777,6 +854,10 @@ void CMsgSteamDatagramSessionCryptInfo::SerializeWithCachedSizes(
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->protocol_version(), target);
   }
 
+  // repeated .ESteamNetworkingSocketsCipher ciphers = 5;
+  target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+    5, this->ciphers_, target);
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target);
@@ -797,6 +878,16 @@ size_t CMsgSteamDatagramSessionCryptInfo::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
+  // repeated .ESteamNetworkingSocketsCipher ciphers = 5;
+  {
+    size_t data_size = 0;
+    unsigned int count = static_cast<unsigned int>(this->ciphers_size());for (unsigned int i = 0; i < count; i++) {
+      data_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(
+        this->ciphers(static_cast<int>(i)));
+    }
+    total_size += (1UL * count) + data_size;
+  }
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
@@ -853,6 +944,7 @@ void CMsgSteamDatagramSessionCryptInfo::MergeFrom(const CMsgSteamDatagramSession
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  ciphers_.MergeFrom(from.ciphers_);
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
@@ -894,6 +986,7 @@ void CMsgSteamDatagramSessionCryptInfo::InternalSwap(CMsgSteamDatagramSessionCry
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
+  ciphers_.InternalSwap(&other->ciphers_);
   key_data_.Swap(&other->key_data_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(key_type_, other->key_type_);

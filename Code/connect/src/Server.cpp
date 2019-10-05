@@ -107,7 +107,7 @@ namespace TiltedPhoques
         for (const auto conn : m_connections)
         {
             m_pInterface->SendMessageToConnection(conn, apPacket->m_pData, apPacket->m_size,
-                aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+                aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
         }
 
     }
@@ -115,7 +115,7 @@ namespace TiltedPhoques
     void Server::Send(const ConnectionId_t aConnectionId, Packet* apPacket, EPacketFlags aPacketFlags) const noexcept
     {
         m_pInterface->SendMessageToConnection(aConnectionId, apPacket->m_pData, apPacket->m_size,
-            aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+            aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
     }
 
     void Server::Kick(const ConnectionId_t aConnectionId) noexcept
@@ -197,13 +197,13 @@ namespace TiltedPhoques
         if(aSpecificConnection != k_HSteamNetConnection_Invalid)
         {
             // In this case we probably want it to arrive so send it reliably
-            m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_ReliableNoNagle);
+            m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_ReliableNoNagle, nullptr);
         }
         else
         {
             for (const auto cConnection : m_connections)
             {
-                m_pInterface->SendMessageToConnection(cConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay);
+                m_pInterface->SendMessageToConnection(cConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay, nullptr);
             }
         }
     }

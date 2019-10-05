@@ -85,7 +85,7 @@ namespace TiltedPhoques
     void Client::Send(Packet* apPacket, const EPacketFlags acPacketFlags) const noexcept
     {
         m_pInterface->SendMessageToConnection(m_connection, apPacket->m_pData, apPacket->m_size,
-            acPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable);
+            acPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
     }
 
     bool Client::IsConnected() const noexcept

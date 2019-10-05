@@ -659,10 +659,23 @@ class CMsgSteamDatagramCertificateSigned :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kPrivateKeyDataFieldNumber = 1,
     kCertFieldNumber = 4,
     kCaSignatureFieldNumber = 6,
     kCaKeyIdFieldNumber = 5,
   };
+  // optional bytes private_key_data = 1;
+  bool has_private_key_data() const;
+  void clear_private_key_data();
+  const std::string& private_key_data() const;
+  void set_private_key_data(const std::string& value);
+  void set_private_key_data(std::string&& value);
+  void set_private_key_data(const char* value);
+  void set_private_key_data(const void* value, size_t size);
+  std::string* mutable_private_key_data();
+  std::string* release_private_key_data();
+  void set_allocated_private_key_data(std::string* private_key_data);
+
   // optional bytes cert = 4;
   bool has_cert() const;
   void clear_cert();
@@ -700,6 +713,7 @@ class CMsgSteamDatagramCertificateSigned :
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr private_key_data_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cert_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr ca_signature_;
   ::PROTOBUF_NAMESPACE_ID::uint64 ca_key_id_;
@@ -1358,41 +1372,41 @@ CMsgSteamDatagramCertificate::mutable_app_ids() {
 
 // optional bytes cert = 4;
 inline bool CMsgSteamDatagramCertificateSigned::has_cert() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
 inline void CMsgSteamDatagramCertificateSigned::clear_cert() {
   cert_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline const std::string& CMsgSteamDatagramCertificateSigned::cert() const {
   // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificateSigned.cert)
   return cert_.GetNoArena();
 }
 inline void CMsgSteamDatagramCertificateSigned::set_cert(const std::string& value) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   cert_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificateSigned.cert)
 }
 inline void CMsgSteamDatagramCertificateSigned::set_cert(std::string&& value) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   cert_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
   // @@protoc_insertion_point(field_set_rvalue:CMsgSteamDatagramCertificateSigned.cert)
 }
 inline void CMsgSteamDatagramCertificateSigned::set_cert(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   cert_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:CMsgSteamDatagramCertificateSigned.cert)
 }
 inline void CMsgSteamDatagramCertificateSigned::set_cert(const void* value, size_t size) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   cert_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:CMsgSteamDatagramCertificateSigned.cert)
 }
 inline std::string* CMsgSteamDatagramCertificateSigned::mutable_cert() {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   // @@protoc_insertion_point(field_mutable:CMsgSteamDatagramCertificateSigned.cert)
   return cert_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -1401,14 +1415,14 @@ inline std::string* CMsgSteamDatagramCertificateSigned::release_cert() {
   if (!has_cert()) {
     return nullptr;
   }
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
   return cert_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline void CMsgSteamDatagramCertificateSigned::set_allocated_cert(std::string* cert) {
   if (cert != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
+    _has_bits_[0] |= 0x00000002u;
   } else {
-    _has_bits_[0] &= ~0x00000001u;
+    _has_bits_[0] &= ~0x00000002u;
   }
   cert_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), cert);
   // @@protoc_insertion_point(field_set_allocated:CMsgSteamDatagramCertificateSigned.cert)
@@ -1416,59 +1430,59 @@ inline void CMsgSteamDatagramCertificateSigned::set_allocated_cert(std::string* 
 
 // optional fixed64 ca_key_id = 5;
 inline bool CMsgSteamDatagramCertificateSigned::has_ca_key_id() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void CMsgSteamDatagramCertificateSigned::clear_ca_key_id() {
   ca_key_id_ = PROTOBUF_ULONGLONG(0);
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint64 CMsgSteamDatagramCertificateSigned::ca_key_id() const {
   // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificateSigned.ca_key_id)
   return ca_key_id_;
 }
 inline void CMsgSteamDatagramCertificateSigned::set_ca_key_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
   ca_key_id_ = value;
   // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificateSigned.ca_key_id)
 }
 
 // optional bytes ca_signature = 6;
 inline bool CMsgSteamDatagramCertificateSigned::has_ca_signature() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void CMsgSteamDatagramCertificateSigned::clear_ca_signature() {
   ca_signature_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline const std::string& CMsgSteamDatagramCertificateSigned::ca_signature() const {
   // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificateSigned.ca_signature)
   return ca_signature_.GetNoArena();
 }
 inline void CMsgSteamDatagramCertificateSigned::set_ca_signature(const std::string& value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   ca_signature_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificateSigned.ca_signature)
 }
 inline void CMsgSteamDatagramCertificateSigned::set_ca_signature(std::string&& value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   ca_signature_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
   // @@protoc_insertion_point(field_set_rvalue:CMsgSteamDatagramCertificateSigned.ca_signature)
 }
 inline void CMsgSteamDatagramCertificateSigned::set_ca_signature(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   ca_signature_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:CMsgSteamDatagramCertificateSigned.ca_signature)
 }
 inline void CMsgSteamDatagramCertificateSigned::set_ca_signature(const void* value, size_t size) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   ca_signature_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:CMsgSteamDatagramCertificateSigned.ca_signature)
 }
 inline std::string* CMsgSteamDatagramCertificateSigned::mutable_ca_signature() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   // @@protoc_insertion_point(field_mutable:CMsgSteamDatagramCertificateSigned.ca_signature)
   return ca_signature_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -1477,17 +1491,75 @@ inline std::string* CMsgSteamDatagramCertificateSigned::release_ca_signature() {
   if (!has_ca_signature()) {
     return nullptr;
   }
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
   return ca_signature_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 inline void CMsgSteamDatagramCertificateSigned::set_allocated_ca_signature(std::string* ca_signature) {
   if (ca_signature != nullptr) {
-    _has_bits_[0] |= 0x00000002u;
+    _has_bits_[0] |= 0x00000004u;
   } else {
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000004u;
   }
   ca_signature_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ca_signature);
   // @@protoc_insertion_point(field_set_allocated:CMsgSteamDatagramCertificateSigned.ca_signature)
+}
+
+// optional bytes private_key_data = 1;
+inline bool CMsgSteamDatagramCertificateSigned::has_private_key_data() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void CMsgSteamDatagramCertificateSigned::clear_private_key_data() {
+  private_key_data_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& CMsgSteamDatagramCertificateSigned::private_key_data() const {
+  // @@protoc_insertion_point(field_get:CMsgSteamDatagramCertificateSigned.private_key_data)
+  return private_key_data_.GetNoArena();
+}
+inline void CMsgSteamDatagramCertificateSigned::set_private_key_data(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  private_key_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CMsgSteamDatagramCertificateSigned.private_key_data)
+}
+inline void CMsgSteamDatagramCertificateSigned::set_private_key_data(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  private_key_data_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CMsgSteamDatagramCertificateSigned.private_key_data)
+}
+inline void CMsgSteamDatagramCertificateSigned::set_private_key_data(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  private_key_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CMsgSteamDatagramCertificateSigned.private_key_data)
+}
+inline void CMsgSteamDatagramCertificateSigned::set_private_key_data(const void* value, size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  private_key_data_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CMsgSteamDatagramCertificateSigned.private_key_data)
+}
+inline std::string* CMsgSteamDatagramCertificateSigned::mutable_private_key_data() {
+  _has_bits_[0] |= 0x00000001u;
+  // @@protoc_insertion_point(field_mutable:CMsgSteamDatagramCertificateSigned.private_key_data)
+  return private_key_data_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* CMsgSteamDatagramCertificateSigned::release_private_key_data() {
+  // @@protoc_insertion_point(field_release:CMsgSteamDatagramCertificateSigned.private_key_data)
+  if (!has_private_key_data()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return private_key_data_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void CMsgSteamDatagramCertificateSigned::set_allocated_private_key_data(std::string* private_key_data) {
+  if (private_key_data != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  private_key_data_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), private_key_data);
+  // @@protoc_insertion_point(field_set_allocated:CMsgSteamDatagramCertificateSigned.private_key_data)
 }
 
 // -------------------------------------------------------------------
