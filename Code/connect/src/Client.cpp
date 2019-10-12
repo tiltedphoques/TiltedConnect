@@ -54,6 +54,8 @@ namespace TiltedPhoques
             m_pInterface->CloseConnection(m_connection, 0, nullptr, true);
             m_connection = k_HSteamNetConnection_Invalid;
 
+            m_clock.Reset();
+
             OnDisconnected(kNormal);
         }
     }
