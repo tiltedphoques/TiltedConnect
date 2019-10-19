@@ -153,6 +153,11 @@ namespace TiltedPhoques
         return m_tickRate;
     }
 
+	uint64_t Server::GetTick() const noexcept
+	{
+		return std::chrono::duration_cast<std::chrono::milliseconds>(m_currentTick.time_since_epoch()).count();
+	}
+
     void Server::Remove(const ConnectionId_t aId) noexcept
     {
         const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);
@@ -183,7 +188,7 @@ namespace TiltedPhoques
 
     void Server::SynchronizeClientClocks(const ConnectionId_t aSpecificConnection) noexcept
     {
-        const auto time = std::chrono::duration_cast<std::chrono::milliseconds>(m_currentTick.time_since_epoch()).count();
+        const auto time = GetTick();
 
         StackAllocator<1 << 10> allocator;
         ScopedAllocator _{ &allocator };

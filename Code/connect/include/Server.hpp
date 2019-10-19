@@ -34,6 +34,7 @@ namespace TiltedPhoques
         [[nodiscard]] bool IsListening() const noexcept;
         [[nodiscard]] uint32_t GetClientCount() const noexcept;
         [[nodiscard]] uint32_t GetTickRate() const noexcept;
+        [[nodiscard]] uint64_t GetTick() const noexcept;
 
     private:
 
