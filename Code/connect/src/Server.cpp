@@ -45,7 +45,7 @@ namespace TiltedPhoques
         // If we pass 0, reuse the previously used tick rate
         else if (aTickRate == 0)
         {
-            m_tickRate = aTickRate;
+            aTickRate = m_tickRate;
         }
 
         m_tickRate = aTickRate;
