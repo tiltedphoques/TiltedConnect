@@ -1,37 +1,20 @@
-function CreateConnectProject(basePath, coreBasePath)
-    project ("Connect")
-        kind ("StaticLib")
-        language ("C++")
+premake.extensions.connect = {}
 
-        includedirs
-        {
-            basePath .. "/Code/connect/include/",
-            coreBasePath .. "/Code/core/include/",
-            basePath .. "/ThirdParty/GameNetworkingSockets/include/",
-            basePath .. "/ThirdParty/protobuf/src/",
-        }
-
-        files
-        {
-            basePath .. "/Code/connect/include/**.hpp",
-            basePath .. "/Code/connect/src/**.cpp",
-        }
-
-        defines { "STEAMNETWORKINGSOCKETS_STATIC_LINK" }
-
-        filter { "action:gmake*", "language:C++" }
-            defines
-            {
-                'POSIX',
-                'LINUX',
-                'GNUC',
-                'GNU_COMPILER',
-            }
-
-        filter ""
+function connect_parent_path()
+    local str = debug.getinfo(2, "S").source:sub(2)
+    local dir =  str:match("(.*/)"):sub(0,-2)
+    local index = string.find(dir, "/[^/]*$")
+    return dir:sub(0, index)
 end
 
-function CreateProtobufProject(basePath)
+function protobuf_generate()
+
+    if premake.extensions.connect.protobuf_generated == true then
+        return
+    end
+
+    local basePath = premake.extensions.connect.path
+
     project ("protobuf")
         kind ("StaticLib")
         language ("C++")
@@ -140,9 +123,60 @@ function CreateProtobufProject(basePath)
             linkoptions ("-fPIC")
 
         filter ""
+
+    premake.extensions.connect.protobuf_generated = true
 end
 
-function CreateSteamNetProject(basePath)
+function connect_generate()
+    if premake.extensions.connect.generated == true then
+        return
+    end
+
+    local basePath = premake.extensions.connect.path
+    local coreBasePath = premake.extensions.core.path
+
+    project ("Connect")
+        kind ("StaticLib")
+        language ("C++")
+
+        includedirs
+        {
+            basePath .. "/Code/connect/include/",
+            coreBasePath .. "/Code/core/include/",
+            basePath .. "/ThirdParty/GameNetworkingSockets/include/",
+            basePath .. "/ThirdParty/protobuf/src/",
+        }
+
+        files
+        {
+            basePath .. "/Code/connect/include/**.hpp",
+            basePath .. "/Code/connect/src/**.cpp",
+        }
+
+        defines { "STEAMNETWORKINGSOCKETS_STATIC_LINK" }
+
+        filter { "action:gmake*", "language:C++" }
+            defines
+            {
+                'POSIX',
+                'LINUX',
+                'GNUC',
+                'GNU_COMPILER',
+            }
+
+        filter ""
+
+    premake.extensions.connect.generated = true
+end
+
+function game_networking_sockets_generate()
+
+    if premake.extensions.connect.game_networking_sockets_generated == true then
+        return
+    end
+
+    local basePath = premake.extensions.connect.path
+
     project ("SteamNet")
         kind ("StaticLib")
         language ("C++")
@@ -255,4 +289,15 @@ function CreateSteamNetProject(basePath)
             }
 
         filter ""
+
+        premake.extensions.connect.game_networking_sockets_generated = true
 end
+
+function connect_generate_libs()
+    game_networking_sockets_generate()
+    protobuf_generate()
+    connect_generate()
+end
+
+premake.extensions.connect.path = connect_parent_path()
+premake.extensions.connect.generate = connect_generate_libs

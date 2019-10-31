@@ -105,8 +105,7 @@ workspace ("Tilted Connect")
 
             filter ""
 
-    CreateConnectProject("..", "../../TiltedCore")
-    CreateProtobufProject("..")
-    CreateSteamNetProject("..")
-    CreateCoreProject("../../TiltedCore")
+    group ("Libraries")
+        premake.extensions.core.generate()
+        premake.extensions.connect.generate()
 
