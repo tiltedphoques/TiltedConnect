@@ -158,6 +158,18 @@ namespace TiltedPhoques
 		return std::chrono::duration_cast<std::chrono::milliseconds>(m_currentTick.time_since_epoch()).count();
 	}
 
+    SteamNetConnectionInfo_t Server::GetConnectionInfo(ConnectionId_t aConnectionId) const noexcept
+    {
+        SteamNetConnectionInfo_t info{};
+
+        if (aConnectionId != k_HSteamNetConnection_Invalid)
+        {
+            m_pInterface->GetConnectionInfo(aConnectionId, &info);
+        }
+
+        return info;
+    }
+
     void Server::Remove(const ConnectionId_t aId) noexcept
     {
         const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);
