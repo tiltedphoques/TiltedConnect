@@ -18,6 +18,10 @@ namespace TiltedPhoques
 
         uint64_t m_lastServerTick;
         uint64_t m_simulatedTick;
+        uint64_t m_previousSimulatedTick;
+        uint64_t m_latestSimulatedTick;
+        double m_deltaTick;
         std::chrono::time_point<std::chrono::high_resolution_clock> m_lastSimulationTime{};
+        std::chrono::time_point<std::chrono::high_resolution_clock> m_lastSynchronizationTime{};
     };
 }

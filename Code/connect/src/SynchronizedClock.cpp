@@ -1,11 +1,17 @@
 #include "SynchronizedClock.hpp"
+#include <Math.hpp>
+
+using namespace std::chrono_literals;
 
 namespace TiltedPhoques
 {
     SynchronizedClock::SynchronizedClock() noexcept
         : m_lastServerTick{ 0 }
         , m_simulatedTick{ 0 }
+        , m_latestSimulatedTick{ 0 }
+        , m_deltaTick{ 0 }
         , m_lastSimulationTime{ std::chrono::high_resolution_clock::now() }
+        , m_lastSynchronizationTime{ std::chrono::high_resolution_clock::now() }
     {}
 
     uint64_t SynchronizedClock::GetCurrentTick() const noexcept
@@ -27,9 +33,17 @@ namespace TiltedPhoques
 
         const auto tripTime = aPing / 2;
 
-        m_lastSimulationTime = std::chrono::high_resolution_clock::now();
+        m_lastSynchronizationTime = std::chrono::high_resolution_clock::now();
 
-        m_simulatedTick = m_lastServerTick + tripTime;
+        if(IsSynchronized())
+        {
+            m_previousSimulatedTick = m_simulatedTick;
+            m_latestSimulatedTick = m_lastServerTick + tripTime;
+        }
+        else
+        {
+            m_previousSimulatedTick = m_latestSimulatedTick = m_simulatedTick = m_lastServerTick + tripTime;
+        }
     }
 
     void SynchronizedClock::Reset() noexcept
@@ -42,12 +56,19 @@ namespace TiltedPhoques
     {
         const auto now = std::chrono::high_resolution_clock::now();
         const auto delta = now - m_lastSimulationTime;
+        const std::chrono::duration<float> syncDelta = now - m_lastSynchronizationTime;
 
         m_lastSimulationTime = now;
 
-        if (m_simulatedTick == 0)
+        if (!IsSynchronized())
             return;
 
-        m_simulatedTick += std::chrono::duration_cast<std::chrono::milliseconds>(delta).count();
+        const auto deltaMs = std::chrono::duration_cast<std::chrono::milliseconds>(delta).count();
+        const auto syncDeltaSeconds = syncDelta.count();
+
+        m_previousSimulatedTick += deltaMs;
+        m_latestSimulatedTick += deltaMs;
+
+        m_simulatedTick = Lerp(m_previousSimulatedTick, m_latestSimulatedTick, Min(1.0f, syncDeltaSeconds));
     }
 }
