@@ -39,8 +39,6 @@ namespace TiltedPhoques
             m_previousSimulatedTick = std::chrono::milliseconds(m_simulatedTick);
             const auto estimatedServerTime = std::chrono::milliseconds(m_lastServerTick) + std::chrono::milliseconds(tripTime);
             m_tickDelta = estimatedServerTime - m_previousSimulatedTick;
-
-            std::cout << "Delta clock : " << std::dec << std::chrono::duration_cast<std::chrono::milliseconds>(m_tickDelta).count() << std::endl;
         }
         else
         {
