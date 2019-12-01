@@ -1,5 +1,6 @@
 #include "SynchronizedClock.hpp"
 #include <Math.hpp>
+#include <iostream>
 
 using namespace std::chrono_literals;
 
@@ -8,9 +9,7 @@ namespace TiltedPhoques
     SynchronizedClock::SynchronizedClock() noexcept
         : m_lastServerTick{ 0 }
         , m_simulatedTick{ 0 }
-        , m_latestSimulatedTick{ 0 }
-        , m_deltaTick{ 0 }
-        , m_lastSimulationTime{ std::chrono::high_resolution_clock::now() }
+        , m_tickDelta{ 0 }
         , m_lastSynchronizationTime{ std::chrono::high_resolution_clock::now() }
     {}
 
@@ -35,14 +34,19 @@ namespace TiltedPhoques
 
         m_lastSynchronizationTime = std::chrono::high_resolution_clock::now();
 
-        if(IsSynchronized())
+        if (IsSynchronized())
         {
-            m_previousSimulatedTick = m_simulatedTick;
-            m_latestSimulatedTick = m_lastServerTick + tripTime;
+            m_previousSimulatedTick = std::chrono::milliseconds(m_simulatedTick);
+            const auto estimatedServerTime = std::chrono::milliseconds(m_lastServerTick) + std::chrono::milliseconds(tripTime);
+            m_tickDelta = estimatedServerTime - m_previousSimulatedTick;
+
+            std::cout << "Delta clock : " << std::dec << std::chrono::duration_cast<std::chrono::milliseconds>(m_tickDelta).count() << std::endl;
         }
         else
         {
-            m_previousSimulatedTick = m_latestSimulatedTick = m_simulatedTick = m_lastServerTick + tripTime;
+            m_previousSimulatedTick = std::chrono::milliseconds(m_lastServerTick) + std::chrono::milliseconds(tripTime);
+            m_simulatedTick = std::chrono::duration_cast<std::chrono::milliseconds>(m_previousSimulatedTick).count();
+            m_tickDelta = 0ns;
         }
     }
 
@@ -55,20 +59,17 @@ namespace TiltedPhoques
     void SynchronizedClock::Update() noexcept
     {
         const auto now = std::chrono::high_resolution_clock::now();
-        const auto delta = now - m_lastSimulationTime;
-        const std::chrono::duration<float> syncDelta = now - m_lastSynchronizationTime;
-
-        m_lastSimulationTime = now;
+        const auto delta = now - m_lastSynchronizationTime;
+        const std::chrono::duration<double> syncDelta = now - m_lastSynchronizationTime;
 
         if (!IsSynchronized())
             return;
 
-        const auto deltaMs = std::chrono::duration_cast<std::chrono::milliseconds>(delta).count();
         const auto syncDeltaSeconds = syncDelta.count();
+        const auto serverTickEstimate = m_previousSimulatedTick + delta;
 
-        m_previousSimulatedTick += deltaMs;
-        m_latestSimulatedTick += deltaMs;
+        const auto diff = std::chrono::nanoseconds(int64_t(m_tickDelta.count() * Min(1.0, syncDeltaSeconds)));
 
-        m_simulatedTick = Lerp(m_previousSimulatedTick, m_latestSimulatedTick, Min(1.0f, syncDeltaSeconds));
+        m_simulatedTick = std::chrono::duration_cast<std::chrono::milliseconds>(serverTickEstimate + diff).count();
     }
 }
