@@ -84,7 +84,8 @@ workspace ("Tilted Connect")
             {
                 "Connect",
                 "Core",
-                "SteamNet"
+                "SteamNet",
+                "mimalloc"
             }
 
             filter { "action:gmake*", "language:C++" }
