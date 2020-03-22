@@ -48,6 +48,7 @@ namespace TiltedPhoques
         void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
 
         HSteamListenSocket m_listenSock;
+        HSteamNetPollGroup m_pollGroup;
         ISteamNetworkingSockets* m_pInterface;
 
         Vector<ConnectionId_t> m_connections;

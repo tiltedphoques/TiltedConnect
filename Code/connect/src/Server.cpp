@@ -22,6 +22,7 @@ namespace TiltedPhoques
 
         m_pInterface = SteamNetworkingSockets();
         m_listenSock = k_HSteamListenSocket_Invalid;
+        m_pollGroup = k_HSteamNetPollGroup_Invalid;
     }
 
     Server::~Server()
@@ -37,6 +38,7 @@ namespace TiltedPhoques
         localAddress.Clear();
         localAddress.m_port = aPort;
         m_listenSock = m_pInterface->CreateListenSocketIP(localAddress, 0, nullptr);
+        m_pollGroup = m_pInterface->CreatePollGroup();
 
         if (m_tickRate == 0 && aTickRate == 0)
         {
@@ -57,8 +59,12 @@ namespace TiltedPhoques
     void Server::Close() noexcept
     {
         if (IsListening())
+        {
+            m_pInterface->DestroyPollGroup(m_pollGroup);
             m_pInterface->CloseListenSocket(m_listenSock);
+        }
 
+        m_pollGroup = k_HSteamNetPollGroup_Invalid;
         m_listenSock = k_HSteamListenSocket_Invalid;
     }
 
@@ -73,7 +79,7 @@ namespace TiltedPhoques
             while (true)
             {
                 ISteamNetworkingMessage* pIncomingMessage = nullptr;
-                const auto messageCount = m_pInterface->ReceiveMessagesOnListenSocket(m_listenSock, &pIncomingMessage, 1);
+                const auto messageCount = m_pInterface->ReceiveMessagesOnPollGroup(m_pollGroup, &pIncomingMessage, 1);
                 if (messageCount <= 0 || pIncomingMessage == nullptr)
                 {
                     break;
@@ -247,6 +253,13 @@ namespace TiltedPhoques
         case k_ESteamNetworkingConnectionState_Connecting:
         {
             if (m_pInterface->AcceptConnection(apInfo->m_hConn) != k_EResultOK)
+            {
+                m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
+                // TODO: Error handling
+                break;
+            }
+
+            if(m_pInterface->SetConnectionPollGroup(apInfo->m_hConn, m_pollGroup) != k_EResultOK)
             {
                 m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
                 // TODO: Error handling
