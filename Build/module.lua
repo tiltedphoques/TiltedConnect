@@ -253,7 +253,8 @@ function game_networking_sockets_generate()
                 "GOOGLE_PROTOBUF_NO_RTTI",
                 "OPENSSL_HAS_25519_RAW",
                 "STEAMNETWORKINGSOCKETS_CRYPTO_25519_OPENSSL",
-                "STEAMNETWORKINGSOCKETS_CRYPTO_VALVEOPENSSL"
+                "STEAMNETWORKINGSOCKETS_CRYPTO_VALVEOPENSSL",
+                "VALVE_CRYPTO_ENABLE_25519"
             }
 
             links
