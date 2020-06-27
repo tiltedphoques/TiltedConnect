@@ -9,8 +9,9 @@ namespace TiltedPhoques
     {
         TP_ALLOCATOR;
 
+        Packet() noexcept;
         Packet(size_t aSize) noexcept;
-        ~Packet() noexcept;
+        virtual ~Packet() noexcept;
 
         TP_NOCOPYMOVE(Packet);
 
@@ -26,12 +27,18 @@ namespace TiltedPhoques
         // Returns true if the packet has an associated buffer, usually used to check if the underlying allocator had enough space
         [[nodiscard]] bool IsValid() const noexcept;
 
-    private:
+    protected:
 
         friend struct Server;
         friend struct Client;
 
         char* m_pData;
         size_t m_size;
+    };
+
+    struct PacketView : Packet
+    {
+        PacketView(char* aPointer, size_t aSize);
+        ~PacketView();
     };
 }

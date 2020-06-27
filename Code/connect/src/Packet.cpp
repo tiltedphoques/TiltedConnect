@@ -3,6 +3,12 @@
 
 namespace TiltedPhoques
 {
+    Packet::Packet() noexcept
+        : m_pData(nullptr)
+        , m_size(0)
+    {
+    }
+
     Packet::Packet(const size_t aSize) noexcept
         : m_pData(nullptr)
         , m_size(aSize + 1)
@@ -35,4 +41,16 @@ namespace TiltedPhoques
     {
         return m_pData != nullptr;
     }
+
+    PacketView::PacketView(char* aPointer, size_t aSize)
+        : Packet()
+    {
+        m_pData = aPointer;
+        m_size = aSize;
+
+        m_pData[0] = kPayload;
+    }
+
+    PacketView::~PacketView() = default;
+
 }
