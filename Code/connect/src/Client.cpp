@@ -87,7 +87,7 @@ namespace TiltedPhoques
 
     void Client::Send(Packet* apPacket, const EPacketFlags acPacketFlags) const noexcept
     {
-        if (apPacket->m_pData[0] != kCompressedPayload)
+        if (apPacket->m_pData[0] == kPayload)
         {
             std::string data;
             snappy::Compress(apPacket->GetData(), apPacket->GetSize(), &data);
