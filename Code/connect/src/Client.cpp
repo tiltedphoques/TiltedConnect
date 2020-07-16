@@ -4,6 +4,7 @@
 #include "Buffer.hpp"
 #include "Packet.hpp"
 #include <google/protobuf/stubs/port.h>
+#include <snappy.h>
 
 namespace TiltedPhoques
 {
@@ -86,6 +87,19 @@ namespace TiltedPhoques
 
     void Client::Send(Packet* apPacket, const EPacketFlags acPacketFlags) const noexcept
     {
+        if (apPacket->m_pData[0] != kCompressedPayload)
+        {
+            std::string data;
+            snappy::Compress(apPacket->GetData(), apPacket->GetSize(), &data);
+
+            if (data.size() < apPacket->GetSize())
+            {
+                apPacket->m_pData[0] = kCompressedPayload;
+                std::copy(std::begin(data), std::end(data), apPacket->GetData());
+                apPacket->m_size = data.size() + 1;
+            }
+        }
+
         m_pInterface->SendMessageToConnection(m_connection, apPacket->m_pData, apPacket->m_size,
             acPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
     }
@@ -184,6 +198,9 @@ namespace TiltedPhoques
         case kServerTime:
             HandleServerTime(pData, aSize);
             break;
+        case kCompressedPayload:
+            HandleCompressedPayload(pData, aSize);
+            break;
         default:
             assert(false);
             break;
@@ -204,5 +221,16 @@ namespace TiltedPhoques
 
         if (!cWasSynchronized)
             OnConnected();
+    }
+
+    void Client::HandleCompressedPayload(const void* apData, uint32_t aSize) noexcept
+    {
+        std::string data;
+        snappy::Uncompress((const char*)apData, aSize, &data);
+
+        if (!data.empty())
+        {
+            OnConsume((const void*)data.data(), data.size());
+        }
     }
 }

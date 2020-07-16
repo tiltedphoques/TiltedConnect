@@ -50,6 +50,7 @@ namespace TiltedPhoques
 
         void HandleMessage(const void* apData, uint32_t aSize) noexcept;
         void HandleServerTime(const void* apData, uint32_t aSize) noexcept;
+        void HandleCompressedPayload(const void* apData, uint32_t aSize) noexcept;
 
         HSteamNetConnection m_connection;
         ISteamNetworkingSockets* m_pInterface;

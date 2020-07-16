@@ -128,6 +128,63 @@ function protobuf_generate()
     premake.extensions.connect.protobuf_generated = true
 end
 
+function snappy_generate()
+
+    if premake.extensions.connect.snappy_generated == true then
+        return
+    end
+
+    local basePath = premake.extensions.connect.path
+
+    group "ThirdParty"
+        project ("snappy")
+            kind ("StaticLib")
+            language ("C++")
+
+            includedirs
+            {
+                basePath .. "/ThirdParty/snappy/"
+            }
+
+            files
+            {
+                basePath .. "/ThirdParty/snappy/*.h",
+                basePath .. "/ThirdParty/snappy/snappy.cc",
+                basePath .. "/ThirdParty/snappy/snappy-c.cc",
+                basePath .. "/ThirdParty/snappy/snappy-sinksource.cc",
+                basePath .. "/ThirdParty/snappy/snappy-stubs-internal.cc",
+            }
+
+            defines
+            {
+                "SNAPPY_HAVE_SSSE3=1"
+            }
+
+            filter { "action:vs*" }
+                defines
+                {
+                    "HAVE_WINDOWS_H=1",
+                }
+
+            filter { "action:gmake*", "language:C++" }
+                buildoptions { "-fPIC", "-mssse3" }
+                linkoptions ("-fPIC")
+                defines
+                {
+                    "HAVE_BUILTIN_EXPECT=1",
+                    "HAVE_UNISTD_H=1",
+                    "HAVE_BUILTIN_EXPECT=1",
+                    "HAVE_FUNC_MMAP=1",
+                    "HAVE_SYS_MMAN_H=1",
+                    "HAVE_SYS_TIME_H=1",
+                    "HAVE_SYS_RESOURCE_H=1"
+                }
+
+            filter ""
+
+    premake.extensions.connect.snappy_generated = true
+end
+
 function connect_generate()
     if premake.extensions.connect.generated == true then
         return
@@ -147,6 +204,7 @@ function connect_generate()
                 coreBasePath .. "/Code/core/include/",
                 basePath .. "/ThirdParty/GameNetworkingSockets/include/",
                 basePath .. "/ThirdParty/protobuf/src/",
+                basePath .. "/ThirdParty/snappy/",
             }
 
             files
@@ -300,6 +358,7 @@ end
 function connect_generate_libs()
     game_networking_sockets_generate()
     protobuf_generate()
+    snappy_generate()
     connect_generate()
 end
 

@@ -7,6 +7,7 @@
 #include <Packet.hpp>
 #include "StackAllocator.hpp"
 #include <google/protobuf/stubs/port.h>
+#include <snappy.h>
 
 using namespace std::chrono;
 
@@ -19,7 +20,6 @@ namespace TiltedPhoques
         , m_lastClockSyncTime(0ns)
     {
         SteamInterface::Acquire();
-
         m_pInterface = SteamNetworkingSockets();
         m_listenSock = k_HSteamListenSocket_Invalid;
         m_pollGroup = k_HSteamNetPollGroup_Invalid;
@@ -112,14 +112,25 @@ namespace TiltedPhoques
     {
         for (const auto conn : m_connections)
         {
-            m_pInterface->SendMessageToConnection(conn, apPacket->m_pData, apPacket->m_size,
-                aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
+            Send(conn, apPacket, aPacketFlags);
         }
-
     }
 
     void Server::Send(const ConnectionId_t aConnectionId, Packet* apPacket, EPacketFlags aPacketFlags) const noexcept
     {
+        if (apPacket->m_pData[0] != kCompressedPayload)
+        {
+            std::string data;
+            snappy::Compress(apPacket->GetData(), apPacket->GetSize(), &data);
+
+            if (data.size() < apPacket->GetSize())
+            {
+                apPacket->m_pData[0] = kCompressedPayload;
+                std::copy(std::begin(data), std::end(data), apPacket->GetData());
+                apPacket->m_size = data.size() + 1;
+            }
+        }
+
         m_pInterface->SendMessageToConnection(aConnectionId, apPacket->m_pData, apPacket->m_size,
             aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
     }
@@ -198,9 +209,23 @@ namespace TiltedPhoques
         case kPayload:
             OnConsume(pData + 1, aSize - 1, aConnectionId);
             break;
+        case kCompressedPayload:
+            HandleCompressedPayload(pData + 1, aSize - 1, aConnectionId);
+            break;
         default:
             assert(false);
             break;
+        }
+    }
+
+    void Server::HandleCompressedPayload(const void* apData, uint32_t aSize, ConnectionId_t aConnectionId) noexcept
+    {
+        std::string data;
+        snappy::Uncompress((const char*)apData, aSize, &data);
+
+        if (!data.empty())
+        {
+            OnConsume((const void*)data.data(), data.size(), aConnectionId);
         }
     }
 

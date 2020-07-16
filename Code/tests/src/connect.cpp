@@ -11,17 +11,18 @@ struct TestServer final : Server
 {
     void OnUpdate() override
     {
-        const std::string data("Hello from server!");
+        const std::string data("Hello from server! 111111111111111111111110000000000000000000000000000");
 
-        Packet packet(data.size() + 1);
-        std::copy_n(data.begin(), data.size() + 1, packet.GetData());
+        Packet packet(data.size());
+        std::copy_n(data.begin(), data.size(), packet.GetData());
 
         SendToAll(&packet);
     }
 
     void OnConsume(const void* apData, const uint32_t aSize, ConnectionId_t aId) override
     {
-        std::cout << static_cast<const char*>(apData) << std::endl;
+        std::string str((const char*)apData, aSize);
+        std::cout << str << std::endl;
     }
 
     void OnConnection(ConnectionId_t aId) override
@@ -43,10 +44,10 @@ struct TestClient final : Client
     {
         //std::cout << static_cast<const char*>(apData) << std::endl;
 
-        const std::string data("Hello from client!");
+        const std::string data("Hello from client! 111111111111111111111110000000000000000000000000000");
 
-        Packet packet(data.size() + 1);
-        std::copy_n(data.begin(), data.size() + 1, packet.GetData());
+        Packet packet(data.size());
+        std::copy_n(data.begin(), data.size(), packet.GetData());
 
         Send(&packet);
     }

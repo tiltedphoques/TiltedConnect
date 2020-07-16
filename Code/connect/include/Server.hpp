@@ -42,6 +42,7 @@ namespace TiltedPhoques
         void Remove(ConnectionId_t aId) noexcept;
 
         void HandleMessage(const void* apData, uint32_t aSize, ConnectionId_t aConnectionId) noexcept;
+        void HandleCompressedPayload(const void* apData, uint32_t aSize, ConnectionId_t aConnectionId) noexcept;
 
         void SynchronizeClientClocks(ConnectionId_t aSpecificConnection = k_HSteamNetConnection_Invalid) noexcept;
 
