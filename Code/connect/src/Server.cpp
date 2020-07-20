@@ -245,13 +245,13 @@ namespace TiltedPhoques
         if(aSpecificConnection != k_HSteamNetConnection_Invalid)
         {
             // In this case we probably want it to arrive so send it reliably
-            m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_ReliableNoNagle, nullptr);
+            m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.Size(), k_nSteamNetworkingSend_ReliableNoNagle, nullptr);
         }
         else
         {
             for (const auto cConnection : m_connections)
             {
-                m_pInterface->SendMessageToConnection(cConnection, pBuffer->GetData(), writer.GetBytePosition(), k_nSteamNetworkingSend_UnreliableNoDelay, nullptr);
+                m_pInterface->SendMessageToConnection(cConnection, pBuffer->GetData(), writer.Size(), k_nSteamNetworkingSend_UnreliableNoDelay, nullptr);
             }
         }
     }

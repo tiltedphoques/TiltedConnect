@@ -51,6 +51,10 @@ namespace TiltedPhoques
         m_pData[0] = kPayload;
     }
 
-    PacketView::~PacketView() = default;
+    PacketView::~PacketView()
+    {
+        m_pData = nullptr;
+        m_size = 0;
+    }
 
 }

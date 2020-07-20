@@ -39,6 +39,6 @@ namespace TiltedPhoques
     struct PacketView : Packet
     {
         PacketView(char* aPointer, size_t aSize);
-        ~PacketView();
+        virtual ~PacketView();
     };
 }
