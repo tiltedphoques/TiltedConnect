@@ -19,6 +19,14 @@ namespace TiltedPhoques
             kNormal
         };
 
+        struct Statistics
+        {
+            uint32_t SentBytes{};
+            uint32_t RecvBytes{};
+            uint32_t UncompressedSentBytes{};
+            uint32_t UncompressedRecvBytes{};
+        };
+
         Client() noexcept;
         virtual ~Client();
 
@@ -42,6 +50,7 @@ namespace TiltedPhoques
 
         [[nodiscard]] bool IsConnected() const noexcept;
         [[nodiscard]] SteamNetworkingQuickConnectionStatus GetConnectionStatus() const noexcept;
+        [[nodiscard]] Statistics GetStatistics() const noexcept;
         [[nodiscard]] const SynchronizedClock& GetClock() const noexcept;
 
     private:
@@ -55,5 +64,8 @@ namespace TiltedPhoques
         HSteamNetConnection m_connection;
         ISteamNetworkingSockets* m_pInterface;
         SynchronizedClock m_clock;
+        uint64_t m_lastStatisticsPoint{};
+        mutable Statistics m_currentFrame{};
+        Statistics m_previousFrame{};
     };
 }

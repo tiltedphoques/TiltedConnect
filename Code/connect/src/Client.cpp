@@ -65,6 +65,13 @@ namespace TiltedPhoques
     {
         m_clock.Update();
 
+        if (m_clock.GetCurrentTick() - m_lastStatisticsPoint >= 1000)
+        {
+            m_lastStatisticsPoint = m_clock.GetCurrentTick();
+            m_previousFrame = m_currentFrame;
+            m_currentFrame = {};
+        }
+
         m_pInterface->RunCallbacks(this);
 
         while (true)
@@ -77,6 +84,9 @@ namespace TiltedPhoques
                 break;
             }
 
+            m_currentFrame.RecvBytes += pIncomingMsg->GetSize();
+            m_currentFrame.UncompressedRecvBytes += pIncomingMsg->GetSize();
+
             HandleMessage(pIncomingMsg->GetData(), pIncomingMsg->GetSize());
 
             pIncomingMsg->Release();
@@ -87,6 +97,8 @@ namespace TiltedPhoques
 
     void Client::Send(Packet* apPacket, const EPacketFlags acPacketFlags) const noexcept
     {
+        m_currentFrame.UncompressedSentBytes += apPacket->m_size;
+
         if (apPacket->m_pData[0] == kPayload)
         {
             std::string data;
@@ -99,6 +111,8 @@ namespace TiltedPhoques
                 apPacket->m_size = data.size() + 1;
             }
         }
+
+        m_currentFrame.SentBytes += apPacket->m_size;
 
         m_pInterface->SendMessageToConnection(m_connection, apPacket->m_pData, apPacket->m_size,
             acPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
@@ -131,6 +145,11 @@ namespace TiltedPhoques
         }
 
         return status;
+    }
+
+    Client::Statistics Client::GetStatistics() const noexcept
+    {
+        return m_previousFrame;
     }
 
     const SynchronizedClock& Client::GetClock() const noexcept
@@ -227,6 +246,9 @@ namespace TiltedPhoques
     {
         std::string data;
         snappy::Uncompress((const char*)apData, aSize, &data);
+
+        m_currentFrame.UncompressedRecvBytes -= aSize;
+        m_currentFrame.UncompressedRecvBytes += data.size();
 
         if (!data.empty())
         {
