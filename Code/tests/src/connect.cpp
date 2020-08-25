@@ -29,7 +29,7 @@ struct TestServer final : Server
     {
     }
 
-    void OnDisconnection(ConnectionId_t aId) override
+    void OnDisconnection(ConnectionId_t aId, EDisconnectReason aReason) override
     {
     }
 };

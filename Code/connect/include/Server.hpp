@@ -21,10 +21,21 @@ namespace TiltedPhoques
 
         void Update() noexcept;
 
+        enum class EDisconnectReason
+        {
+            Unknown,
+            Quit,
+            Kicked,
+            Banned,
+            BadConnection,
+            TimedOut
+        };
+
         virtual void OnUpdate() = 0;
         virtual void OnConsume(const void* apData, uint32_t aSize, ConnectionId_t aConnectionId) = 0;
         virtual void OnConnection(ConnectionId_t aHandle) = 0;
-        virtual void OnDisconnection(ConnectionId_t aConnectionId) = 0;
+        virtual void OnDisconnection(ConnectionId_t aConnectionId,
+                                     EDisconnectReason aReason) = 0;
 
         void SendToAll(Packet* apPacket, EPacketFlags aPacketFlags = kReliable) noexcept;
         void Send(ConnectionId_t aConnectionId, Packet* apPacket, EPacketFlags aPacketFlags = kReliable) const noexcept;
