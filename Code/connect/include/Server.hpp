@@ -21,7 +21,7 @@ namespace TiltedPhoques
 
         void Update() noexcept;
 
-        enum class DisconnectReason
+        enum class EDisconnectReason
         {
             Unknown,
             Quit,
@@ -35,7 +35,7 @@ namespace TiltedPhoques
         virtual void OnConsume(const void* apData, uint32_t aSize, ConnectionId_t aConnectionId) = 0;
         virtual void OnConnection(ConnectionId_t aHandle) = 0;
         virtual void OnDisconnection(ConnectionId_t aConnectionId,
-                                     DisconnectReason reason) = 0;
+                                     EDisconnectReason aReason) = 0;
 
         void SendToAll(Packet* apPacket, EPacketFlags aPacketFlags = kReliable) noexcept;
         void Send(ConnectionId_t aConnectionId, Packet* apPacket, EPacketFlags aPacketFlags = kReliable) const noexcept;
