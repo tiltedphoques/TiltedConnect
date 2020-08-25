@@ -51,8 +51,9 @@ namespace TiltedPhoques
         }
 
         m_tickRate = aTickRate;
-        m_timeBetweenUpdates = 1000ms / m_tickRate;
 
+        // update time in MS
+        m_timeBetweenUpdates = 1000ms / m_tickRate;
         return IsListening();
     }
 
@@ -138,10 +139,9 @@ namespace TiltedPhoques
     void Server::Kick(const ConnectionId_t aConnectionId) noexcept
     {
         m_pInterface->CloseConnection(aConnectionId, 0, "Kick", true);
-
         Remove(aConnectionId);
 
-        OnDisconnection(aConnectionId);
+        OnDisconnection(aConnectionId, DisconnectReason::Kicked);
     }
 
     uint16_t Server::GetPort() const noexcept
@@ -269,7 +269,11 @@ namespace TiltedPhoques
             {
                 Remove(apInfo->m_hConn);
 
-                OnDisconnection(apInfo->m_hConn);
+                const auto reason = apInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ClosedByPeer
+                        ? DisconnectReason::Quit
+                        : DisconnectReason::BadConnection;
+
+                OnDisconnection(apInfo->m_hConn, reason);
             }
 
             m_pInterface->CloseConnection(apInfo->m_hConn, 0, nullptr, false);
