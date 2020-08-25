@@ -141,7 +141,7 @@ namespace TiltedPhoques
         m_pInterface->CloseConnection(aConnectionId, 0, "Kick", true);
         Remove(aConnectionId);
 
-        OnDisconnection(aConnectionId, DisconnectReason::Kicked);
+        OnDisconnection(aConnectionId, EDisconnectReason::Kicked);
     }
 
     uint16_t Server::GetPort() const noexcept
@@ -270,8 +270,8 @@ namespace TiltedPhoques
                 Remove(apInfo->m_hConn);
 
                 const auto reason = apInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ClosedByPeer
-                        ? DisconnectReason::Quit
-                        : DisconnectReason::BadConnection;
+                        ? EDisconnectReason::Quit
+                        : EDisconnectReason::BadConnection;
 
                 OnDisconnection(apInfo->m_hConn, reason);
             }
