@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Meta.hpp"
-#include "Allocator.hpp"
+#include <TiltedCore/Meta.hpp>
+#include <TiltedCore/Allocator.hpp>
 
 namespace TiltedPhoques
 {

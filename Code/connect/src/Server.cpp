@@ -2,10 +2,12 @@
 #include "SteamInterface.hpp"
 #include <thread>
 #include <algorithm>
-#include <Buffer.hpp>
+#include <TiltedCore/Buffer.hpp>
+#include <TiltedCore/StackAllocator.hpp>
+
 #include <cassert>
 #include <Packet.hpp>
-#include "StackAllocator.hpp"
+#include <bit>
 #include <google/protobuf/stubs/port.h>
 #include <snappy.h>
 
@@ -13,6 +15,8 @@ using namespace std::chrono;
 
 namespace TiltedPhoques
 {
+    static thread_local Server* s_pServer = nullptr;
+
     Server::Server() noexcept
         : m_tickRate(10)
         , m_lastUpdateTime(0ns)
@@ -37,7 +41,11 @@ namespace TiltedPhoques
         SteamNetworkingIPAddr localAddress{};  // NOLINT(cppcoreguidelines-pro-type-member-init)
         localAddress.Clear();
         localAddress.m_port = aPort;
-        m_listenSock = m_pInterface->CreateListenSocketIP(localAddress, 0, nullptr);
+
+        SteamNetworkingConfigValue_t opt = {};
+        opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, static_cast<void*>(&SteamNetConnectionStatusChangedCallback));
+        m_listenSock = m_pInterface->CreateListenSocketIP(localAddress, 1, &opt);
+
         m_pollGroup = m_pInterface->CreatePollGroup();
 
         if (m_tickRate == 0 && aTickRate == 0)
@@ -75,7 +83,9 @@ namespace TiltedPhoques
 
         if (IsListening())
         {
-            m_pInterface->RunCallbacks(this);
+            s_pServer = this;
+            m_pInterface->RunCallbacks();
+            s_pServer = nullptr;
 
             while (true)
             {
@@ -253,6 +263,17 @@ namespace TiltedPhoques
             {
                 m_pInterface->SendMessageToConnection(cConnection, pBuffer->GetData(), writer.Size(), k_nSteamNetworkingSend_UnreliableNoDelay, nullptr);
             }
+        }
+    }
+
+    void Server::SteamNetConnectionStatusChangedCallback(SteamNetConnectionStatusChangedCallback_t* apInfo)
+    {
+        if (!apInfo || apInfo->m_hConn == k_HSteamNetConnection_Invalid) [[unlikely]]
+            return;
+
+        if (s_pServer) [[likely]]
+        {
+            s_pServer->OnSteamNetConnectionStatusChanged(apInfo);
         }
     }
 

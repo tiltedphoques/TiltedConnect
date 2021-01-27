@@ -1,6 +1,5 @@
 #include "SynchronizedClock.hpp"
-#include <Math.hpp>
-#include <iostream>
+#include <TiltedCore/Math.hpp>
 
 using namespace std::chrono_literals;
 

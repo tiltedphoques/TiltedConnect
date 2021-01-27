@@ -9,7 +9,7 @@
 namespace TiltedPhoques
 {
     struct Packet;
-    struct Client : private ISteamNetworkingSocketsCallbacks
+    struct Client
     {
         enum EDisconnectReason
         {
@@ -55,7 +55,8 @@ namespace TiltedPhoques
 
     private:
 
-        void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
+        static void SteamNetConnectionStatusChangedCallback(SteamNetConnectionStatusChangedCallback_t* apInfo);
+        void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo);
 
         void HandleMessage(const void* apData, uint32_t aSize) noexcept;
         void HandleServerTime(const void* apData, uint32_t aSize) noexcept;

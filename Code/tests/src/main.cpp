@@ -1,10 +1,10 @@
 #define CATCH_CONFIG_RUNNER
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 #ifdef _WIN32
 #include <windows.h>
 #else
 #endif
-#include <Platform.hpp>
+#include <TiltedCore/Platform.hpp>
 
 #ifdef _WIN32
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)

@@ -1,15 +1,15 @@
 #pragma once
 
-#include "steam/steamnetworkingsockets.h"
+#include <steam/steamnetworkingsockets.h>
 #include <cstdint>
 #include <chrono>
 #include "SteamInterface.hpp"
-#include "Stl.hpp"
+#include <TiltedCore/Stl.hpp>
 
 namespace TiltedPhoques
 {
     struct Packet;
-    struct Server : private ISteamNetworkingSocketsCallbacks
+    struct Server
     {
         Server() noexcept;
         virtual ~Server();
@@ -57,7 +57,8 @@ namespace TiltedPhoques
 
         void SynchronizeClientClocks(ConnectionId_t aSpecificConnection = k_HSteamNetConnection_Invalid) noexcept;
 
-        void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo) override;
+        static void SteamNetConnectionStatusChangedCallback(SteamNetConnectionStatusChangedCallback_t* apInfo);
+        void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo);
 
         HSteamListenSocket m_listenSock;
         HSteamNetPollGroup m_pollGroup;

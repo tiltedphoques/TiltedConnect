@@ -1,13 +1,16 @@
 #include "Client.hpp"
 #include "SteamInterface.hpp"
 #include <cassert>
-#include "Buffer.hpp"
+#include <TiltedCore/Buffer.hpp>
 #include "Packet.hpp"
 #include <google/protobuf/stubs/port.h>
 #include <snappy.h>
+#include <bit>
 
 namespace TiltedPhoques
 {
+    static thread_local Client* s_pClient = nullptr;
+
     Client::Client() noexcept
     {
         SteamInterface::Acquire();
@@ -38,12 +41,25 @@ namespace TiltedPhoques
         return *this;
     }
 
+    void Client::SteamNetConnectionStatusChangedCallback(SteamNetConnectionStatusChangedCallback_t* apInfo)
+    {
+        if (!apInfo || apInfo->m_hConn == k_HSteamNetConnection_Invalid) [[unlikely]]
+            return;
+
+        if (s_pClient) [[likely]]
+        {
+            s_pClient->OnSteamNetConnectionStatusChanged(apInfo);
+        }
+    }
+
     bool Client::Connect(const std::string& acEndpoint) noexcept
     {
         SteamNetworkingIPAddr remoteAddress{};
         remoteAddress.ParseString(acEndpoint.c_str());
 
-        m_connection = m_pInterface->ConnectByIPAddress(remoteAddress, 0, nullptr);
+        SteamNetworkingConfigValue_t opt = {};
+        opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, static_cast<void*>(&SteamNetConnectionStatusChangedCallback));
+        m_connection = m_pInterface->ConnectByIPAddress(remoteAddress, 1, &opt);
 
         return m_connection != k_HSteamNetConnection_Invalid;
     }
@@ -65,14 +81,16 @@ namespace TiltedPhoques
     {
         m_clock.Update();
 
-        if (m_clock.GetCurrentTick() - m_lastStatisticsPoint >= 1000)
+        if (m_clock.GetCurrentTick() - m_lastStatisticsPoint >= 1000) [[unlikely]]
         {
             m_lastStatisticsPoint = m_clock.GetCurrentTick();
             m_previousFrame = m_currentFrame;
             m_currentFrame = {};
         }
 
-        m_pInterface->RunCallbacks(this);
+        s_pClient = this;
+        m_pInterface->RunCallbacks();
+        s_pClient = nullptr;
 
         while (true)
         {
@@ -120,7 +138,7 @@ namespace TiltedPhoques
 
     bool Client::IsConnected() const noexcept
     {
-        if (m_connection != k_HSteamNetConnection_Invalid)
+        if (m_connection != k_HSteamNetConnection_Invalid) [[likely]]
         {
             SteamNetConnectionInfo_t info{};
             if (m_pInterface->GetConnectionInfo(m_connection, &info))
@@ -139,7 +157,7 @@ namespace TiltedPhoques
     {
         SteamNetworkingQuickConnectionStatus status{};
 
-        if (m_connection != k_HSteamNetConnection_Invalid)
+        if (m_connection != k_HSteamNetConnection_Invalid) [[likely]]
         {
             m_pInterface->GetQuickConnectionStatus(m_connection, &status);
         }
@@ -250,7 +268,7 @@ namespace TiltedPhoques
         m_currentFrame.UncompressedRecvBytes -= aSize;
         m_currentFrame.UncompressedRecvBytes += data.size();
 
-        if (!data.empty())
+        if (!data.empty()) [[likely]]
         {
             OnConsume((const void*)data.data(), data.size());
         }

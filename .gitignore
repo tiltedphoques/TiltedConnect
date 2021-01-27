@@ -6,3 +6,5 @@ Build/obj
 Build/lib
 Build/bin
 *__pycache__*
+.xmake/*
+vsxmake*
