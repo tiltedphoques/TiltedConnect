@@ -8,3 +8,4 @@ Build/bin
 *__pycache__*
 .xmake/*
 vsxmake*
+Build/*
