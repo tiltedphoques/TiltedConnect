@@ -18,6 +18,7 @@ end
 
 target("TiltedConnect")
     set_kind("static")
+    set_group("Libraries")
     add_files("Code/connect/src/*.cpp")
     add_includedirs("Code/connect/include/", {public = true})
     add_headerfiles("Code/connect/include/*.hpp", {prefixdir = "TiltedConnect"})
@@ -26,6 +27,7 @@ target("TiltedConnect")
 
 target("Tests")
     set_kind("binary")
+    set_group("Tests")
     add_files("Code/tests/src/*.cpp")
     add_deps("TiltedConnect")
     add_packages("catch2", "hopscotch-map", "tiltedcore", "gamenetworkingsockets")
