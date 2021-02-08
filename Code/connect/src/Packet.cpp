@@ -56,5 +56,4 @@ namespace TiltedPhoques
         m_pData = nullptr;
         m_size = 0;
     }
-
 }
