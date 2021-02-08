@@ -58,7 +58,7 @@ namespace TiltedPhoques
         remoteAddress.ParseString(acEndpoint.c_str());
 
         SteamNetworkingConfigValue_t opt = {};
-        opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, static_cast<void*>(&SteamNetConnectionStatusChangedCallback));
+        opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, reinterpret_cast<void*>(&SteamNetConnectionStatusChangedCallback));
         m_connection = m_pInterface->ConnectByIPAddress(remoteAddress, 1, &opt);
 
         return m_connection != k_HSteamNetConnection_Invalid;
@@ -81,7 +81,7 @@ namespace TiltedPhoques
     {
         m_clock.Update();
 
-        if (m_clock.GetCurrentTick() - m_lastStatisticsPoint >= 1000) [[unlikely]]
+        if (m_clock.GetCurrentTick() - m_lastStatisticsPoint >= 1000)
         {
             m_lastStatisticsPoint = m_clock.GetCurrentTick();
             m_previousFrame = m_currentFrame;
@@ -138,7 +138,7 @@ namespace TiltedPhoques
 
     bool Client::IsConnected() const noexcept
     {
-        if (m_connection != k_HSteamNetConnection_Invalid) [[likely]]
+        if (m_connection != k_HSteamNetConnection_Invalid)
         {
             SteamNetConnectionInfo_t info{};
             if (m_pInterface->GetConnectionInfo(m_connection, &info))
@@ -157,7 +157,7 @@ namespace TiltedPhoques
     {
         SteamNetworkingQuickConnectionStatus status{};
 
-        if (m_connection != k_HSteamNetConnection_Invalid) [[likely]]
+        if (m_connection != k_HSteamNetConnection_Invalid)
         {
             m_pInterface->GetQuickConnectionStatus(m_connection, &status);
         }

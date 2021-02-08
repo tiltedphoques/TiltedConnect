@@ -43,7 +43,7 @@ namespace TiltedPhoques
         localAddress.m_port = aPort;
 
         SteamNetworkingConfigValue_t opt = {};
-        opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, static_cast<void*>(&SteamNetConnectionStatusChangedCallback));
+        opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, reinterpret_cast<void*>(&SteamNetConnectionStatusChangedCallback));
         m_listenSock = m_pInterface->CreateListenSocketIP(localAddress, 1, &opt);
 
         m_pollGroup = m_pInterface->CreatePollGroup();
@@ -271,7 +271,7 @@ namespace TiltedPhoques
         if (!apInfo || apInfo->m_hConn == k_HSteamNetConnection_Invalid) [[unlikely]]
             return;
 
-        if (s_pServer) [[likely]]
+        if (s_pServer)
         {
             s_pServer->OnSteamNetConnectionStatusChanged(apInfo);
         }
