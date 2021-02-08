@@ -25,7 +25,7 @@ target("TiltedConnect")
     add_packages("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets")
     add_cxflags("-fPIC")
 
-target("Tests")
+target("TiltedConnect_Tests")
     set_kind("binary")
     set_group("Tests")
     add_files("Code/tests/src/*.cpp")
