@@ -2,7 +2,7 @@ set_languages("cxx20")
 
 set_xmakever("2.5.1")
 
-add_requires("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets")
+add_requires("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "protobuf-cpp")
 add_requires("catch2")
 
 add_rules("mode.debug","mode.releasedbg", "mode.release")
@@ -30,4 +30,4 @@ target("TiltedConnect_Tests")
     set_group("Tests")
     add_files("Code/tests/src/*.cpp")
     add_deps("TiltedConnect")
-    add_packages("catch2", "hopscotch-map", "tiltedcore", "gamenetworkingsockets")
+    add_packages("catch2", "hopscotch-map", "tiltedcore", "gamenetworkingsockets", "protobuf-cpp")
