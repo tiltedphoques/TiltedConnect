@@ -2,8 +2,7 @@ set_languages("cxx20")
 
 set_xmakever("2.5.1")
 
-add_requires("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "protobuf-cpp")
-add_requires("catch2")
+add_requires("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "catch2")
 
 add_rules("mode.debug","mode.releasedbg", "mode.release")
 add_rules("plugin.vsxmake.autoupdate")
