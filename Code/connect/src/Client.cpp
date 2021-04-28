@@ -2,6 +2,8 @@
 #include "SteamInterface.hpp"
 #include <cassert>
 #include <TiltedCore/Buffer.hpp>
+#include <TiltedCore/Allocator.hpp>
+#include <uv.h>
 #include "Packet.hpp"
 #include <google/protobuf/stubs/port.h>
 #include <snappy.h>
@@ -17,10 +19,17 @@ namespace TiltedPhoques
 
         m_connection = k_HSteamNetConnection_Invalid;
         m_pInterface = SteamNetworkingSockets();
+
+        m_pLoop = Allocator::GetDefault()->Allocate(sizeof(uv_loop_t));
+        auto* pLoop = static_cast<uv_loop_t*>(m_pLoop);
+        uv_loop_init(pLoop);
+        pLoop->data = this;
     }
 
     Client::~Client()
     {
+        uv_loop_close(static_cast<uv_loop_t*>(m_pLoop));
+        Allocator::Get()->Free(m_pLoop);
         SteamInterface::Release();
     }
 
@@ -54,14 +63,87 @@ namespace TiltedPhoques
 
     bool Client::Connect(const std::string& acEndpoint) noexcept
     {
+        static auto GetAddrInfoCallback = [](uv_getaddrinfo_t* apHandle, int aStatus, struct addrinfo* apResult)
+        {
+            SteamNetworkingIPAddr remoteAddress{};
+            bool valid = false;
+
+            auto* pClient = static_cast<Client*>(apHandle->loop->data);
+            pClient->m_pHandle = nullptr;
+            
+            if (aStatus == 0)
+            {
+                switch (apResult->ai_family)
+                {
+                case AF_INET:
+                {
+                    const auto port = ntohs(reinterpret_cast<sockaddr_in*>(apResult->ai_addr)->sin_port);
+                    remoteAddress.SetIPv4(ntohl(reinterpret_cast<sockaddr_in*>(apResult->ai_addr)->sin_addr.s_addr), port);
+                    valid = true;
+                } break;
+                case AF_INET6:
+                {
+                    const auto port = ntohs(reinterpret_cast<sockaddr_in6*>(apResult->ai_addr)->sin6_port);
+                    remoteAddress.SetIPv6(reinterpret_cast<sockaddr_in6*>(apResult->ai_addr)->sin6_addr.s6_bytes, port);
+                    valid = true;
+                } break;
+                }
+            }
+
+            uv_freeaddrinfo(apResult);
+            Allocator::GetDefault()->Free(apHandle);
+
+            if(aStatus == UV_ECANCELED)
+            {
+                pClient->OnDisconnected(kAborted);
+                return;
+            }
+
+            if (!valid)
+            {
+                pClient->OnDisconnected(kCannotResolve);
+                return;
+            }
+
+            const auto cConnectResult = pClient->Connect(remoteAddress);
+            if (!cConnectResult)
+            {
+                pClient->OnDisconnected(kLocalProblem);
+            }
+        };
+
+        const auto pos = acEndpoint.find_last_of(':');
+        auto* pHandle = static_cast<uv_getaddrinfo_t*>(Allocator::GetDefault()->Allocate(sizeof(uv_getaddrinfo_t)));
+
+        std::string endpoint = acEndpoint;
+        std::string serviceName = "25681";
+        if(pos != std::string::npos)
+        {
+            serviceName = acEndpoint.c_str() + 1 + pos;
+            endpoint = endpoint.substr(0, pos);
+        }
+
+        m_pHandle = pHandle;
+        uv_getaddrinfo(static_cast<uv_loop_t*>(m_pLoop), pHandle, GetAddrInfoCallback, endpoint.c_str(), serviceName.c_str(), nullptr);
+
+        return true;
+    }
+
+    bool Client::Connect(const SteamNetworkingIPAddr& acEndpoint) noexcept
+    {
+        SteamNetworkingConfigValue_t opt = {};
+        opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, reinterpret_cast<void*>(&SteamNetConnectionStatusChangedCallback));
+        m_connection = m_pInterface->ConnectByIPAddress(acEndpoint, 1, &opt);
+
+        return m_connection != k_HSteamNetConnection_Invalid;
+    }
+
+    bool Client::ConnectByIp(const std::string& acEndpoint) noexcept
+    {
         SteamNetworkingIPAddr remoteAddress{};
         remoteAddress.ParseString(acEndpoint.c_str());
 
-        SteamNetworkingConfigValue_t opt = {};
-        opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, reinterpret_cast<void*>(&SteamNetConnectionStatusChangedCallback));
-        m_connection = m_pInterface->ConnectByIPAddress(remoteAddress, 1, &opt);
-
-        return m_connection != k_HSteamNetConnection_Invalid;
+        return Connect(remoteAddress);
     }
 
     void Client::Close() noexcept
@@ -73,7 +155,12 @@ namespace TiltedPhoques
 
             m_clock.Reset();
 
-            OnDisconnected(kNormal);
+            OnDisconnected(kAborted);
+        }
+
+        if(m_pHandle != nullptr)
+        {
+            uv_cancel(static_cast<uv_req_t*>(m_pHandle));
         }
     }
 
@@ -90,6 +177,7 @@ namespace TiltedPhoques
 
         s_pClient = this;
         m_pInterface->RunCallbacks();
+        uv_run(static_cast<uv_loop_t*>(m_pLoop), UV_RUN_NOWAIT);
         s_pClient = nullptr;
 
         while (true)

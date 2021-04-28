@@ -2,7 +2,7 @@ set_languages("cxx20")
 
 set_xmakever("2.5.1")
 
-add_requires("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "catch2")
+add_requires("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "catch2", "libuv")
 
 add_rules("mode.debug","mode.releasedbg", "mode.release")
 add_rules("plugin.vsxmake.autoupdate")
@@ -21,7 +21,7 @@ target("TiltedConnect")
     add_files("Code/connect/src/*.cpp")
     add_includedirs("Code/connect/include/", {public = true})
     add_headerfiles("Code/connect/include/*.hpp", {prefixdir = "TiltedConnect"})
-    add_packages("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets")
+    add_packages("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "libuv")
     add_cxflags("-fPIC")
 
 target("TiltedConnect_Tests")
@@ -29,4 +29,4 @@ target("TiltedConnect_Tests")
     set_group("Tests")
     add_files("Code/tests/src/*.cpp")
     add_deps("TiltedConnect")
-    add_packages("catch2", "hopscotch-map", "tiltedcore", "gamenetworkingsockets", "protobuf-cpp")
+    add_packages("catch2", "hopscotch-map", "tiltedcore", "gamenetworkingsockets")

@@ -16,6 +16,8 @@ namespace TiltedPhoques
             kTimeout,
             kLocalProblem,
             kKicked,
+            kCannotResolve,
+            kAborted,
             kNormal
         };
 
@@ -36,7 +38,9 @@ namespace TiltedPhoques
         Client(Client&&) noexcept;
         Client& operator=(Client&&) noexcept;
 
+        bool Connect(const SteamNetworkingIPAddr& acEndpoint) noexcept;
         bool Connect(const std::string& acEndpoint) noexcept;
+        bool ConnectByIp(const std::string& acEndpoint) noexcept;
         void Close() noexcept;
 
         void Update() noexcept;
@@ -56,6 +60,7 @@ namespace TiltedPhoques
     private:
 
         static void SteamNetConnectionStatusChangedCallback(SteamNetConnectionStatusChangedCallback_t* apInfo);
+        static void UVGetAddrInfoCallback(void* apHandle, int aStatus, void* apResult);
         void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo);
 
         void HandleMessage(const void* apData, uint32_t aSize) noexcept;
@@ -68,5 +73,7 @@ namespace TiltedPhoques
         uint64_t m_lastStatisticsPoint{};
         mutable Statistics m_currentFrame{};
         Statistics m_previousFrame{};
+        void* m_pLoop{};
+        void* m_pHandle{};
     };
 }
