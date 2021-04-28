@@ -84,7 +84,7 @@ namespace TiltedPhoques
                 case AF_INET6:
                 {
                     const auto port = ntohs(reinterpret_cast<sockaddr_in6*>(apResult->ai_addr)->sin6_port);
-                    remoteAddress.SetIPv6(reinterpret_cast<sockaddr_in6*>(apResult->ai_addr)->sin6_addr.s6_bytes, port);
+                    remoteAddress.SetIPv6(reinterpret_cast<sockaddr_in6*>(apResult->ai_addr)->sin6_addr.s6_addr, port);
                     valid = true;
                 } break;
                 }
