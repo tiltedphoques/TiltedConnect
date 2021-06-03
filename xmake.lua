@@ -21,6 +21,7 @@ target("TiltedConnect")
     add_headerfiles("Code/connect/include/*.hpp", {prefixdir = "TiltedConnect"})
     add_packages("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "libuv")
     add_cxflags("-fPIC")
+    add_defines("STEAMNETWORKINGSOCKETS_STATIC_LINK")
 
 target("TiltedConnect_Tests")
     set_kind("binary")
