@@ -1,5 +1,6 @@
 #include "Client.hpp"
 #include "SteamInterface.hpp"
+#include <steam/isteamnetworkingutils.h>
 #include <cassert>
 #include <TiltedCore/Buffer.hpp>
 #include <TiltedCore/Allocator.hpp>
