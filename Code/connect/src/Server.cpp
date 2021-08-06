@@ -67,9 +67,10 @@ namespace TiltedPhoques
 
     void Server::Close() noexcept
     {
+        m_pInterface->DestroyPollGroup(m_pollGroup);
+        
         if (IsListening())
         {
-            m_pInterface->DestroyPollGroup(m_pollGroup);
             m_pInterface->CloseListenSocket(m_listenSock);
         }
 
