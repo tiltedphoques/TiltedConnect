@@ -242,13 +242,13 @@ namespace TiltedPhoques
         return false;
     }
 
-    SteamNetworkingQuickConnectionStatus Client::GetConnectionStatus() const noexcept
+    SteamNetConnectionRealTimeStatus_t Client::GetConnectionStatus() const noexcept
     {
-        SteamNetworkingQuickConnectionStatus status{};
+        SteamNetConnectionRealTimeStatus_t status{};
 
         if (m_connection != k_HSteamNetConnection_Invalid)
         {
-            m_pInterface->GetQuickConnectionStatus(m_connection, &status);
+            m_pInterface->GetConnectionRealTimeStatus(m_connection, &status, 0, nullptr);
         }
 
         return status;
