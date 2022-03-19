@@ -21,7 +21,7 @@ namespace TiltedPhoques
 
         void Update() noexcept;
 
-        enum class EDisconnectReason
+        enum EDisconnectReason : int
         {
             Unknown,
             Quit,
