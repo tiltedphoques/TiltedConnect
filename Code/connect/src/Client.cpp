@@ -215,7 +215,7 @@ namespace TiltedPhoques
             {
                 apPacket->m_pData[0] = kCompressedPayload;
                 std::copy(std::begin(data), std::end(data), apPacket->GetData());
-                apPacket->m_size = data.size() + 1;
+                apPacket->m_size = (data.size() + 1) & 0xFFFFFFFF;
             }
         }
 
@@ -355,11 +355,11 @@ namespace TiltedPhoques
         snappy::Uncompress((const char*)apData, aSize, &data);
 
         m_currentFrame.UncompressedRecvBytes -= aSize;
-        m_currentFrame.UncompressedRecvBytes += data.size();
+        m_currentFrame.UncompressedRecvBytes += data.size() & 0xFFFFFFFF;
 
         if (!data.empty()) [[likely]]
         {
-            OnConsume((const void*)data.data(), data.size());
+            OnConsume(data.data(), data.size() & 0xFFFFFFFF);
         }
     }
 }

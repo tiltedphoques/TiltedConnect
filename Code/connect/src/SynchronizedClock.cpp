@@ -65,7 +65,7 @@ namespace TiltedPhoques
         const auto syncDeltaSeconds = syncDelta.count();
         const auto serverTickEstimate = m_previousSimulatedTick + delta;
 
-        const auto diff = std::chrono::nanoseconds(int64_t(m_tickDelta.count() * Min(1.0, syncDeltaSeconds)));
+        const auto diff = std::chrono::nanoseconds(static_cast<int64_t>(m_tickDelta.count() * Min(1.0, (float)syncDeltaSeconds)));
 
         m_simulatedTick = std::chrono::duration_cast<std::chrono::milliseconds>(serverTickEstimate + diff).count();
     }

@@ -9,7 +9,7 @@ namespace TiltedPhoques
     {
     }
 
-    Packet::Packet(const size_t aSize) noexcept
+    Packet::Packet(const uint32_t aSize) noexcept
         : m_pData(nullptr)
         , m_size(aSize + 1)
     {
@@ -27,12 +27,12 @@ namespace TiltedPhoques
         return m_pData + 1;
     }
 
-    size_t Packet::GetSize() const noexcept
+    uint32_t Packet::GetSize() const noexcept
     {
         return m_size - 1;
     }
 
-    size_t Packet::GetTotalSize() const noexcept
+    uint32_t Packet::GetTotalSize() const noexcept
     {
         return m_size;
     }
@@ -42,7 +42,7 @@ namespace TiltedPhoques
         return m_pData != nullptr;
     }
 
-    PacketView::PacketView(char* aPointer, size_t aSize)
+    PacketView::PacketView(char* aPointer, uint32_t aSize)
         : Packet()
     {
         m_pData = aPointer;

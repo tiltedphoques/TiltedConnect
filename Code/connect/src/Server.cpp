@@ -139,7 +139,7 @@ namespace TiltedPhoques
             {
                 apPacket->m_pData[0] = kCompressedPayload;
                 std::copy(std::begin(data), std::end(data), apPacket->GetData());
-                apPacket->m_size = data.size() + 1;
+                apPacket->m_size = (data.size() + 1) & 0xFFFFFFFF;
             }
         }
 
@@ -173,7 +173,7 @@ namespace TiltedPhoques
 
     uint32_t Server::GetClientCount() const noexcept
     {
-        return m_connections.size();
+        return m_connections.size() & 0xFFFFFFFF;
     }
 
     uint32_t Server::GetTickRate() const noexcept
@@ -236,7 +236,7 @@ namespace TiltedPhoques
 
         if (!data.empty())
         {
-            OnConsume((const void*)data.data(), data.size(), aConnectionId);
+            OnConsume(data.data(), data.size() & 0xFFFFFFFF, aConnectionId);
         }
     }
 
@@ -256,13 +256,13 @@ namespace TiltedPhoques
         if(aSpecificConnection != k_HSteamNetConnection_Invalid)
         {
             // In this case we probably want it to arrive so send it reliably
-            m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.Size(), k_nSteamNetworkingSend_ReliableNoNagle, nullptr);
+            m_pInterface->SendMessageToConnection(aSpecificConnection, pBuffer->GetData(), writer.Size() & 0xFFFFFFFF, k_nSteamNetworkingSend_ReliableNoNagle, nullptr);
         }
         else
         {
             for (const auto cConnection : m_connections)
             {
-                m_pInterface->SendMessageToConnection(cConnection, pBuffer->GetData(), writer.Size(), k_nSteamNetworkingSend_UnreliableNoDelay, nullptr);
+                m_pInterface->SendMessageToConnection(cConnection, pBuffer->GetData(), writer.Size() & 0xFFFFFFFF, k_nSteamNetworkingSend_UnreliableNoDelay, nullptr);
             }
         }
     }
