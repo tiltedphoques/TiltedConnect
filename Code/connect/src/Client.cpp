@@ -1,3 +1,4 @@
+#include <chrono>
 #include "Client.hpp"
 #include "SteamInterface.hpp"
 #include <steam/isteamnetworkingutils.h>
@@ -8,7 +9,6 @@
 #include "Packet.hpp"
 #include <google/protobuf/stubs/port.h>
 #include <snappy.h>
-#include <bit>
 
 namespace TiltedPhoques
 {

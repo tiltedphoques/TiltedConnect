@@ -1,8 +1,6 @@
 #pragma once
 
 #include "steam/steamnetworkingsockets.h"
-#include <cstdint>
-#include <string>
 #include "SteamInterface.hpp"
 #include "SynchronizedClock.hpp"
 

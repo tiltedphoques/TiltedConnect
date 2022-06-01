@@ -1,9 +1,11 @@
 #include "SteamInterface.hpp"
 #include "steam/steamnetworkingsockets.h"
 
+#include <atomic>
+
 namespace TiltedPhoques
 {
-    std::atomic<std::size_t> SteamInterface::s_initCounter = 0;
+    static std::atomic<std::size_t> s_initCounter = 0;
 
     void SteamInterface::Acquire()
     {
