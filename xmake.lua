@@ -2,7 +2,7 @@ set_languages("cxx20")
 
 set_xmakever("2.5.1")
 
-add_requires("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "catch2", "libuv")
+add_requires("tiltedcore", "hopscotch-map", "snappy", "gamenetworkingsockets", "catch2 2.13.9", "libuv")
 add_requireconfs("*.protobuf*", { build = true })
 
 add_rules("mode.debug","mode.releasedbg", "mode.release")
