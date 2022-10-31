@@ -16,7 +16,7 @@ namespace TiltedPhoques
 
         TP_NOCOPYMOVE(Server);
 
-        bool Host(uint16_t aPort, uint32_t aTickRate) noexcept;
+        bool Host(uint16_t aPort, uint32_t aTickRate, bool bEnableDualStackIP = true) noexcept;
         void Close() noexcept;
 
         void Update() noexcept;

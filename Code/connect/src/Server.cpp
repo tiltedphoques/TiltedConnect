@@ -34,13 +34,20 @@ namespace TiltedPhoques
         SteamInterface::Release();
     }
 
-    bool Server::Host(const uint16_t aPort, uint32_t aTickRate) noexcept
+    bool Server::Host(const uint16_t aPort, uint32_t aTickRate, bool bEnableDualStackIP) noexcept
     {
         Close();
 
         SteamNetworkingIPAddr localAddress{};  // NOLINT(cppcoreguidelines-pro-type-member-init)
-        localAddress.Clear();
-        localAddress.m_port = aPort;
+        if (bEnableDualStackIP)
+        {
+            localAddress.Clear();
+            localAddress.m_port = aPort;
+        }
+        else
+        {
+            localAddress.SetIPv4(0, aPort);
+        }
 
         SteamNetworkingConfigValue_t opt = {};
         opt.SetPtr(k_ESteamNetworkingConfig_Callback_ConnectionStatusChanged, reinterpret_cast<void*>(&SteamNetConnectionStatusChangedCallback));
