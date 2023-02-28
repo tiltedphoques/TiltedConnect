@@ -47,6 +47,7 @@ namespace TiltedPhoques
         [[nodiscard]] uint32_t GetTickRate() const noexcept;
         [[nodiscard]] uint64_t GetTick() const noexcept;
         [[nodiscard]] SteamNetConnectionInfo_t GetConnectionInfo(ConnectionId_t aConnectionId) const noexcept;
+        [[nodiscard]] bool IsAlive(ConnectionId_t aConnectionId) const noexcept;
 
     private:
 

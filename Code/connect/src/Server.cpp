@@ -205,6 +205,12 @@ namespace TiltedPhoques
         return info;
     }
 
+    bool Server::IsAlive(ConnectionId_t aConnectionId) const noexcept
+    {
+		const auto it = std::find(std::begin(m_connections), std::end(m_connections), aConnectionId);
+        return it != std::end(m_connections);
+    }
+
     void Server::Remove(const ConnectionId_t aId) noexcept
     {
         const auto it = std::find(std::begin(m_connections), std::end(m_connections), aId);
