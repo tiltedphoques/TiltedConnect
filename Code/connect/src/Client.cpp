@@ -194,6 +194,7 @@ namespace TiltedPhoques
             m_currentFrame.RecvBytes += pIncomingMsg->GetSize();
             m_currentFrame.UncompressedRecvBytes += pIncomingMsg->GetSize();
 
+            m_currentMessageReceiveTime = pIncomingMsg->GetTimeReceived();
             HandleMessage(pIncomingMsg->GetData(), pIncomingMsg->GetSize());
 
             pIncomingMsg->Release();
@@ -222,7 +223,7 @@ namespace TiltedPhoques
         m_currentFrame.SentBytes += apPacket->m_size;
 
         m_pInterface->SendMessageToConnection(m_connection, apPacket->m_pData, apPacket->m_size,
-            acPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
+            ToSteamSendFlags(acPacketFlags), nullptr);
     }
 
     bool Client::IsConnected() const noexcept
@@ -262,6 +263,11 @@ namespace TiltedPhoques
     const SynchronizedClock& Client::GetClock() const noexcept
     {
         return m_clock;
+    }
+
+    SteamNetworkingMicroseconds Client::GetCurrentMessageReceiveTime() const noexcept
+    {
+        return m_currentMessageReceiveTime;
     }
 
     void Client::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* apInfo)

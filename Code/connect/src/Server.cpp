@@ -151,7 +151,7 @@ namespace TiltedPhoques
         }
 
         m_pInterface->SendMessageToConnection(aConnectionId, apPacket->m_pData, apPacket->m_size,
-            aPacketFlags == kReliable ? k_nSteamNetworkingSend_Reliable : k_nSteamNetworkingSend_Unreliable, nullptr);
+            ToSteamSendFlags(aPacketFlags), nullptr);
     }
 
     void Server::Kick(const ConnectionId_t aConnectionId) noexcept
