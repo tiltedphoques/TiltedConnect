@@ -349,7 +349,10 @@ namespace TiltedPhoques
         const auto cServerTime = google::protobuf::BigEndian::Load64(apData);
         const auto cWasSynchronized = GetClock().IsSynchronized();
 
-        m_clock.Synchronize(cServerTime, cConnectionStatus.m_nPing);
+        // The message may have waited out a long frame before Update() got to it, the server's time moved on meanwhile
+        const auto cMessageAge = (SteamNetworkingUtils()->GetLocalTimestamp() - m_currentMessageReceiveTime) / 1000;
+
+        m_clock.Synchronize(cServerTime, cConnectionStatus.m_nPing, cMessageAge > 0 ? static_cast<uint32_t>(cMessageAge) : 0u);
 
         if (!cWasSynchronized)
             OnConnected();
