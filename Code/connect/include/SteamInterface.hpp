@@ -7,8 +7,20 @@ namespace TiltedPhoques
     enum EPacketFlags
     {
         kReliable,
-        kUnreliable
+        kUnreliable,
+        // Skips Nagle's algorithm: sent right away, flushing anything queued before it
+        kUnreliableNoNagle
     };
+
+    [[nodiscard]] inline int ToSteamSendFlags(const EPacketFlags acPacketFlags) noexcept
+    {
+        switch (acPacketFlags)
+        {
+        case kUnreliable: return k_nSteamNetworkingSend_Unreliable;
+        case kUnreliableNoNagle: return k_nSteamNetworkingSend_UnreliableNoNagle;
+        default: return k_nSteamNetworkingSend_Reliable;
+        }
+    }
 
     enum EConnectOpcode : uint8_t
     {

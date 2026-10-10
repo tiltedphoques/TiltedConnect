@@ -9,7 +9,8 @@ namespace TiltedPhoques
         SynchronizedClock() noexcept;
         [[nodiscard]] uint64_t GetCurrentTick() const noexcept;
         [[nodiscard]] bool IsSynchronized() const noexcept;
-        void Synchronize(uint64_t aServerTick, uint32_t aPing) noexcept;
+        // aMessageAge is how long ago in ms the message carrying aServerTick arrived
+        void Synchronize(uint64_t aServerTick, uint32_t aPing, uint32_t aMessageAge = 0) noexcept;
         void Reset() noexcept;
         void Update() noexcept;
 

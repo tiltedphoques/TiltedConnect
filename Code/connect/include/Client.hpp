@@ -55,6 +55,9 @@ namespace TiltedPhoques
         [[nodiscard]] SteamNetConnectionRealTimeStatus_t GetConnectionStatus() const noexcept;
         [[nodiscard]] Statistics GetStatistics() const noexcept;
         [[nodiscard]] const SynchronizedClock& GetClock() const noexcept;
+        // SteamNetworkingUtils()->GetLocalTimestamp() at which the message being consumed arrived. It may have been
+        // queued for a while before Update() picked it up, e.g. during a long frame. Only meaningful inside OnConsume().
+        [[nodiscard]] SteamNetworkingMicroseconds GetCurrentMessageReceiveTime() const noexcept;
 
     private:
 
@@ -70,6 +73,7 @@ namespace TiltedPhoques
         ISteamNetworkingSockets* m_pInterface;
         SynchronizedClock m_clock;
         uint64_t m_lastStatisticsPoint{};
+        SteamNetworkingMicroseconds m_currentMessageReceiveTime{};
         mutable Statistics m_currentFrame{};
         Statistics m_previousFrame{};
         void* m_pLoop{};

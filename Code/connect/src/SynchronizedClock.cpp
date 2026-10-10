@@ -23,14 +23,14 @@ namespace TiltedPhoques
         return m_simulatedTick != 0;
     }
 
-    void SynchronizedClock::Synchronize(uint64_t aServerTick, uint32_t aPing) noexcept
+    void SynchronizedClock::Synchronize(uint64_t aServerTick, uint32_t aPing, uint32_t aMessageAge) noexcept
     {
         if (aServerTick <= m_lastServerTick)
             return;
 
         m_lastServerTick = aServerTick;
 
-        const auto tripTime = aPing / 2;
+        const auto tripTime = aPing / 2 + aMessageAge;
 
         m_lastSynchronizationTime = std::chrono::high_resolution_clock::now();
 
